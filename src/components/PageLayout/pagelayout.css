@@ -1,0 +1,36 @@
+.app {
+    display: flex;
+    flex-direction: column;
+    height: 98vh;
+    justify-content: space-between;
+    /* padding: 0.1rem; */
+    /* overflow-x: hidden; */
+}
+
+.appmain {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: auto;
+    min-height: calc(100vh - 80px);
+    background-color: var(--color-background);
+}
+
+.appfooter {
+    font-weight: 400;
+    font-size: 0.75rem;
+    line-height: 2.0rem;
+    text-align: center;
+    flex: 0 0 auto;
+}
+
+@media (min-width: 1216px) {
+    .appmain {
+        flex-direction: column;
+    }
+}
+
+/* @media (min-width: 640px) {
+    .app {
+        padding: 0.25rem;
+    }
+} */

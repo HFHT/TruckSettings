@@ -1,0 +1,357 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700&display=swap');
+
+::before,
+::after {
+  --my-border-spacing-x: 0;
+  --my-border-spacing-y: 0;
+  --my-bg-opacity: 1;
+}
+
+input::-webkit-inner-spin-button,
+input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0
+}
+
+::-webkit-calendar-picker-indicator {
+  filter: invert(var(--date-filter))
+}
+
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color-scheme: light dark;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+
+    --color-background: rgb(30 41 59);
+    --color-badge-background: black;
+    --color-badge-hover: rgb(143, 143, 143, 0.6);
+    --color-badge-text: white;
+    --color-blue-background: blue;
+    --color-border: lightgray;
+    --color-btn-background: rgb(40, 119, 192);
+    --color-btn-hover: rgb(14 165 233);
+    --color-btn-off-background: #7d7c7c;
+    --color-btn-text: rgb(22, 22, 22);
+    --color-dark-background: black;
+    --color-done-background: gray;
+    --color-drawer-bg: rgb(51, 65, 85);
+    --color-glyph: white;
+    --color-glyph-bg: darkred;
+    --color-green-background: darkgreen;
+    --color-icon: white;
+    --color-icon-hover: black;
+
+    --color-input-border-err: rgb(119, 29, 29);
+    --color-input-err: rgb(173, 74, 74);
+    --color-input-bg: rgb(55 65 81);
+    --color-input-border: rgb(75 85 99);
+    --color-input-border-err: rgb(173, 74, 74);
+    --color-input-box-bg: rgb(55 65 81);
+    --color-input-focus: rgb(59 130 246);
+    --color-input-outline: rgb(59 130 246);
+    --color-input-placeholder: rgb(156 163 175);
+    --color-input-text: white;
+    --color-li-border: rgb(30 41 59 / 0.5);
+    --color-link: rgb(47, 176, 235);
+    --color-link-hover: white;
+    --color-magenta-background: darkmagenta;
+    --color-modal: rgb(55 65 81);
+    --color-navitem-background: rgb(55 65 81);
+    --color-red-background: darkred;
+    --color-star: #fde047;
+    --color-star-hover: #ffd400;
+    --color-star-none: #a7aeb6;
+    --color-text: white;
+    --color-textarea: white;
+    --color-textarea-background: rgb(55 65 81);
+    --color-tile: #222;
+    --color-tile-active: rgb(209 213 219);
+    --color-tile-bg: gray;
+    --color-tile-border: white;
+    --color-tile-hover: rgb(120, 235, 120);
+    --color-toast-bg: rgb(245 245 245 / 1);
+    --color-selected-bg: #937737;
+    --color-complete-bg: rgb(16 45 1 / 1);
+    --color-resched-bg: rgb(51 12 0 / 1);
+    --color-crosshatch-fg: red;
+    --color-crosshatch-bg: rgba(255, 255, 255, 0.5);
+
+    --date-filter: 1;
+    --svg-bg: black;
+    --svg-fill: white;
+  }
+
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --color-background: white;
+    --color-badge-background: white;
+    --color-badge-hover: rgba(143, 143, 143, 0.4);
+    --color-badge-text: black;
+    --color-blue-background: lightblue;
+    --color-border: lightgray;
+    --color-btn-background: rgb(14 165 233);
+    --color-btn-hover: rgb(75, 185, 236);
+    --color-btn-text: white;
+    --color-dark-background: lightgray;
+    --color-done-background: rgb(216, 214, 214);
+    --color-drawer-bg: rgb(202, 200, 200);
+    --color-glyph: white;
+    --color-glyph-bg: darkred;
+    --color-green-background: lightgreen;
+    --color-icon: #334155;
+    --color-icon-hover: white;
+
+    --color-input-border-err: rgb(119, 29, 29);
+    --color-input-err: rgb(173, 74, 74);
+    --color-input-bg: rgb(249 250 251);
+    --color-input-border: rgb(209 213 219);
+    --color-input-border-err: rgb(173, 74, 74);
+    --color-input-box-bg: rgb(249 250 251);
+    --color-input-focus: rgb(59 130 246);
+    --color-input-outline: rgb(59 130 246);
+    --color-input-placeholder: rgb(156 163 175);
+    --color-input-text: black;
+
+    --color-li-border: rgb(209 213 219 / 1);
+    --color-link: rgb(40, 119, 192);
+    --color-link-hover: #535bf2;
+    --color-magenta-background: thistle;
+    --color-modal: white;
+    --color-navitem-background: white;
+
+    --color-red-background: pink;
+    --color-star: #209e4e;
+    --color-star-hover: #029f3b;
+    --color-star-none: #334155;
+    --color-text: #222;
+    --color-textarea: #222;
+    --color-textarea-background: rgb(249 250 251);
+    ;
+    --color-tile: #222;
+    --color-tile-active: rgb(177, 240, 177);
+    --color-tile-active: rgb(90, 90, 90);
+    --color-tile-bg: #ddd;
+    --color-tile-border: black;
+    --color-tile-hover: rgb(120, 235, 120);
+    --color-toast-bg: rgb(115 115 115 / 1);
+    --color-selected-bg: #937737;
+    --color-complete-bg: rgb(206, 247, 186);
+    --color-resched-bg: rgb(253, 198, 181);
+    --color-crosshatch-fg: white;
+    --color-crosshatch-bg: rgba(0, 0, 0, 0.5);
+
+    --date-filter: 0;
+    --svg-bg: black;
+    --svg-fill: black;
+  }
+}
+
+/* .crosshatch {
+  color: var(--color-crosshatch-fg);
+  background-image: linear-gradient(45deg,
+      var(--color-crosshatch-bg),
+      var(--color-crosshatch-bg) 25%,
+      transparent 25%,
+      transparent 50%,
+      var(--color-crosshatch-bg) 50%,
+      var(--color-crosshatch-bg) 75%,
+      transparent 75%,
+      transparent);
+  background-size: 5px 5px;
+} */
+
+html {
+  min-height: 100%;
+  line-height: 1.5;
+  tab-size: 4;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  display: block;
+  background-color: var(--color-background);
+  color: var(--color-text);
+  overflow-y: hidden;
+  min-height: 100vh;
+  /* overflow-y: hidden; */
+}
+
+a {
+  font-weight: 500;
+  color: var(--svg-fill);
+  text-decoration: inherit;
+}
+
+a:hover {
+  color: var(--color-link-hover);
+}
+
+a:link,
+a:visited,
+a:active {
+  background-color: var(--color-modal);
+  color: var(--color-link);
+  text-decoration: underline solid var(--color-link);
+}
+
+textarea {
+  color: var(--color-textarea);
+  background-color: var(--color-textarea-background);
+  height: 4em;
+  width: 22em;
+  margin-top: 8px;
+}
+
+h1 {
+  font-size: 1.7em;
+  line-height: 1.1;
+}
+
+h2 {
+  font-size: 1.5em;
+  line-height: 1.1;
+}
+
+h3 {
+  font-size: 1.17em;
+  line-height: 1.1;
+}
+
+
+@media (max-width: 319px) {
+  textarea {
+    width: 19em;
+  }
+
+  h1 {
+    font-size: 1.4rem;
+  }
+
+  h2 {
+    font-size: 1.2rem;
+  }
+
+  h3 {
+    font-size: 1rem;
+  }
+}
+
+img,
+svg {
+  vertical-align: middle;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+
+button:hover {
+  border-color: #646cff;
+}
+
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+.text {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.text-xs {
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+.text-sm {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.text-base {
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+
+.text-lg {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+}
+
+.text-3xl {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+}
+
+.p0 {
+  padding: 0;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.height1 {
+  height: 1rem;
+}
+
+.ml10 {
+  margin-left: 10px;
+}
+
+.uncover {
+  object-fit: unset !important;
+}
+
+.svgBroken {
+  filter: invert(0.5);
+  width: initial;
+  opacity: 0.2;
+}
+
+.twocols {
+  display: grid;
+  grid-template-columns: 2fr 3fr;
+}
+
+.emailsend {
+  display: grid;
+  gap: 0;
+  grid-template-columns: 15fr 1fr;
+}
+
+.favcolor {
+  fill: var(--color-star);
+}
+
+.favcolor:hover {
+  fill: var(--color-star-hover);
+}
+
+.favnocolor {
+  fill: var(--color-star-none);
+}
+
+.favnocolor:hover {
+  fill: var(--color-star-hover);
+}
