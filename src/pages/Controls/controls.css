@@ -1,0 +1,80 @@
+.controlgrid {
+    display: grid;
+    width: 100%;
+    grid-template-columns: 1.4fr 2fr 7fr 0.5fr;
+    grid-template-rows: 1fr;
+    gap: 5px 5px;
+    grid-auto-flow: column dense;
+    grid-template-areas:
+        "logo title navigation profile";
+}
+
+.thelogo {
+    grid-area: logo;
+    display: flex;
+    align-items: center;
+}
+
+.thetitle {
+    grid-area: title;
+}
+
+.thetitle h2 {
+    font-size: 1.2rem;
+}
+
+.thenav {
+    grid-area: navigation;
+}
+
+.profilegrid {
+    grid-area: profile;
+    text-align: right;
+}
+
+.profileimg {
+    border-radius: 9999px;
+    height: 3rem;
+    width: 3rem;
+}
+
+.profiledrawer {
+    display: flex;
+    border-bottom-width: 1px;
+    border-color: var(--color-li-border);
+    padding: 0.75rem;
+    max-width: 24rem;
+    width: 100%;
+    margin-left: 0.75rem;
+    margin-right: 0.75rem;
+}
+
+.profiledrawer .account {
+    flex: 1 1 0%;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    height: 1rem;
+    font-size: 0.875rem;
+}
+
+.profiledrawer .account .name {
+    font-weight: 500;
+    width: 75%;
+}
+
+.profilegrid .divider {
+    border-bottom-width: 1px;
+    padding-bottom: 0.25rem;
+}
+
+@media (max-width: 440px) {
+    .controlgrid {
+        display: grid;
+        grid-template-columns: minmax(auto, max-content) minmax(auto, max-content);
+        grid-template-areas:
+            "logo  profile"
+            "title  title"
+            "navigation  navigation";
+
+    }
+}

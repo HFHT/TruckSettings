@@ -1,0 +1,9 @@
+.searchresults {
+    position:fixed;
+    width:20%;
+    height:20%;
+    cursor: pointer;
+    background-color: var(--color-input-box-bg);
+    opacity: 0.96;
+    overflow-y: scroll;
+}

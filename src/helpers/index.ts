@@ -1,5 +1,5 @@
 // export * from './calcDistance';
-// export * from './dateDB';
+export * from './dateDB';
 export * from './fetchAPI';
 export * from './find_id';
 // export * from './handleBrokenImage';
@@ -14,7 +14,7 @@ export * from './find_id';
 // export * from './buildSchedule';
 // export * from './buildSlots';
 // export * from './buildFollowups';
-// export * from './buildAppts';
+export * from './buildAppts';
 // export * from './buildDBEntry';
 // export * from './findFirstSlot';
 // export * from './moveAppt';

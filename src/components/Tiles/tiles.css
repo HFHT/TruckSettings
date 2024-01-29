@@ -1,0 +1,44 @@
+.tilegroup {
+    display: grid;
+    padding-right: 0.75rem;
+}
+
+.tiles {
+    padding-left: 0.70rem;
+    margin-top: -0.3rem;
+    border-color: var(--color-input-border);
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 0.5rem;
+}
+
+.tiletitle {
+    margin-right: 0.25rem;
+    margin-left: 0.75rem;
+    background-color: var(--color-input-bg);
+}
+
+.tile {
+    align-items: center;
+    margin-top: 0.6rem;
+    margin-right: 0rem;
+    margin-bottom: 0.25rem;
+    padding: 0.1rem 0.5rem 0.1rem 0.5rem;
+    cursor: pointer;
+    background-color: inherit;
+    display: inline-flex;
+}
+
+.tileactive {
+    background-color: var(--color-tile-active);
+    color: var(--color-btn-text);
+    font-weight: 600;
+}
+
+.tile:hover {
+    background-color: var(--color-btn-hover);
+}
+
+.tilehide {
+    display: none;
+}

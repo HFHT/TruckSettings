@@ -91,7 +91,7 @@ input:focus:invalid {
 
 .itemqty {
     flex: 0 1 auto;
-    width: 15%!important;
+    width: 15% !important;
     height: 1rem;
     margin-right: 5px;
 }

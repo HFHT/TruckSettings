@@ -1,101 +1,76 @@
-//@ts-ignore
-import { CSVLink } from "react-csv";
+import './main.css';
+
 import { useDb } from "../../hooks";
+import { Controls, Downloads } from "..";
+import { ToastContainer } from "react-toastify";
+import { useMemo, useState } from "react";
+import { buildAppts, dateFormat, find_row } from "../../helpers";
+import { followupAppt } from "../../components";
 export function Main({ settings }: any) {
     const [dbTrack, mutateTrack, updateTrack, trackFetching] = useDb({ key: 'track', theDB: 'DonorTracking', interval: 4 })
     const [dbDonor, mutateDonor, updateDonor, donorFetching] = useDb({ key: 'donors', theDB: 'Donors', interval: 4 })
     const [dbSched, mutateSched, updateSched, schedFetching] = useDb({ key: 'sched', theDB: 'Schedule', interval: 4 })
     const [dbSettings, mutateSettings, updateSettings, settingsFetching] = useDb({ key: 'settings', theDB: 'Settings', interval: 4 })
+    const [curDate, setCurDate] = useState(dateFormat(''))      // holds the schedule display date set by navigation controls
+    const [schedDate, setSchedDate] = useState('')              // holds the date from the appt date field
+    const [name, setName] = useState<IName>({ first: '', last: '', company: '' })
+    const [phone, setPhone] = useState('')
+    const [zip, setZip] = useState('');
+    const [mode, setMode] = useState('Dashboard')
 
+    const searchList = useMemo(() => { console.log('useMemo-appts'); return buildAppts(dbSched) }, [dbSched, schedFetching])
+    const handleSetSchedDate = (e: string) => {
+        setSchedDate(e)
+        setCurDate(e)
+    }
+    const handleModeChange = (e: string) => {
+        console.log(e)
+        e === 'Dashboard' && mode !== e && setMode(e)
+        e === 'Downloads' && mode !== e && setMode(e)
+        e === 'Users' && mode !== e && setMode(e)
+        e === 'Holidays' && mode !== e && setMode(e)
+        e === 'Templates' && mode !== e && setMode(e)
+        e === 'Routes' && mode !== e && setMode(e)
+    }
+    function handleFollowup(thisApptID: followupAppt) {
+        //When a followup item is clicked a followupAppt object is passed with the DB and appt index.
+        //Locate the appt and then call handleEdit for the appointment.
+        if (!thisApptID) return
+        let thisDay = dbSched[thisApptID.dbIdx]
+        console.log('handleFollowup', thisApptID, thisDay._id, thisDay.c[thisApptID.apptIdx].id)
+        setCurDate(thisDay._id)
+        handleEdit(thisDay.c[thisApptID.apptIdx].id, thisDay._id)
+    }
+    const handleEdit = (apptID: string, apptDate: string) => {
+        // When a schedule block is clicked get the pickup object and open and pass to the editor
+        console.log('handleEdit', dbSched && find_row('_id', apptDate, dbSched), apptID)
+    }
     return (
-        <>
-            <div>Main</div>
-
+        <div className='maingrid'>
+            <div className='maincontrol'>
+                <ToastContainer position="top-left" className='mytoast' autoClose={3000} hideProgressBar={true} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover theme="light" />
+                <Controls
+                    controls={{ zip: zip, name: name, curDate: curDate, phone: phone }}
+                    // availSlots={zipAvailSlots}
+                    holidays={find_row('_id', 'Holidays', settings)}
+                    setZip={(e: any) => setZip(e)}
+                    setSched={(e: any) => handleSetSchedDate(e)}
+                    setName={(e: any) => setName(e)}
+                    setPhone={(e: any) => setPhone(e)}
+                    setCurDate={(e: any) => setCurDate(e)}
+                    mode={mode}
+                    setMode={(e: any) => handleModeChange(e)}
+                    searchList={searchList}
+                    handleSearch={(e: any) => handleFollowup(e)}
+                />
+            </div>
             {(dbTrack && dbDonor && dbSched && dbSettings) ?
-                <>
-                    <CSVLink data={csvDonors(dbDonor)} filename={'HabiStoreDonors.csv'}>Download Donors</CSVLink>
-                    <CSVLink data={csvTrack(dbTrack)} filename={'HabiStoreVisits.csv'}>Download Web Visits</CSVLink>
-                    <CSVLink data={csvPickup(dbSched)} filename={'HabiStoreAppts.csv'}>Download Pickups</CSVLink>
-
-                </>
+                <div className='mainpage'>
+                    <Downloads isOpen={mode === 'Downloads'} dbDonor={dbDonor} dbTrack={dbTrack} dbSched={dbSched} />
+                </div>
                 :
                 'loading...'
             }
-        </>
+        </div>
     )
-}
-export function csvPickup(dbSched: any) {
-    let csv = [['Date', 'Done?', 'Route', 'First', 'Last', 'Company', 'Address', 'Unit', 'Zip', 'email', 'ID']]
-    console.log(dbSched)
-    dbSched.forEach((theDay: any) => {
-        console.log(theDay)
-        theDay.c.forEach((theAppt: any) => {
-            console.log(theAppt)
-            csv.push([
-                theDay._id,
-                theAppt.done ? 'Yes' : '',
-                theAppt.appt.rt,
-                theAppt.name.first,
-                theAppt.name.last,
-                theAppt.name.company,
-                theAppt.place.addr,
-                theAppt.cust.apt,
-                theAppt.zip,
-                theAppt.email,
-                getItems(theAppt.items),
-                `'${theAppt.id}`
-            ])
-        })
-    })
-    return csv
-    function getItems(items: any[]) {
-        let retVal = ''
-        items.forEach((theItem: any) => {
-            retVal = `${retVal} ${theItem.prod}(${theItem.qty}${theItem.c ? 'c' : '?'}) `
-        })
-        return retVal
-    }
-}
-export function csvDonors(dbDonor: any) {
-    let csv = [['First', 'Last', 'Address', 'Unit', 'email', 'Date', 'ID']]
-    console.log(dbDonor)
-    dbDonor.forEach((theRcd: any) => {
-        csv.push([theRcd.name.first, theRcd.name.last, theRcd.addr.addr, theRcd.apt, theRcd.email, theRcd.dt, theRcd._id])
-    })
-    return csv
-}
-export function csvTrack(dbTrack: any) {
-    let csv = [['Date', 'Step', 'Zip', 'Phone', 'Browser', '', 'OS', '', 'Vendor', 'Model', 'Type', 'Fingerprint']]
-    console.log(dbTrack)
-    dbTrack.forEach((theRcd: any) => {
-        console.log(theRcd)
-        theRcd.sessions.forEach((theSession: any) => {
-            console.log(theSession)
-            csv.push([
-                theSession.dt,
-                theSession.step,
-                theSession.zip,
-                theSession.phone]
-                .concat(getNameVersion(theRcd.browser.browser))
-                .concat(getNameVersion(theRcd.browser.os))
-                .concat(getDevice(theRcd.browser.device))
-                .concat(theRcd._id))
-        })
-    })
-    return csv
-
-    function getNameVersion(val: any) {
-        console.log(val)
-        if (!val) return ''
-        return [getProperty('name', val), getProperty('version', val)]
-    }
-    function getDevice(val: any) {
-        console.log(val)
-        if (!val) return ''
-        return [getProperty('vendor', val), getProperty('model', val), getProperty('type', val)]
-    }
-    function getProperty(prop: string, val: any) {
-        if (val.hasOwnProperty(prop)) return val[prop]
-        return ''
-    }
 }
