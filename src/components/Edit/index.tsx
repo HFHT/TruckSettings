@@ -35,6 +35,7 @@ export function TextEditor({ html, setter }: IEditor) {
                 wrapperClassName="wrapperClassName"
                 editorClassName="editorClassName"
                 onEditorStateChange={onEditorStateChange}
+                spellCheck={true}
             />
             <textarea
                 disabled
