@@ -1,0 +1,26 @@
+.templatediv {
+    display: grid;
+    gap: 5px;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    grid-template-areas:
+        "subject"
+        "edit"
+        "body"
+}
+
+.templatesubject {
+    grid-area: subject
+}
+
+.templateedit {
+    grid-area: edit
+}
+
+.templatebody {
+    grid-area: body;
+}
+
+.templatetext {
+    height: unset;
+}

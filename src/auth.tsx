@@ -53,7 +53,7 @@ async function signInClickHandler(instance: any) {
     const results = {};
     const queryClient = new QueryClient();
     const selects: any = { a: 1 };
-    const settings = await fetchAPI({ req: { method: 'find', db: 'Truck', collection: 'Settings' }, isObj: true });
+    // const settings = await fetchAPI({ req: { method: 'find', db: 'Truck', collection: 'Settings' }, isObj: true });
 
     console.log('Auth render');
 
@@ -69,7 +69,7 @@ async function signInClickHandler(instance: any) {
                       {/* <APIProvider apiKey={`${import.meta.env.VITE_GOOGLE_APIKEY}`} libraries={['places','routes']}> */}
 
                         {results &&
-                          <App settings={settings}/>
+                          <App msal={msalInstance}/>
                         }
                       {/* </APIProvider> */}
                     </QueryClientProvider>

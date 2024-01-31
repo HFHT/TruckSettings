@@ -62,7 +62,7 @@ export const Downloads = ({ isOpen, dbDonor, dbTrack, dbSched }: IDownloads) => 
         }
     }
     function csvPickup(dbSched: any) {
-        let csv = [['Date', 'Done?', 'Route', 'First', 'Last', 'Company', 'Address', 'Unit', 'Zip', 'email', 'ID']]
+        let csv = [['Date', 'Done?', 'Route', 'First', 'Last', 'Company', 'Address', 'Unit', 'Zip', 'email', 'Items', 'ID', 'Fingerprint']]
         console.log(dbSched)
         dbSched.forEach((theDay: any) => {
             console.log(theDay)
@@ -80,7 +80,8 @@ export const Downloads = ({ isOpen, dbDonor, dbTrack, dbSched }: IDownloads) => 
                     theAppt.zip,
                     theAppt.email,
                     getItems(theAppt.items),
-                    `'${theAppt.id}`
+                    `'${theAppt.id}`,
+                    theAppt?.fingerprint
                 ])
             })
         })
