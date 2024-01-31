@@ -27,7 +27,7 @@ export const Downloads = ({ isOpen, dbDonor, dbTrack, dbSched }: IDownloads) => 
         return csv
     }
     function csvTrack(dbTrack: any) {
-        let csv = [['Date', 'Step', 'Zip', 'Phone', 'Browser', '', 'OS', '', 'Vendor', 'Model', 'Type', 'Fingerprint']]
+        let csv = [['Date', 'Step', 'Zip', 'Phone', 'Browser', '', 'OS', '', 'Vendor', 'Model', 'Type', 'Fingerprint', 'Reason']]
         console.log(dbTrack)
         dbTrack.forEach((theRcd: any) => {
             console.log(theRcd)
@@ -41,7 +41,9 @@ export const Downloads = ({ isOpen, dbDonor, dbTrack, dbSched }: IDownloads) => 
                     .concat(getNameVersion(theRcd.browser.browser))
                     .concat(getNameVersion(theRcd.browser.os))
                     .concat(getDevice(theRcd.browser.device))
-                    .concat(theRcd._id))
+                    .concat(theRcd._id)
+                    .concat(getProperty('reason', theSession))
+                )
             })
         })
         return csv
