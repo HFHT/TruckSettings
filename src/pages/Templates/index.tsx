@@ -1,10 +1,9 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { find_id } from '../../helpers';
 import { MiscIcons } from '../../icons';
 import './templates.css';
-import { Button, Tiles, TextEditor } from '../../components';
-//@ts-ignore
-// import TextEditor from "../../components/Edit/index";
+import { Button, Tiles } from '../../components';
+
 interface IDownloads {
     isOpen: boolean
     isAdmin: boolean
@@ -20,6 +19,7 @@ export const Templates = ({ isOpen, isAdmin, dbSettings, mutateDB/* dbTrack, dbS
     const [theTemplate, setTheTemplate] = useState<any>()
     const [theEmailType, setTheEmailType] = useState('')
     const [editorState, setEditorState] = useState('')
+    const [canSave, setCanSave] = useState(false)
     const emailTypes: any = useMemo(() => {
         let retval: string[] = []
         Object.entries(theTemplates.templates).forEach((theTemplate: any, i: number) => {
@@ -31,11 +31,11 @@ export const Templates = ({ isOpen, isAdmin, dbSettings, mutateDB/* dbTrack, dbS
     console.log(theTemplates, uIdx, theTemplates.templates)
     console.log(Object.entries(theTemplates.templates), emailTypes)
     function setEmail(t: string) {
-        if (editorState !== '' && !confirm('Have you saved your changes?')) return
         setTheEmailType(t)
         // setValue(theTemplates.templates[t].body)
         setTheTemplate(theTemplates.templates[t])
-        setEditorState('')
+        setEditorState(theTemplates.templates[t].body)
+        setCanSave(false)
     }
     function saveBody() {
         if (!editorState) {
@@ -47,6 +47,7 @@ export const Templates = ({ isOpen, isAdmin, dbSettings, mutateDB/* dbTrack, dbS
         setTheTemplates(thisTemplate)
         mutateDB(theTemplates, dbSettings, false)
         setEditorState('')
+        setCanSave(false)
     }
     function cancelBody() {
         const thisTemplate = JSON.parse(JSON.stringify(theTemplates.templates[theEmailType]))
@@ -54,6 +55,7 @@ export const Templates = ({ isOpen, isAdmin, dbSettings, mutateDB/* dbTrack, dbS
         console.log(thisTemplate)
         setEditorState('')
         setTheEmailType('')
+        setCanSave(false)
     }
     function onSubjectChange(thisSubject: any) {
         console.log(thisSubject)
@@ -62,7 +64,6 @@ export const Templates = ({ isOpen, isAdmin, dbSettings, mutateDB/* dbTrack, dbS
         setTheTemplates(thisTemplate)
         mutateDB(theTemplates, dbSettings, false)
     }
-
     return (
         <>
             <h2>email Templates</h2>
@@ -70,14 +71,15 @@ export const Templates = ({ isOpen, isAdmin, dbSettings, mutateDB/* dbTrack, dbS
             {theEmailType !== '' &&
                 <div className='templatediv'>
                     <div className='templatebtn'>
-                        <Button onClick={() => saveBody()}>&nbsp;&nbsp;&nbsp;Save&nbsp;&nbsp;&nbsp;</Button>
-                        <Button onClick={() => cancelBody()}>Cancel</Button>
+                        <Button disabled={!canSave} onClick={() => saveBody()}>&nbsp;&nbsp;&nbsp;Save&nbsp;&nbsp;&nbsp;</Button>
+                        <Button disabled={!canSave} onClick={() => cancelBody()}>Cancel</Button>
                     </div>
                     <label className='templatesubject'>Subject
                         <input disabled={!isAdmin} type={'text'} value={theTemplate.subject} title={'Subject'} onChange={(e: any) => onSubjectChange({ ...theTemplate, subject: e.target.value })} />
                     </label>
                     <label className='templatebody'>Body
-                        <TextEditor html={theTemplate.body} setter={(e: string) => setEditorState(e)} />
+                        <textarea value={editorState} spellCheck onChange={(e: any) => {setCanSave(true); setEditorState(e.target.value)}} />
+                        {/* <TextEditor html={theTemplate.body} setter={(e: string) => setEditorState(e)} /> */}
                     </label>
                 </div>
             }

@@ -5,7 +5,6 @@ export * from './Button';
 // export * from './Badge';
 // export * from './Drawer';
 export * from './ErrorFallBack';
-export * from './Edit';
 // export * from './Header';
 // export * from './Modal';
 export * from './PageLayout';
