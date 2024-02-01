@@ -4,35 +4,34 @@ import './download.css';
 
 interface IDownloads {
     isOpen: boolean
-    dbDonor: any
-    dbTrack: any
-    dbSched: any
+    dbSched: IScheds[]
+    dbDonor: IDonor[]
+    dbTrack: IVisits[]
 }
 
 export const Downloads = ({ isOpen, dbDonor, dbTrack, dbSched }: IDownloads) => {
     if (!isOpen) return (<></>)
     return (
-        <div className='downloadmain'>
-            <CSVLink data={csvDonors(dbDonor)} filename={'HabiStoreDonors.csv'}>Download Donors</CSVLink>
-            <CSVLink data={csvTrack(dbTrack)} filename={'HabiStoreVisits.csv'}>Download Web Visits</CSVLink>
-            <CSVLink data={csvPickup(dbSched)} filename={'HabiStoreAppts.csv'}>Download Pickups</CSVLink>
-        </div>
+        <>
+            <h2>Downloads</h2>
+            <div className='downloadmain'>
+                <CSVLink data={csvDonors(dbDonor)} filename={'HabiStoreDonors.csv'}>Download Donors</CSVLink>
+                <CSVLink data={csvTrack(dbTrack)} filename={'HabiStoreVisits.csv'}>Download Web Visits</CSVLink>
+                <CSVLink data={csvPickup(dbSched)} filename={'HabiStoreAppts.csv'}>Download Pickups</CSVLink>
+            </div>
+        </>
     )
-    function csvDonors(dbDonor: any) {
+    function csvDonors(dbDonor: IDonor[]) {
         let csv = [['First', 'Last', 'Address', 'Unit', 'email', 'Date', 'ID']]
-        console.log(dbDonor)
         dbDonor.forEach((theRcd: any) => {
             csv.push([theRcd.name.first, theRcd.name.last, theRcd.addr.addr, theRcd.apt, theRcd.email, theRcd.dt, theRcd._id])
         })
         return csv
     }
-    function csvTrack(dbTrack: any) {
+    function csvTrack(dbTrack: IVisits[]) {
         let csv = [['Date', 'Step', 'Zip', 'Phone', 'Browser', '', 'OS', '', 'Vendor', 'Model', 'Type', 'Fingerprint', 'Reason']]
-        console.log(dbTrack)
         dbTrack.forEach((theRcd: any) => {
-            console.log(theRcd)
             theRcd.sessions.forEach((theSession: any) => {
-                console.log(theSession)
                 csv.push([
                     theSession.dt,
                     theSession.step,
@@ -49,12 +48,10 @@ export const Downloads = ({ isOpen, dbDonor, dbTrack, dbSched }: IDownloads) => 
         return csv
 
         function getNameVersion(val: any) {
-            console.log(val)
             if (!val) return ''
             return [getProperty('name', val), getProperty('version', val)]
         }
         function getDevice(val: any) {
-            console.log(val)
             if (!val) return ''
             return [getProperty('vendor', val), getProperty('model', val), getProperty('type', val)]
         }
@@ -63,27 +60,25 @@ export const Downloads = ({ isOpen, dbDonor, dbTrack, dbSched }: IDownloads) => 
             return ''
         }
     }
-    function csvPickup(dbSched: any) {
-        let csv = [['Date', 'Done?', 'Route', 'First', 'Last', 'Company', 'Address', 'Unit', 'Zip', 'email', 'Items', 'ID', 'Fingerprint']]
-        console.log(dbSched)
-        dbSched.forEach((theDay: any) => {
-            console.log(theDay)
-            theDay.c.forEach((theAppt: any) => {
-                console.log(theAppt)
+    function csvPickup(dbSched: IScheds[]) {
+        let csv = [['Date', 'Done?', 'Route', 'First', 'Last', 'Company', 'Address', 'Unit', 'Zip', 'email', 'Items', 'ID', 'src', 'Fingerprint']]
+        dbSched.forEach((theDay: IScheds) => {
+            theDay.c.forEach((theAppt: ISched) => {
                 csv.push([
                     theDay._id,
                     theAppt.done ? 'Yes' : '',
                     theAppt.appt.rt,
                     theAppt.name.first,
                     theAppt.name.last,
-                    theAppt.name.company,
-                    theAppt.place.addr,
+                    theAppt.name.company ? theAppt.name.company : '',
+                    theAppt.place.addr ? theAppt.place.addr : '',
                     theAppt.cust.apt,
                     theAppt.zip,
                     theAppt.email,
                     getItems(theAppt.items),
                     `'${theAppt.id}`,
-                    theAppt?.fingerprint
+                    theAppt.src ? theAppt.src : '',
+                    theAppt.fingerprint ? theAppt.fingerprint : ''
                 ])
             })
         })

@@ -1,7 +1,7 @@
 import './main.css';
 
 import { useDb } from "../../hooks";
-import { Admins, Controls, Downloads, Holidays, Templates, Users } from "..";
+import { Admins, Controls, Dashboard, Downloads, Holidays, Templates, Users } from "..";
 import { ToastContainer } from "react-toastify";
 import { useEffect, useMemo, useState } from "react";
 import { buildAppts, dateFormat, find_id, find_row } from "../../helpers";
@@ -18,6 +18,7 @@ export function Main({ account }: any) {
     // const [zip, setZip] = useState('');
     const [mode, setMode] = useState('Dashboard')
     const [isAdmin, setIsAdmin] = useState(false)
+    const [siteSettings, setSiteSettings] = useState()
 
     // const searchList = useMemo(() => { console.log('useMemo-appts'); return buildAppts(dbSched) }, [dbSched, schedFetching])
     // const handleSetSchedDate = (e: string) => {
@@ -49,6 +50,7 @@ export function Main({ account }: any) {
     useEffect(() => {
         if (!dbSettings || !account.hasOwnProperty('username')) return
         setIsAdmin(checkForAdmin(dbSettings, account.username))
+        setSiteSettings(find_row('_id','Site',dbSettings))
     }, [dbSettings, account])
 
     return (
@@ -72,6 +74,7 @@ export function Main({ account }: any) {
             </div>
             {(dbTrack && dbDonor && dbSched && dbSettings) ?
                 <div className='mainpage'>
+                    <Dashboard isOpen={mode === 'Dashboard'} isAdmin={isAdmin} siteSettings={siteSettings} dbDonor={dbDonor} dbTrack={dbTrack} dbSched={dbSched}/>
                     <Downloads isOpen={mode === 'Downloads'} dbDonor={dbDonor} dbTrack={dbTrack} dbSched={dbSched} />
                     <Users isOpen={mode === 'Users'} isAdmin={isAdmin} mutateDB={mutateSettings} dbSettings={dbSettings} />
                     <Admins isOpen={mode === 'Users'} isAdmin={isAdmin} mutateDB={mutateSettings} dbSettings={dbSettings} />

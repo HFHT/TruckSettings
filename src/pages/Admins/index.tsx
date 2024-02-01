@@ -7,7 +7,7 @@ import './admin.css';
 interface IDownloads {
     isOpen: boolean
     isAdmin: boolean
-    dbSettings: any
+    dbSettings: []
     mutateDB: Function
     // dbSched: any
 }
@@ -15,12 +15,12 @@ interface IDownloads {
 export const Admins = ({ isOpen, isAdmin, dbSettings, mutateDB/* dbTrack, dbSched */ }: IDownloads) => {
     if (!isOpen) return (<></>)
     const uIdx = find_id('_id', 'Admins', dbSettings)
-    const [theUsers, setTheUsers] = useState(dbSettings[uIdx])
-    const [newAdmin, setNewAdmin] = useState({ id: '', permissions: ['All'] })
+    const [theUsers, setTheUsers] = useState<DBAdmins>(dbSettings[uIdx])
+    const [newAdmin, setNewAdmin] = useState<IAdmin>({ id: '', permissions: ['All'] })
     const isEmail = (email: string) => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email);
 
     console.log(theUsers, uIdx)
-    function onPinChange(thisPin: any, pinIdx: number) {
+    function onPinChange(thisPin: IAdmin, pinIdx: number) {
         console.log(thisPin, pinIdx)
         const thisUser = { ...theUsers }
         thisUser.admins[pinIdx] = thisPin
@@ -47,7 +47,7 @@ export const Admins = ({ isOpen, isAdmin, dbSettings, mutateDB/* dbTrack, dbSche
     return (
         <>
             <h2>Administrators</h2>
-            {theUsers.admins.map((theAdmin: any, i: number) => (
+            {theUsers.admins.map((theAdmin: IAdmin, i: number) => (
                 // <User pin={thePin} idx={i} key={i} onChange={(p: any) => onPinChange(p, i)} />
                 <div className='userpindiv' key={i}>
                     <div className={!isAdmin ? 'hidden' : ''} onClick={() => remove(i)}>{MiscIcons('trash')}</div>

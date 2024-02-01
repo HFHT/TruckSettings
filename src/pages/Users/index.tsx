@@ -7,7 +7,7 @@ import './users.css';
 interface IDownloads {
     isOpen: boolean
     isAdmin: boolean
-    dbSettings: any
+    dbSettings: []
     mutateDB: Function
     // dbSched: any
 }
@@ -15,10 +15,10 @@ interface IDownloads {
 export const Users = ({ isOpen, isAdmin, dbSettings, mutateDB/* dbTrack, dbSched */ }: IDownloads) => {
     if (!isOpen) return (<></>)
     const uIdx = find_id('_id', 'Users', dbSettings)
-    const [theUsers, setTheUsers] = useState(dbSettings[uIdx])
-    const [newPin, setNewPin] = useState({ person: '', pin: '' })
+    const [theUsers, setTheUsers] = useState<DBUsers>(dbSettings[uIdx])
+    const [newPin, setNewPin] = useState<IPin>({ person: '', pin: '' })
     console.log(theUsers, uIdx)
-    function onPinChange(thisPin: any, pinIdx: number) {
+    function onPinChange(thisPin: IPin, pinIdx: number) {
         console.log(thisPin, pinIdx)
         const thisUser = { ...theUsers }
         thisUser.pins[pinIdx] = thisPin
@@ -45,7 +45,7 @@ export const Users = ({ isOpen, isAdmin, dbSettings, mutateDB/* dbTrack, dbSched
     return (
         <>
             <h2>Driver Pins</h2>
-            {theUsers.pins.map((thePin: any, i: number) => (
+            {theUsers.pins.map((thePin: IPin, i: number) => (
                 // <User pin={thePin} idx={i} key={i} onChange={(p: any) => onPinChange(p, i)} />
                 <div className='userpindiv' key={i}>
                     <div className={!isAdmin ? 'hidden' : ''} onClick={() => remove(i)}>{MiscIcons('trash')}</div>

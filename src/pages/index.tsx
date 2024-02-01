@@ -8,6 +8,6 @@ export * from './Users';
 export * from './Admins';
 export * from './Holidays';
 export * from './Templates';
-// export * from './Edit';
+export * from './Dashboard';
 // export * from './MonthView';
 // export * from './WeekView';

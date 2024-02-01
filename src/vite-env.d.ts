@@ -1,25 +1,11 @@
 /// <reference types="vite/client" />
 
-interface IControls {
-    _id: string
-    blocks: IBlocks[]
-}
-interface IBlocks {
-    date: string
-    routes: string[]
-}
-interface ISchedMonth {
-    dom: string
-    routes: ISched[][]
-}
-
+//Schedule Database 
 interface Idb extends Array<IScheds> { }
-
 interface IScheds {
     _id: string
     c: [ISched]
 }
-
 interface ISched {
     id: string
     dt: string
@@ -55,7 +41,6 @@ interface Iitem {
     qty: number | string;
     c?: boolean;
 }
-
 interface ICustInfo {
     apt: string
     note: string
@@ -75,11 +60,6 @@ interface Icall {
     dt: string;
     note: string;
 }
-interface Iprod {
-    prod: string;
-    qty: number;
-}
-interface Iprods extends Array<Iprod> { }
 interface IPlace {
     addr?: string;
     lat?: string | number;
@@ -93,247 +73,92 @@ interface IPlace {
     c_nm?: string
 }
 
-interface IEdit {
-    zip?: string;
-    id?: string;
-    src?: string;
-    rt?: string;
-    time?: string;
-    slot?: string;
+//Donor Database
+interface IDonor {
+    _id: string
+    addr: IPlace
+    apt: string
+    dt: string
+    email: string
+    name: IName
+    nt: string
 }
 
-interface IDaily {
-    _id: number;
-    date: Date;
-    client: IClient[];
-    slots: ISlots;
+//Vists Tracking Database
+interface IVisits {
+    _id: string
+    sessions: ISessions[]
+    browser: IBrowser
 }
-
-interface IDailys extends Array<IDaily> { }
-
-interface IClient {
-    name: string;               // client info
-    addr: string;
-    phone: string;
-    zip: string;
-    note: string;               // Gate code etc.
-    online: boolean;            // Scheduled by client online
-    done: boolean;              // Pickup/delivery completed
-    ts: Date;                   // Date & Time of pickup/delivery
+interface ISessions {
+    dt: string
+    phone: string
+    step: number | string
+    zip: string
 }
-
-// interface IItem {
-//     prod: string;               // Item name, Bed, etc.
-//     qty: number;                // Quantity of this item.
-//     refused?: boolean;           // Driver refused this item
-//     reason?: string              // Reason for refusal
-// }
-// interface IItems extends Array<IItem> { }
-
-interface ISlot {
-    r: string;                  // Route 'Blue'
-    s: number;                  // Stop on the route
-    c: number;                  // index into the client array
-    n: 1 | 2;                   // slots taken (1 or 2)
-    d: boolean;                 // Stop completed
-    x: boolean;                 // Stop cancelled
-}
-interface ISlots extends Array<ISlot> { }
-
-interface Itile {
-    i: string;
-    t: string
-}
-interface Itiles extends Array<Itile> { }
-
-interface IType {
-    products: Iitems
-    chosen: Iprods
-    hasCustom: string
-    customItems: any
-    customIdx: number
-    setCustomItems: Function
-    title?: string
-    onClick: Function
-}
-
-interface ITiles {
-    tiles: Iitems
-    chosen?: Iprods
-    hasCustom?: string
-    customItems: any
-    customIdx: number
-    setCustomItems: Function
-    onClick(e: string, i: number, t: string, b: number): Function | void
-}
-
-
-
-// old stuff below-----------------------------------------------------------
-interface ICard {
-    _id: any;
-    classMod: string;
-    invItem: string;
-    catName: string;
-    catSub: string;
-    isSerial?: boolean;
-    invBarCode: string;
-    invSKUs: InvSKUs;
-    invImg: string;
-    invFav: boolean;
-    invDesc: string;
-    invType: string;
-    invAccessCount: number;
-    invSize: string;
-    invColor: string;
-    invTotal: number;
-    invQtyByLoc: {
-        total: number;
-        byLoc: any;
+interface IBrowser {
+    ua: string
+    browser: {
+        name: string
+        major: string
+        version: string
     }
-    invWarnLevels: {
-        Yellow: number;
-        Red: number;
-    };
-}
-interface ICards extends Array<ICard> { }
-
-interface InvSKU {
-    invUPC: string;
-    invMFG: string;
-    invModel: string;
-    invDesc: string;
-    invURL: string;
-    invQR: string;
-    invQty: number;
-    img: string;
-    imgFav?: boolean;
-    invSerials?: [InvSerials];
-    invLocQty?: any;
-};
-interface InvSKUs extends Array<InvSKU> { }
-interface InvSKUsIdx extends InvSKU {
-    idx: number;
-}
-
-interface InvSerials {
-    invSerial: string;
-    invLoc: string;
-    invAcquired: date;
-    invDisposed: date;
-    invQR: string;
-}
-
-// interface InvLocQty {
-//     invLoc: string;
-//     invQty: number;
-// }
-
-interface Fetch {
-    data: any;
-    error: object;
-}
-
-interface ISKU {
-    SKU: string;
-    QR: string;
-    _id: string;
-    idx: number;
-}
-interface ISKUs extends Array<ISKU> { }
-
-interface IUPC {
-    brand: string;
-    categories: string;
-    description: string;
-    image: string;
-    manufacturer: {
-        company: string;
-    };
-    product_web_page: string;
-    retun_code: number;
-    return_message: string;
-    thumbnail: {
-        height: string;
-        width: string;
-        url: string;
+    cpu: {
+        architecture: string | undefined
     }
-    upc_code: string;
-    usage: string;
+    device: {
+        model: string | undefined
+        type: string | undefined
+        vendor: string | undefined
+    }
+    engine: {
+        name: string
+        version: string
+    }
+    os: {
+        name: string
+        version: string
+    }
 }
 
-interface ILocation {
-    Name: string;
-    lat: number;
-    lon: number;
-    org: Orgs;
+//Settings Database
+interface DBHolidays {
+    _id: 'Holidays'
+    dates: IHoliday[]
 }
-interface ILocations extends Array<ILocation> { }
-
-interface Org {
-    Aisle: string;
-    Bay: string;
+interface IHoliday {
+    date: string
+    title: string
 }
-
-interface Orgs extends Array<Org> { }
-
-interface XferHist {
-    _id: number;
-    item_id: number;
-    skuIdx: number;
-    img: string;
-    from: string;
-    fromQty?: number;
-    to: string;
-    toQty?: number;
-    qty: number;
-    serial?: string;
-    date: string;
-    by: string;
+interface DBUsers {
+    _id: 'Users'
+    pins: IPin[]
 }
-interface XfersHist extends Array<XferHist> { }
-
-interface PCard {
-    _id: number;
-    palTitle: string;
-    palQR: string;
-    palDest: string;
-    palBy: string;
-    palUsedBy: string;
-    palCreateDate: string;
-    palUsedDate: string;
-    palStatus: string;
-    palImg: string;
-    palItems: PItems;
+interface IPin {
+    pin: string
+    person: string
 }
-interface PCards extends Array<PCard> { }
-
-interface PItem {
-    inv_id: number;
-    invUPCorBarcode: string;
-    invQty: number;
-    invImg: string;
-    invDesc: string;
-    invType: string;
-    invIsSerial: boolean;
-    invSerials: [string];
+interface DBAdmins {
+    _id: 'Admins'
+    admins: IAdmin[]
 }
-interface PItems extends Array<PItem> { }
-
-interface IPrint {
-    _id: number;
-    mac: string;
-    job: string;
-    printed: false;
-    blob: string;
-    fileX: string;
+interface IAdmin {
+    id: string
+    permissions: string[]
 }
-
-interface IPrintQueue extends Array<IPrint> { }
-
-interface IprintJob {
-    printer: "label" | "receipt";
-    upc: string;
-    desc: string;
+interface DBEmail {
+    _id: 'email'
+    templates: ITemplate[]
 }
-
+interface ITemplate {
+    confirmation: IEmailType
+    reschedule: IEmailType
+    reminder: IEmailType
+    cancel: IEmailType
+    receipt: IEmailType
+}
+interface IEmailType {
+    type: string
+    subject: string
+    body: string
+}

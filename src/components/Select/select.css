@@ -1,0 +1,41 @@
+label {
+    display: block;
+    font-weight: 500;
+    color: var(--color-input-focus);
+    margin-left: 0.75rem;
+}
+
+label:focus-within {
+    color: var(--color-input-focus);
+}
+
+label span {
+    background-color: var(--color-input-bg);
+}
+
+select {
+    color: var(--color-input-text);
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    padding: 0.625rem;
+    border: 1px;
+    border-style: solid;
+    border-radius: 0.5rem;
+    border-color: var(--color-input-border);
+    width: 100%;
+    /* min-width: -moz-fit-content;
+    min-width: -webkit-fill-available; */
+    min-width: max-content;
+    display: block;
+    margin-left: -0.75rem;
+    margin-top: -0.5rem;
+    background-color: var(--color-input-box-bg);
+}
+
+select:focus {
+    border-color: var(--color-input-outline);
+}
+
+select::placeholder {
+    color: var(--color-input-placeholder);
+}

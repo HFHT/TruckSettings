@@ -4,21 +4,21 @@ import { find_id } from '../../helpers';
 import { MiscIcons } from '../../icons';
 import './holidays.css';
 
-interface IDownloads {
+interface IHolidays {
     isOpen: boolean
     isAdmin: boolean
-    dbSettings: any
+    dbSettings: []
     mutateDB: Function
     // dbSched: any
 }
 
-export const Holidays = ({ isOpen, isAdmin, dbSettings, mutateDB/* dbTrack, dbSched */ }: IDownloads) => {
+export const Holidays = ({ isOpen, isAdmin, dbSettings, mutateDB/* dbTrack, dbSched */ }: IHolidays) => {
     if (!isOpen) return (<></>)
     const uIdx = find_id('_id', 'Holidays', dbSettings)
-    const [theHolidays, setTheHolidays] = useState(dbSettings[uIdx])
+    const [theHolidays, setTheHolidays] = useState<DBHolidays>(dbSettings[uIdx])
     const [newHoliday, setNewHoliday] = useState({ date: '', title: '' })
     console.log(theHolidays, uIdx)
-    function onPinChange(thisPin: any, pinIdx: number) {
+    function onPinChange(thisPin: IHoliday, pinIdx: number) {
         console.log(thisPin, pinIdx)
         const thisUser = { ...theHolidays }
         thisUser.dates[pinIdx] = thisPin
@@ -45,7 +45,7 @@ export const Holidays = ({ isOpen, isAdmin, dbSettings, mutateDB/* dbTrack, dbSc
     return (
         <>
             <h2>Holidays</h2>
-            {theHolidays.dates.map((theHoliday: any, i: number) => (
+            {theHolidays.dates.map((theHoliday: IHoliday, i: number) => (
                 // <User pin={thePin} idx={i} key={i} onChange={(p: any) => onPinChange(p, i)} />
                 <div className='userpindiv' key={i}>
                     <div className={!isAdmin ? 'hidden' : ''} onClick={() => remove(i)}>{MiscIcons('trash')}</div>
