@@ -1,9 +1,9 @@
 import './dashboard.css';
 
 import { Id } from "react-toastify"
-import { dateMetrics } from "./dashboard"
+import { dateMetrics } from "./dateMetrics"
 import { useMemo, useState } from "react"
-import { Select, StackedBar, Tiles } from "../../components"
+import { BiAxialLineChart, LineChart, Sankey, Select, StackedBar, Tiles } from "../../components"
 //Totals, donors, total pickups, web pickups, cancellations, Web vists, Completed Web Visits
 //Donors by Zip
 //Donors by Date
@@ -73,6 +73,8 @@ export type TheMetrics = {
         web: {
             visits: number
             completed: number
+            steps: string[]
+            sumSteps: string[]
         },
         pickup: {
             scheduled: number
@@ -90,7 +92,9 @@ export const emptyTheMetrics = {
         donors: 0,
         web: {
             visits: 0,
-            completed: 0
+            completed: 0,
+            steps: [],
+            sumSteps: []
         },
         pickup: {
             scheduled: 0,
@@ -119,6 +123,7 @@ export function Dashboard({ isOpen, isAdmin, siteSettings, dbSched, dbDonor, dbT
     const [theMonth, setTheMonth] = useState(months[Number(new Date().getMonth())])
 
     let theseDatesMetrics = useMemo(() => dateMetrics(dbTrack, dbDonor, dbSched), [dbTrack, dbDonor, dbSched])
+
     return (
         <>
             <h2>Dashboard</h2>
@@ -138,55 +143,132 @@ export function Dashboard({ isOpen, isAdmin, siteSettings, dbSched, dbDonor, dbT
                     ))}
                 </Select>
             </div>
-            {`Donors: ${theseDatesMetrics.totals.donors} `}
-            {`Web Visits: ${theseDatesMetrics.totals.web.visits} `}
-            {`Web Booked: ${theseDatesMetrics.totals.web.completed} `}
-            {`Conversion Rate: ${(theseDatesMetrics.totals.web.completed / theseDatesMetrics.totals.web.visits * 100).toFixed(2).toLocaleString()}% `}
-            {`Pickups Booked: ${theseDatesMetrics.totals.pickup.scheduled} `}
+            {`Donors: ${theseDatesMetrics.totals.donors}, `}
+            {/* {`Web Visits: ${theseDatesMetrics.totals.web.visits} `} */}
+            {/* {`Web Booked: ${theseDatesMetrics.totals.web.completed} `} */}
+            {/* {`Conversion Rate: ${(theseDatesMetrics.totals.web.completed / theseDatesMetrics.totals.web.visits * 100).toFixed(2).toLocaleString()}% `} */}
+            {`Pickups Booked: ${theseDatesMetrics.totals.pickup.scheduled}, `}
             {`Pickups Completed: ${theseDatesMetrics.totals.pickup.completed} `}
-            {`Deliveries Booked: ${theseDatesMetrics.totals.delivery.scheduled} `}
-            {`Deliveries Completed: ${theseDatesMetrics.totals.delivery.completed} `}
-            <StackedBar dataKeys={['date', 'web', 'manual', 'cancel']} data={[
-                {
-                    date: "02/01",
-                    web: 4000,
-                    manual: 2400,
-                    cancel: 100
-                },
-                {
-                    date: "02/02",
-                    web: 3000,
-                    manual: 1398,
-                    cancel: 1000
-                },
-                {
-                    date: "02/03",
-                    web: 2000,
-                    manual: 9800,
-                    cancel: 100
-                }]}
-            />
-            <StackedBar dataKeys={['date', 'web', 'manual', 'cancel']} data={[
-                {
-                    date: "02/01",
-                    web: 4000,
-                    manual: 2400,
-                    cancel: 100
-                },
-                {
-                    date: "02/02",
-                    web: 3000,
-                    manual: 1398,
-                    cancel: 1000
-                },
-                {
-                    date: "02/03",
-                    web: 2000,
-                    manual: 9800,
-                    cancel: 100
-                }]}
-            />
-
+            {/* {`Deliveries Booked: ${theseDatesMetrics.totals.delivery.scheduled} `}
+            {`Deliveries Completed: ${theseDatesMetrics.totals.delivery.completed} `} */}
+            <div className='dashboardchartarea'>
+                <StackedBar dataKeys={['date', 'quantity', 'booked', 'cancel']} 
+                title='Online Pickup Conversion' 
+                note={` ${(theseDatesMetrics.totals.web.completed / theseDatesMetrics.totals.web.visits * 100).toFixed(2).toLocaleString()}% Conversion Rate = ${theseDatesMetrics.totals.web.completed} Booked / ${theseDatesMetrics.totals.web.visits} Visits`}
+                data={[
+                    { date: "Visit", quantity: theseDatesMetrics.totals.web.visits },
+                    { date: "Zip", quantity: theseDatesMetrics.totals.web.sumSteps['1'] },
+                    { date: "Agree", quantity: theseDatesMetrics.totals.web.sumSteps['2'], },
+                    { date: "Items", quantity: theseDatesMetrics.totals.web.sumSteps['3'] },
+                    { date: "Photo", quantity: theseDatesMetrics.totals.web.sumSteps['4'], },
+                    { date: "Contact", quantity: theseDatesMetrics.totals.web.sumSteps['5'], },
+                    { date: "Final", booked: theseDatesMetrics.totals.web.completed, cancel: 4 }
+                ]}
+                />
+                {/* <StackedBar dataKeys={['date', 'web', 'manual', 'cancel']} data={[
+                    {
+                        date: "02/01",
+                        web: 4000,
+                        manual: 2400,
+                        cancel: 100
+                    },
+                    {
+                        date: "02/02",
+                        web: 3000,
+                        manual: 1398,
+                        cancel: 1000
+                    },
+                    {
+                        date: "02/03",
+                        web: 2000,
+                        manual: 9800,
+                        cancel: 100
+                    }]}
+                /> */}
+                {/* <LineChart dataKeys={['date', 'web', 'manual', 'cancel']} data={[
+                    {
+                        date: "02/01",
+                        web: 4000,
+                        manual: 2400,
+                        cancel: 100
+                    },
+                    {
+                        date: "02/02",
+                        web: 3000,
+                        manual: 1398,
+                        cancel: 1000
+                    },
+                    {
+                        date: "02/03",
+                        web: 2000,
+                        manual: 9800,
+                        cancel: 100
+                    }]}
+                /> */}
+                {/* <BiAxialLineChart dataKeys={['date', 'web', 'manual', 'cancel']} data={[
+                    {
+                        date: "02/01",
+                        web: 4000,
+                        manual: 2400,
+                        cancel: 100
+                    },
+                    {
+                        date: "02/02",
+                        web: 3000,
+                        manual: 1398,
+                        cancel: 1000
+                    },
+                    {
+                        date: "02/03",
+                        web: 2000,
+                        manual: 9800,
+                        cancel: 100
+                    }]}
+                /> */}
+                {/* <Sankey dataKeys={['date', 'web', 'manual', 'cancel']} data={{
+                    // "nodes": [
+                    //     { "name": "Visit" },
+                    //     { "name": "Direct-Favourite" },
+                    //     { "name": "Page-Click" },
+                    //     { "name": "Detail-Favourite" },
+                    //     { "name": "Lost" }
+                    // ],
+                    // "links": [
+                    //     { "source": 0, "target": 1, "value": 3728.3 },
+                    //     { "source": 0, "target": 2, "value": 354170 },
+                    //     { "source": 2, "target": 3, "value": 62429 },
+                    //     { "source": 2, "target": 4, "value": 291741 }
+                    // ]
+                    "nodes": [
+                        { "name": "Visit" },
+                        { "name": "Abandoned" },
+                        { "name": "Zip" },
+                        { "name": "Accepted" },
+                        { "name": "Donations" },
+                        { "name": "Photos" },
+                        { "name": "Contact" },
+                        { "name": "Completed" },
+                        { "name": "Cancelled" },
+                    ],
+                    "links": [
+                        // { "source": 0, "target": 1, "value": 50 },
+                        { "source": 0, "target": 2, "value": 100 },
+                        // { "source": 2, "target": 1, "value": 20 },
+                        { "source": 2, "target": 3, "value": 80 },
+                        // { "source": 3, "target": 1, "value": 20 },
+                        { "source": 3, "target": 4, "value": 60 },
+                        // { "source": 4, "target": 1, "value": 30 },
+                        { "source": 4, "target": 5, "value": 30 },
+                        // { "source": 5, "target": 1, "value": 10 },
+                        { "source": 5, "target": 6, "value": 20 },
+                        // { "source": 6, "target": 1, "value": 1 },
+                        { "source": 6, "target": 7, "value": 15 },
+                        // { "source": 5, "target": 8, "value": 5 },
+                        { "source": 6, "target": 8, "value": 4 },
+                    ]
+                }}
+                /> */}
+            </div>
         </>
     )
     function getYears(s: any) {

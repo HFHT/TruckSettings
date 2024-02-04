@@ -72,7 +72,7 @@ export function Main({ account }: any) {
                 // handleSearch={(e: any) => handleFollowup(e)}
                 />
             </div>
-            {(dbTrack && dbDonor && dbSched && dbSettings) ?
+            {(dbTrack && dbDonor && dbSched && dbSettings && siteSettings) ?
                 <div className='mainpage'>
                     <Dashboard isOpen={mode === 'Dashboard'} isAdmin={isAdmin} siteSettings={siteSettings} dbDonor={dbDonor} dbTrack={dbTrack} dbSched={dbSched}/>
                     <Downloads isOpen={mode === 'Downloads'} dbDonor={dbDonor} dbTrack={dbTrack} dbSched={dbSched} />

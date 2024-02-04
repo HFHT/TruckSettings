@@ -1,0 +1,24 @@
+.chartnodetext {
+    fill: var(--color-text)
+}
+
+.chartdiv {
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+        "title"
+        "chart"
+}
+
+.charttitle {
+    grid-area: title;
+    text-align: center;
+}
+.charttitle h2 {
+    margin-bottom: 2px;
+}
+
+.chartarea {
+    grid-area: chart;
+}

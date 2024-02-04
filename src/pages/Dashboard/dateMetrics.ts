@@ -13,11 +13,11 @@ export function dateMetrics(dbTrack: IVisits[], dbDonor: IDonor[], dbSched: ISch
         if (v === m) return q
         return 0
     }
-    dbTrack.forEach((fingerprint: IVisits) => {
+    dbTrack && dbTrack.forEach((fingerprint: IVisits) => {
         // console.log(fingerprint,theMetrics)
         fingerprint.sessions.forEach((session: ISessions) => {
             const idx = find_id('date', session.dt, theMetrics.metrics)
-            // console.log(session, idx)
+            console.log(session, idx)
             if (idx > -1) {
                 let steps = theMetrics.metrics[idx].web.steps
                 steps.push(session.step.toString())
@@ -40,16 +40,21 @@ export function dateMetrics(dbTrack: IVisits[], dbDonor: IDonor[], dbSched: ISch
                     }
                 })
             }
+            let steps = theMetrics.totals.web.steps
+            console.log(steps)
+            steps.push(session.step.toString())
             theMetrics.totals = {
                 ...theMetrics.totals, web: {
                     visits: theMetrics.totals.web.visits + 1,
                     completed: theMetrics.totals.web.completed + hasWebCompleted(session.step),
+                    steps: steps,
+                    sumSteps: []
                 }
             }
 
         })
     })
-    dbDonor.forEach((donor: IDonor) => {
+    dbDonor && dbDonor.forEach((donor: IDonor) => {
         const idx = find_id('date', donor.dt, theMetrics.metrics)
         // console.log(session, idx)
         if (idx > -1) {
@@ -73,7 +78,7 @@ export function dateMetrics(dbTrack: IVisits[], dbDonor: IDonor[], dbSched: ISch
         }
     })
 
-    dbSched.forEach((scheds: IScheds) => {
+    dbSched && dbSched.forEach((scheds: IScheds) => {
         // console.log(fingerprint,theMetrics)
         scheds.c.forEach((sched: ISched) => {
             const idx = find_id('date', scheds._id, theMetrics.metrics)
@@ -125,7 +130,22 @@ export function dateMetrics(dbTrack: IVisits[], dbDonor: IDonor[], dbSched: ISch
 
         })
     })
+    if (theMetrics.metrics.length === 0) return theMetrics
     theMetrics.metrics.sort(function (a, b) { return new Date(a.date).getTime() - new Date(b.date).getTime() })
+    let sumSteps = theMetrics.totals.web.steps.reduce(function (value: any, value2: any) {
+        return (value[value2] ? ++value[value2] : (value[value2] = 1), value);
+    }, {});
+    let theSteps: any = {}
+    theSteps['0'] = sumSteps['0'] + sumSteps['1'] + sumSteps['2'] + sumSteps['3'] + sumSteps['4'] + sumSteps['5'] + sumSteps.C + sumSteps.X + sumSteps.R
+    theSteps['1'] = sumSteps['1'] + sumSteps['2'] + sumSteps['3'] + sumSteps['4'] + sumSteps['5'] + sumSteps.C + sumSteps.X + sumSteps.R
+    theSteps['2'] = sumSteps['2'] + sumSteps['3'] + sumSteps['4'] + sumSteps['5'] + sumSteps.C + sumSteps.X
+    theSteps['3'] = sumSteps['3'] + sumSteps['4'] + sumSteps['5'] + sumSteps.C + sumSteps.X
+    theSteps['4'] = sumSteps['4'] + sumSteps['5'] + sumSteps.C + sumSteps.X
+    theSteps['5'] = sumSteps['5'] + sumSteps.C + sumSteps.X
+    theSteps.C = sumSteps.C
+    theSteps.X = sumSteps.X
+
+    theMetrics.totals.web.sumSteps = theSteps
     console.log('dashboard-metrics', theMetrics)
     return theMetrics
 }
