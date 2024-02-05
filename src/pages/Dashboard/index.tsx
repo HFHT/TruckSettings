@@ -3,7 +3,8 @@ import './dashboard.css';
 import { Id } from "react-toastify"
 import { dateMetrics } from "./dateMetrics"
 import { useMemo, useState } from "react"
-import { BiAxialLineChart, LineChart, Sankey, Select, StackedBar, Tiles } from "../../components"
+import { BiAxialLineChart, LineChart, Sankey, Select, StackedArea, StackedBar, Tiles } from "../../components"
+import { pickupMetrics } from './pickupMetrics';
 //Totals, donors, total pickups, web pickups, cancellations, Web vists, Completed Web Visits
 //Donors by Zip
 //Donors by Date
@@ -123,7 +124,8 @@ export function Dashboard({ isOpen, isAdmin, siteSettings, dbSched, dbDonor, dbT
     const [theMonth, setTheMonth] = useState(months[Number(new Date().getMonth())])
 
     let theseDatesMetrics = useMemo(() => dateMetrics(dbTrack, dbDonor, dbSched), [dbTrack, dbDonor, dbSched])
-
+    let thesePickupMetrics = useMemo(() => pickupMetrics(theseDatesMetrics), [])
+    console.log(thesePickupMetrics)
     return (
         <>
             <h2>Dashboard</h2>
@@ -147,63 +149,54 @@ export function Dashboard({ isOpen, isAdmin, siteSettings, dbSched, dbDonor, dbT
             {/* {`Web Visits: ${theseDatesMetrics.totals.web.visits} `} */}
             {/* {`Web Booked: ${theseDatesMetrics.totals.web.completed} `} */}
             {/* {`Conversion Rate: ${(theseDatesMetrics.totals.web.completed / theseDatesMetrics.totals.web.visits * 100).toFixed(2).toLocaleString()}% `} */}
-            {`Pickups Booked: ${theseDatesMetrics.totals.pickup.scheduled}, `}
-            {`Pickups Completed: ${theseDatesMetrics.totals.pickup.completed} `}
+            {/* {`Pickups Booked: ${theseDatesMetrics.totals.pickup.scheduled}, Pickups Completed: ${theseDatesMetrics.totals.pickup.completed}`} */}
+            {/* {`Pickups Completed: ${theseDatesMetrics.totals.pickup.completed} `} */}
             {/* {`Deliveries Booked: ${theseDatesMetrics.totals.delivery.scheduled} `}
             {`Deliveries Completed: ${theseDatesMetrics.totals.delivery.completed} `} */}
             <div className='dashboardchartarea'>
-                <StackedBar dataKeys={['date', 'quantity', 'booked', 'cancel']} 
-                title='Online Pickup Conversion' 
-                note={` ${(theseDatesMetrics.totals.web.completed / theseDatesMetrics.totals.web.visits * 100).toFixed(2).toLocaleString()}% Conversion Rate = ${theseDatesMetrics.totals.web.completed} Booked / ${theseDatesMetrics.totals.web.visits} Visits`}
-                data={[
-                    { date: "Visit", quantity: theseDatesMetrics.totals.web.visits },
-                    { date: "Zip", quantity: theseDatesMetrics.totals.web.sumSteps['1'] },
-                    { date: "Agree", quantity: theseDatesMetrics.totals.web.sumSteps['2'], },
-                    { date: "Items", quantity: theseDatesMetrics.totals.web.sumSteps['3'] },
-                    { date: "Photo", quantity: theseDatesMetrics.totals.web.sumSteps['4'], },
-                    { date: "Contact", quantity: theseDatesMetrics.totals.web.sumSteps['5'], },
-                    { date: "Final", booked: theseDatesMetrics.totals.web.completed, cancel: 4 }
-                ]}
+                <StackedBar dataKeyX='step'
+                    dataKeysY={[{ key: 'quantity', color: '#8884d8' }, { key: 'booked', color: '#82ca9d' }, { key: 'cancel', color: '#355c9b' }]}
+                    title='Online Pickup Conversion'
+                    note={` ${(theseDatesMetrics.totals.web.completed / theseDatesMetrics.totals.web.visits * 100).toFixed(2).toLocaleString()}% Conversion Rate = ${theseDatesMetrics.totals.web.completed} Booked / ${theseDatesMetrics.totals.web.visits} Visits`}
+                    data={[
+                        { step: "Visit", quantity: theseDatesMetrics.totals.web.visits },
+                        { step: "Zip", quantity: theseDatesMetrics.totals.web.sumSteps['1'] },
+                        { step: "Agree", quantity: theseDatesMetrics.totals.web.sumSteps['2'], },
+                        { step: "Items", quantity: theseDatesMetrics.totals.web.sumSteps['3'] },
+                        { step: "Photo", quantity: theseDatesMetrics.totals.web.sumSteps['4'], },
+                        { step: "Contact", quantity: theseDatesMetrics.totals.web.sumSteps['5'], },
+                        { step: "Final", booked: theseDatesMetrics.totals.web.completed, cancel: 4 }
+                    ]}
                 />
-                {/* <StackedBar dataKeys={['date', 'web', 'manual', 'cancel']} data={[
-                    {
-                        date: "02/01",
-                        web: 4000,
-                        manual: 2400,
-                        cancel: 100
-                    },
-                    {
-                        date: "02/02",
-                        web: 3000,
-                        manual: 1398,
-                        cancel: 1000
-                    },
-                    {
-                        date: "02/03",
-                        web: 2000,
-                        manual: 9800,
-                        cancel: 100
-                    }]}
-                /> */}
-                {/* <LineChart dataKeys={['date', 'web', 'manual', 'cancel']} data={[
-                    {
-                        date: "02/01",
-                        web: 4000,
-                        manual: 2400,
-                        cancel: 100
-                    },
-                    {
-                        date: "02/02",
-                        web: 3000,
-                        manual: 1398,
-                        cancel: 1000
-                    },
-                    {
-                        date: "02/03",
-                        web: 2000,
-                        manual: 9800,
-                        cancel: 100
-                    }]}
+                <StackedBar dataKeyX='date' width={620}
+                    dataKeysY={[{ key: 'qtyManual', color: '#8884d8' }, { key: 'qtyWeb', color: '#82ca9d' }, { key: 'qtyCancel', color: '#355c9b' }]}
+                    title='Scheduled Pickups'
+                    note={`Pickups Booked: ${theseDatesMetrics.totals.pickup.scheduled}, Pickups Completed: ${theseDatesMetrics.totals.pickup.completed}`}
+                    data={thesePickupMetrics}
+                />
+                {/* <LineChart dataKeyX='date'
+                    dataKeysY={[{ key: 'web', color: '#8884d8' }, { key: 'manual', color: '#82ca9d' }, { key: 'cancel', color: '#355c9b' }]}
+                    title='Online Pickup Conversion'
+                    note={` ${(theseDatesMetrics.totals.web.completed / theseDatesMetrics.totals.web.visits * 100).toFixed(2).toLocaleString()}% Conversion Rate = ${theseDatesMetrics.totals.web.completed} Booked / ${theseDatesMetrics.totals.web.visits} Visits`}
+                    data={[
+                        {
+                            date: "02/01",
+                            web: 4000,
+                            manual: 2400,
+                            cancel: 100
+                        },
+                        {
+                            date: "02/02",
+                            web: 3000,
+                            manual: 1398,
+                            cancel: 1000
+                        },
+                        {
+                            date: "02/03",
+                            web: 2000,
+                            manual: 9800,
+                            cancel: 100
+                        }]}
                 /> */}
                 {/* <BiAxialLineChart dataKeys={['date', 'web', 'manual', 'cancel']} data={[
                     {

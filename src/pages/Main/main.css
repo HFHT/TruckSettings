@@ -1,3 +1,41 @@
+
+.userdiv {
+    display: grid;
+    width: max-content;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    gap: 8px;
+    grid-template-areas: "driver admin"
+}
+
+.userdriver {
+    grid-area: driver;
+    width: 300px;
+    margin-right: 30px;
+}
+
+.useradmin {
+    grid-area: admin;
+    width: 300px;
+}
+
+.userpindiv {
+    display: grid;
+    margin-bottom: 4px;
+    gap: 10px;
+    grid-template-columns: 1fr 20fr 10fr;
+}
+
+@media (max-width: 639px) {
+    .userdiv {
+        grid-template-areas: "driver" "admin"
+    }
+
+    .userdriver {
+        margin-right: unset;
+    }
+}
+
 .navbar {
     flex-direction: column;
     overflow-y: auto;

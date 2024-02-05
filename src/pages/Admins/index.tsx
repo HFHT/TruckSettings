@@ -1,18 +1,9 @@
 import { useState } from 'react';
-// import { Input } from '../../components';
 import { find_id } from '../../helpers';
 import { MiscIcons } from '../../icons';
-import './admin.css';
+import { IUsers } from '..';
 
-interface IDownloads {
-    isOpen: boolean
-    isAdmin: boolean
-    dbSettings: []
-    mutateDB: Function
-    // dbSched: any
-}
-
-export const Admins = ({ isOpen, isAdmin, dbSettings, mutateDB/* dbTrack, dbSched */ }: IDownloads) => {
+export const Admins = ({ isOpen, isAdmin, dbSettings, mutateDB/* dbTrack, dbSched */ }: IUsers) => {
     if (!isOpen) return (<></>)
     const uIdx = find_id('_id', 'Admins', dbSettings)
     const [theUsers, setTheUsers] = useState<DBAdmins>(dbSettings[uIdx])
@@ -45,21 +36,21 @@ export const Admins = ({ isOpen, isAdmin, dbSettings, mutateDB/* dbTrack, dbSche
         mutateDB(theUsers, dbSettings, false)
     }
     return (
-        <>
+        <div className='useradmin'>
             <h2>Administrators</h2>
             {theUsers.admins.map((theAdmin: IAdmin, i: number) => (
                 // <User pin={thePin} idx={i} key={i} onChange={(p: any) => onPinChange(p, i)} />
                 <div className='userpindiv' key={i}>
-                    <div className={!isAdmin ? 'hidden' : ''} onClick={() => remove(i)}>{MiscIcons('trash')}</div>
-                    <input className='userdriver' disabled={!isAdmin} type={'text'} value={theAdmin.id} title={'Driver Name'} onChange={(e: any) => onPinChange({ ...theAdmin, id: e.target.value }, i)} />
+                    <div className={!isAdmin ? 'hidden' : ''} onClick={() => remove(i)} title='Remove Admin'>{MiscIcons('trash')}</div>
+                    <input className='username' disabled={!isAdmin} type={'text'} value={theAdmin.id} title={'Driver Name'} onChange={(e: any) => onPinChange({ ...theAdmin, id: e.target.value }, i)} />
                     {/* <input className='userpin' type={'number'} value={theAdmin.persmissions} title={'Driver PIN'} onChange={(e: any) => onPinChange({ ...theAdmin, permissions: e.target.value }, i)} /> */}
                 </div>
             ))}
             <div className='userpindiv'>
-                <div className={!isAdmin ? 'hidden' : ''} onClick={() => addNew()}>{MiscIcons('circleplus')}</div>
-                <input className='userdriver' disabled={!isAdmin} type={'text'} value={newAdmin.id} title={'Driver Name'} onChange={(e: any) => setNewAdmin({ ...newAdmin, id: e.target.value })} />
+                <div className={!isAdmin ? 'hidden' : ''} onClick={() => addNew()} title='Add Admin'>{MiscIcons('circleplus')}</div>
+                <input className='username' disabled={!isAdmin} type={'text'} value={newAdmin.id} title={'Driver Name'} onChange={(e: any) => setNewAdmin({ ...newAdmin, id: e.target.value })} />
                 {/* <input className='userpin' type={'number'} value={newAdmin.permissions} title={'Driver PIN'} onChange={(e: any) => setNewAdmin({ ...newAdmin, permissions: e.target.value })} /> */}
             </div>
-        </>
+        </div>
     )
 }

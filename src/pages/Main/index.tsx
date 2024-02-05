@@ -50,7 +50,7 @@ export function Main({ account }: any) {
     useEffect(() => {
         if (!dbSettings || !account.hasOwnProperty('username')) return
         setIsAdmin(checkForAdmin(dbSettings, account.username))
-        setSiteSettings(find_row('_id','Site',dbSettings))
+        setSiteSettings(find_row('_id', 'Site', dbSettings))
     }, [dbSettings, account])
 
     return (
@@ -74,12 +74,11 @@ export function Main({ account }: any) {
             </div>
             {(dbTrack && dbDonor && dbSched && dbSettings && siteSettings) ?
                 <div className='mainpage'>
-                    <Dashboard isOpen={mode === 'Dashboard'} isAdmin={isAdmin} siteSettings={siteSettings} dbDonor={dbDonor} dbTrack={dbTrack} dbSched={dbSched}/>
+                    <Dashboard isOpen={mode === 'Dashboard'} isAdmin={isAdmin} siteSettings={siteSettings} dbDonor={dbDonor} dbTrack={dbTrack} dbSched={dbSched} />
                     <Downloads isOpen={mode === 'Downloads'} dbDonor={dbDonor} dbTrack={dbTrack} dbSched={dbSched} />
-                    <Users isOpen={mode === 'Users'} isAdmin={isAdmin} mutateDB={mutateSettings} dbSettings={dbSettings} />
-                    <Admins isOpen={mode === 'Users'} isAdmin={isAdmin} mutateDB={mutateSettings} dbSettings={dbSettings} />
                     <Holidays isOpen={mode === 'Holidays'} isAdmin={isAdmin} mutateDB={mutateSettings} dbSettings={dbSettings} />
                     <Templates isOpen={mode === 'Templates'} isAdmin={isAdmin} mutateDB={mutateSettings} dbSettings={dbSettings} />
+                    <UserPage isOpen={mode === 'Users'} isAdmin={isAdmin} mutateDB={mutateSettings} dbSettings={dbSettings} />
 
                 </div>
                 :
@@ -93,4 +92,21 @@ export function Main({ account }: any) {
         console.log(uRow.admins, user, find_id('id', user, uRow.admins))
         return find_id('id', user, uRow.admins) > -1
     }
+}
+export interface IUsers {
+    isOpen: boolean
+    isAdmin: boolean
+    dbSettings: []
+    mutateDB: Function
+}
+function UserPage({ isOpen, isAdmin, dbSettings, mutateDB }: IUsers) {
+    if (!isOpen) return (<></>)
+
+    return (
+        <div className='userdiv'>
+            <Users isOpen={isOpen} isAdmin={isAdmin} mutateDB={mutateDB} dbSettings={dbSettings} />
+            <Admins isOpen={isOpen} isAdmin={isAdmin} mutateDB={mutateDB} dbSettings={dbSettings} />
+        </div>
+
+    )
 }

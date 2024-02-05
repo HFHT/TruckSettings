@@ -69,7 +69,7 @@ input::-webkit-outer-spin-button {
     --color-star: #fde047;
     --color-star-hover: #ffd400;
     --color-star-none: #a7aeb6;
-    --color-text: white;
+    --color-text: rgb(212, 202, 202);
     --color-textarea: white;
     --color-textarea-background: rgb(55 65 81);
     --color-tile: #222;

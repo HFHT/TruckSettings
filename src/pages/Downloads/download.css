@@ -1,3 +1,6 @@
 .downloadmain {
     display: grid
 }
+.dbtn {
+    width: 200px;
+}

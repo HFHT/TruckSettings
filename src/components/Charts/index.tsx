@@ -1,20 +1,24 @@
 import './charts.css'
-import { Bar, BarChart as ReBarChart, CartesianGrid, Legend, Line, LineChart as ReLineChart, Sankey as ReSankey, Text, Tooltip, XAxis, YAxis } from "recharts"
+import { Bar, BarChart as ReBarChart, CartesianGrid, Legend, Line, LineChart as ReLineChart, Sankey as ReSankey, Text, Tooltip, XAxis, YAxis, AreaChart, Area } from "recharts"
 
 interface ICharts {
     data: any
-    dataKeys: string[]
+    dataKeyX: string
+    dataKeysY: ChartDataKey[]
     width?: number
     height?: number
     className?: string
     title?: string
     note?: string
 }
-export function StackedBar({ data, dataKeys, width = 500, height = 300, title, note = '' }: ICharts) {
+export type ChartDataKey = {
+    key: string
+    color: string
+}
+export function StackedBar({ data, dataKeyX, dataKeysY, width = 320, height = 300, title, note = '' }: ICharts) {
     return (
         <div className='chartdiv'>
             {title && <div className='charttitle'><h2 >{title}</h2><sub className='chartnote'>{note}</sub></div>}
-
             <ReBarChart
                 className='chartarea'
                 width={width}
@@ -27,79 +31,122 @@ export function StackedBar({ data, dataKeys, width = 500, height = 300, title, n
                     bottom: 5
                 }}
             >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey={dataKeys[0]} />
+                <CartesianGrid strokeDasharray="2 2" />
+                <XAxis dataKey={dataKeyX} />
                 <YAxis />
                 <Tooltip />
                 <Legend />
-                <Bar dataKey={dataKeys[1]} stackId="a" fill="#8884d8" />
-                <Bar dataKey={dataKeys[2]} stackId="a" fill="#82ca9d" />
-                <Bar dataKey={dataKeys[3]} stackId="a" fill="#355c9b" />
+                {dataKeysY.map((dataKey: ChartDataKey, idx: number) => (
+                    <Bar key={idx} dataKey={dataKey.key} stackId="a" fill={dataKey.color} />
+                ))}
             </ReBarChart>
         </div>
     )
 }
-export function LineChart({ data, dataKeys, width = 500, height = 300 }: ICharts) {
+export function StackedArea({ data, dataKeyX, dataKeysY, width = 320, height = 300, title, note = '' }: ICharts) {
     return (
-        <ReLineChart
-            width={width}
-            height={height}
-            data={data}
-            margin={{
-                top: 5,
-                right: 30,
-                left: 20,
-                bottom: 5
-            }}
-        >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey={dataKeys[0]} />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Line
-                type="monotone"
-                dataKey={dataKeys[1]}
-                stroke="#8884d8"
-                activeDot={{ r: 8 }}
-            />
-            <Line type="monotone" dataKey={dataKeys[2]} stroke="#82ca9d" />
-        </ReLineChart>
+        <div className='chartdiv'>
+            {title && <div className='charttitle'><h2 >{title}</h2><sub className='chartnote'>{note}</sub></div>}
+            <AreaChart
+                className='chartarea'
+                width={width}
+                height={height}
+                data={data}
+                margin={{
+                    top: 20,
+                    right: 30,
+                    left: 20,
+                    bottom: 5
+                }}
+            >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey={dataKeyX} />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                {dataKeysY.map((dataKey: ChartDataKey, idx: number) => (
+                    <Area key={idx}
+                        type="monotone"
+                        dataKey={dataKey.key}
+                        stackId="1"
+                        stroke={dataKey.color}
+                        fill={dataKey.color}
+                    />
+                ))}
+            </AreaChart>
+        </div>
+    )
+}
+export function LineChart({ data, dataKeyX, dataKeysY, width = 320, height = 300, title, note = '' }: ICharts) {
+    return (
+        <div className='chartdiv'>
+            {title && <div className='charttitle'><h2 >{title}</h2><sub className='chartnote'>{note}</sub></div>}
+            <ReLineChart
+                width={width}
+                height={height}
+                data={data}
+                margin={{
+                    top: 5,
+                    right: 30,
+                    left: 20,
+                    bottom: 5
+                }}
+            >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey={dataKeyX} />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                {dataKeysY.map((dataKey: ChartDataKey, idx: number) => (
+
+                    <Line key={idx}
+                        type="monotone"
+                        dataKey={dataKey.key}
+                        stroke={dataKey.color}
+                        activeDot={idx === 0 ? { r: 8 } : false}
+                    />
+                ))}
+            </ReLineChart>
+        </div>
     )
 }
 
-export function BiAxialLineChart({ data, dataKeys, width = 500, height = 300 }: ICharts) {
+export function BiAxialLineChart({ data, dataKeyX, dataKeysY, width = 320, height = 300, title, note = '' }: ICharts) {
     return (
-        <ReLineChart
-            width={width}
-            height={height}
-            data={data}
-            margin={{
-                top: 5,
-                right: 30,
-                left: 20,
-                bottom: 5
-            }}
-        >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey={dataKeys[0]} />
-            <YAxis yAxisId="left" />
-            <YAxis yAxisId="right" orientation="right" />
-            <Tooltip />
-            <Legend />
-            <Line
-                yAxisId="left"
-                type="monotone"
-                dataKey={dataKeys[1]}
-                stroke="#8884d8"
-                activeDot={{ r: 8 }}
-            />
-            <Line yAxisId="right" type="monotone" dataKey={dataKeys[2]} stroke="#82ca9d" />
+        <div className='chartdiv'>
+            {title && <div className='charttitle'><h2 >{title}</h2><sub className='chartnote'>{note}</sub></div>}
 
-        </ReLineChart>
+            <ReLineChart
+                width={width}
+                height={height}
+                data={data}
+                margin={{
+                    top: 5,
+                    right: 30,
+                    left: 20,
+                    bottom: 5
+                }}
+            >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey={dataKeyX} />
+                <YAxis yAxisId="left" />
+                <YAxis yAxisId="right" orientation="right" />
+                <Tooltip />
+                <Legend />
+                <Line
+                    yAxisId="left"
+                    type="monotone"
+                    dataKey={dataKeysY[0].key}
+                    stroke={dataKeysY[0].color}
+                    activeDot={{ r: 8 }}
+                />
+                <Line yAxisId="right" type="monotone" dataKey={dataKeysY[1].key} stroke={dataKeysY[0].color} />
+
+            </ReLineChart>
+        </div>
     )
 }
-export function Sankey({ data, dataKeys, width = 500, height = 300 }: ICharts) {
+export function Sankey({ data, dataKeyX, dataKeysY, width = 500, height = 300 }: ICharts) {
     return (
         <ReSankey
             width={960}

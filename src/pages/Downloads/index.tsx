@@ -1,6 +1,7 @@
 //@ts-ignore
 import { CSVLink } from "react-csv";
 import './download.css';
+import { Button } from "../../components";
 
 interface IDownloads {
     isOpen: boolean
@@ -15,9 +16,9 @@ export const Downloads = ({ isOpen, dbDonor, dbTrack, dbSched }: IDownloads) => 
         <>
             <h2>Downloads</h2>
             <div className='downloadmain'>
-                <CSVLink data={csvDonors(dbDonor)} filename={'HabiStoreDonors.csv'}>Download Donors</CSVLink>
-                <CSVLink data={csvTrack(dbTrack)} filename={'HabiStoreVisits.csv'}>Download Web Visits</CSVLink>
-                <CSVLink data={csvPickup(dbSched)} filename={'HabiStoreAppts.csv'}>Download Pickups</CSVLink>
+                <CSVLink data={csvDonors(dbDonor)} filename={'HabiStoreDonors.csv'}><Button classes='dbtn'>Download Donors</Button></CSVLink>
+                <CSVLink data={csvTrack(dbTrack)} filename={'HabiStoreVisits.csv'}><Button classes='dbtn'>Download Web Visits</Button></CSVLink>
+                <CSVLink data={csvPickup(dbSched)} filename={'HabiStorePickups.csv'}><Button classes='dbtn'>Download Pickups</Button></CSVLink>
             </div>
         </>
     )
