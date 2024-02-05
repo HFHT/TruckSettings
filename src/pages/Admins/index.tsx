@@ -39,18 +39,20 @@ export const Admins = ({ isOpen, isAdmin, dbSettings, mutateDB/* dbTrack, dbSche
         <div className='useradmin'>
             <h2>Administrators</h2>
             {theUsers.admins.map((theAdmin: IAdmin, i: number) => (
-                // <User pin={thePin} idx={i} key={i} onChange={(p: any) => onPinChange(p, i)} />
                 <div className='userpindiv' key={i}>
-                    <div className={!isAdmin ? 'hidden' : ''} onClick={() => remove(i)} title='Remove Admin'>{MiscIcons('trash')}</div>
+                    {isAdmin ?
+                        <div onClick={() => remove(i)} title='Remove Admin'>{MiscIcons('trash')}</div>
+                        : <div></div>
+                    }
                     <input className='username' disabled={!isAdmin} type={'text'} value={theAdmin.id} title={'Driver Name'} onChange={(e: any) => onPinChange({ ...theAdmin, id: e.target.value }, i)} />
-                    {/* <input className='userpin' type={'number'} value={theAdmin.persmissions} title={'Driver PIN'} onChange={(e: any) => onPinChange({ ...theAdmin, permissions: e.target.value }, i)} /> */}
                 </div>
             ))}
-            <div className='userpindiv'>
-                <div className={!isAdmin ? 'hidden' : ''} onClick={() => addNew()} title='Add Admin'>{MiscIcons('circleplus')}</div>
-                <input className='username' disabled={!isAdmin} type={'text'} value={newAdmin.id} title={'Driver Name'} onChange={(e: any) => setNewAdmin({ ...newAdmin, id: e.target.value })} />
-                {/* <input className='userpin' type={'number'} value={newAdmin.permissions} title={'Driver PIN'} onChange={(e: any) => setNewAdmin({ ...newAdmin, permissions: e.target.value })} /> */}
-            </div>
+            {isAdmin &&
+                <div className='userpindiv'>
+                    <div onClick={() => addNew()} title='Add Admin'>{MiscIcons('circleplus')}</div>
+                    <input className='username' disabled={!isAdmin} type={'text'} value={newAdmin.id} title={'Driver Name'} onChange={(e: any) => setNewAdmin({ ...newAdmin, id: e.target.value })} />
+                </div>
+            }
         </div>
     )
 }

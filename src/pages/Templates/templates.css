@@ -23,4 +23,5 @@
 
 .templatetext {
     height: unset;
+    color: var(--color-text);
 }

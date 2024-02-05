@@ -37,18 +37,22 @@ export const Holidays = ({ isOpen, isAdmin, dbSettings, mutateDB/* dbTrack, dbSc
         <div className='userdriver'>
             <h2>Holidays</h2>
             {theHolidays.dates.map((theHoliday: IHoliday, i: number) => (
-                // <User pin={thePin} idx={i} key={i} onChange={(p: any) => onPinChange(p, i)} />
                 <div className='userpindiv' key={i}>
-                    <div className={!isAdmin ? 'hidden' : ''} onClick={() => remove(i)} title='Remove Holiday'>{MiscIcons('trash')}</div>
+                    {isAdmin ?
+                        <div onClick={() => remove(i)} title='Remove Holiday'>{MiscIcons('trash')}</div>
+                        : <div></div>
+                    }
                     <input className='username' disabled={!isAdmin} type={'text'} value={theHoliday.title} title={'Holiday Title'} onChange={(e: any) => onPinChange({ ...theHoliday, title: e.target.value }, i)} />
-                    <input className='userpin' disabled={!isAdmin} type={'date'} value={theHoliday.date} title={'Holiday Date'} onChange={(e: any) => onPinChange({ ...theHoliday, date: e.target.value }, i)} />
+                    <input className='userdate' disabled={!isAdmin} type={'date'} value={theHoliday.date} title={'Holiday Date'} onChange={(e: any) => onPinChange({ ...theHoliday, date: e.target.value }, i)} />
                 </div>
             ))}
-            <div className='userpindiv'>
-                <div className={!isAdmin ? 'hidden' : ''} onClick={() => addNew()} title='Add Holiday'>{MiscIcons('circleplus')}</div>
-                <input className='username' disabled={!isAdmin} type={'text'} value={newHoliday.title} title={'Holiday Title'} onChange={(e: any) => setNewHoliday({ ...newHoliday, title: e.target.value })} />
-                <input className='userpin' disabled={!isAdmin} type={'date'} value={newHoliday.date} title={'Holiday Date'} onChange={(e: any) => setNewHoliday({ ...newHoliday, date: e.target.value })} />
-            </div>
+            {isAdmin &&
+                <div className='userpindiv'>
+                    <div className={!isAdmin ? 'hidden' : ''} onClick={() => addNew()} title='Add Holiday'>{MiscIcons('circleplus')}</div>
+                    <input className='username' disabled={!isAdmin} type={'text'} value={newHoliday.title} title={'Holiday Title'} onChange={(e: any) => setNewHoliday({ ...newHoliday, title: e.target.value })} />
+                    <input className='userdate' disabled={!isAdmin} type={'date'} value={newHoliday.date} title={'Holiday Date'} onChange={(e: any) => setNewHoliday({ ...newHoliday, date: e.target.value })} />
+                </div>
+            }
         </div>
     )
 }

@@ -78,8 +78,11 @@ export const Templates = ({ isOpen, isAdmin, dbSettings, mutateDB/* dbTrack, dbS
                         <input disabled={!isAdmin} type={'text'} value={theTemplate.subject} title={'Subject'} onChange={(e: any) => onSubjectChange({ ...theTemplate, subject: e.target.value })} />
                     </label>
                     <label className='templatebody'>Body
-                        <textarea value={editorState} spellCheck onChange={(e: any) => {setCanSave(true); setEditorState(e.target.value)}} />
-                        {/* <TextEditor html={theTemplate.body} setter={(e: string) => setEditorState(e)} /> */}
+                        {isAdmin ?
+                            <textarea value={editorState} spellCheck onChange={(e: any) => { setCanSave(true); setEditorState(e.target.value) }} />
+                            :
+                            <p className='templatetext'>{editorState}</p>
+                        }
                     </label>
                 </div>
             }

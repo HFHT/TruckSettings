@@ -37,18 +37,22 @@ export const Users = ({ isOpen, isAdmin, dbSettings, mutateDB/* dbTrack, dbSched
         <div className='userdriver'>
             <h2>Driver Pins</h2>
             {theUsers.pins.map((thePin: IPin, i: number) => (
-                // <User pin={thePin} idx={i} key={i} onChange={(p: any) => onPinChange(p, i)} />
                 <div className='userpindiv' key={i}>
-                    <div className={!isAdmin ? 'hidden' : ''} onClick={() => remove(i)} title='Remove Driver'>{MiscIcons('trash')}</div>
+                    {isAdmin ?
+                        <div onClick={() => remove(i)} title='Remove Driver'>{MiscIcons('trash')}</div>
+                        : <div></div>
+                    }
                     <input className='username' disabled={!isAdmin} type={'text'} value={thePin.person} title={'Driver Name'} onChange={(e: any) => onPinChange({ ...thePin, person: e.target.value }, i)} />
                     <input className='userpin' disabled={!isAdmin} type={isAdmin ? 'text' : 'password'} value={thePin.pin} title={'Driver PIN'} onChange={(e: any) => onPinChange({ ...thePin, pin: e.target.value }, i)} />
                 </div>
             ))}
-            <div className='userpindiv'>
-                <div className={!isAdmin ? 'hidden' : ''} onClick={() => addNew()}  title='Add Driver'>{MiscIcons('circleplus')}</div>
-                <input className='username' disabled={!isAdmin} type={'text'} value={newPin.person} title={'Driver Name'} onChange={(e: any) => setNewPin({ ...newPin, person: e.target.value })} />
-                <input className='userpin' disabled={!isAdmin} type={'number'} value={newPin.pin} title={'Driver PIN'} onChange={(e: any) => setNewPin({ ...newPin, pin: e.target.value })} />
-            </div>
+            {isAdmin &&
+                <div className='userpindiv'>
+                    <div className={!isAdmin ? 'hidden' : ''} onClick={() => addNew()} title='Add Driver'>{MiscIcons('circleplus')}</div>
+                    <input className='username' disabled={!isAdmin} type={'text'} value={newPin.person} title={'Driver Name'} onChange={(e: any) => setNewPin({ ...newPin, person: e.target.value })} />
+                    <input className='userpin' disabled={!isAdmin} type={'number'} value={newPin.pin} title={'Driver PIN'} onChange={(e: any) => setNewPin({ ...newPin, pin: e.target.value })} />
+                </div>
+            }
         </div>
     )
 }

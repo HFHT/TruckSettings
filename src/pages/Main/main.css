@@ -1,4 +1,3 @@
-
 .userdiv {
     display: grid;
     width: max-content;
@@ -17,6 +16,10 @@
 .useradmin {
     grid-area: admin;
     width: 300px;
+}
+
+.userdate {
+    min-width: min-content;
 }
 
 .userpindiv {
