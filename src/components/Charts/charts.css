@@ -2,14 +2,14 @@
     fill: var(--color-text)
 }
 
-.chartdiv {
+/* .chartdiv {
     display: grid;
     grid-template-rows: 1fr;
     grid-template-columns: 1fr;
     grid-template-areas:
         "title"
         "chart"
-}
+} */
 
 .charttitle {
     grid-area: title;

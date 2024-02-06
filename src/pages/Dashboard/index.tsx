@@ -151,6 +151,19 @@ export function Dashboard({ isOpen, isAdmin, siteSettings, dbSched, dbDonor, dbT
                 </Select>
             </div>
             <div className='dashboardchartarea'>
+
+                <StackedBar dataKeyX='date' width={620}
+                    dataKeysY={[{ key: 'qtyManual', color: '#8884d8' }, { key: 'qtyWeb', color: '#82ca9d' }, { key: 'qtyCancel', color: '#355c9b' }]}
+                    title='Scheduled Pickups'
+                    note={`Booked: ${theseDatesMetrics.totals.pickup.scheduled}, Completed: ${theseDatesMetrics.totals.pickup.completed}, Cancelled: ${theseDatesMetrics.totals.pickup.cancelled} = Remaining: ${theseDatesMetrics.totals.pickup.scheduled - theseDatesMetrics.totals.pickup.completed - theseDatesMetrics.totals.pickup.cancelled}`}
+                    data={thesePickupMetrics}
+                />
+                <LineChart dataKeyX='date' width={620}
+                    dataKeysY={[{ key: 'qtyDonors', color: '#8884d8' }]}
+                    title='Donors'
+                    note={`Total: ${theseDatesMetrics.totals.donors} `}
+                    data={theseDonorMetrics}
+                />
                 <StackedBar dataKeyX='step'
                     dataKeysY={[{ key: 'quantity', color: '#8884d8' }, { key: 'booked', color: '#82ca9d' }, { key: 'cancel', color: '#355c9b' }]}
                     title='Online Pickup Conversion'
@@ -164,18 +177,6 @@ export function Dashboard({ isOpen, isAdmin, siteSettings, dbSched, dbDonor, dbT
                         { step: "Contact", quantity: theseDatesMetrics.totals.web.sumSteps['5'], },
                         { step: "Final", booked: theseDatesMetrics.totals.web.completed, cancel: 4 }
                     ]}
-                />
-                <StackedBar dataKeyX='date' width={620}
-                    dataKeysY={[{ key: 'qtyManual', color: '#8884d8' }, { key: 'qtyWeb', color: '#82ca9d' }, { key: 'qtyCancel', color: '#355c9b' }]}
-                    title='Scheduled Pickups'
-                    note={`Booked: ${theseDatesMetrics.totals.pickup.scheduled}, Completed: ${theseDatesMetrics.totals.pickup.completed}, Cancelled: ${theseDatesMetrics.totals.pickup.cancelled} = Remaining: ${theseDatesMetrics.totals.pickup.scheduled - theseDatesMetrics.totals.pickup.completed - theseDatesMetrics.totals.pickup.cancelled}`}
-                    data={thesePickupMetrics}
-                />
-                <LineChart dataKeyX='date' width={620}
-                    dataKeysY={[{ key: 'qtyDonors', color: '#8884d8' }]}
-                    title='Donors'
-                    note={`Total: ${theseDatesMetrics.totals.donors} `}
-                    data={theseDonorMetrics}
                 />
                 {/* <BiAxialLineChart dataKeys={['date', 'web', 'manual', 'cancel']} data={[
                     {
