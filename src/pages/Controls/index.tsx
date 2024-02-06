@@ -5,10 +5,9 @@ import { Tiles } from "../../components"
 import { AuthContext } from '../../context';
 import { useMsal } from '@azure/msal-react';
 
-export function Controls({ controls, setControls, availSlots, setZip, sched, setSched, holidays, setName, mode, setMode, setCurDate, searchList, handleSearch }: any) {
+export function Controls({ mode, setMode }: any) {
   const { account, photo, theme, setTheme } = useContext(AuthContext);
   const [profileDrawer, setProfileDrawer] = useState(false);
-  const { instance } = useMsal();
   async function signOutClickHandler(instance: any) {
     try {
       await instance.logoutPopup().then(
@@ -45,25 +44,6 @@ export function Controls({ controls, setControls, availSlots, setZip, sched, set
           <button className="p0" title="open profile" onClick={() => setProfileDrawer(true)}>
             <img src={photo} className="profileimg" alt="photo"></img>
           </button>
-          {/* <Drawer isOpen={profileDrawer} setIsOpen={setProfileDrawer} width="fit" height="fit" >
-            <div className='profiledrawer'>
-              <img src={photo} className="profileimg" alt="photo"></img>
-              <div className='account'>
-                <div className='name'>
-                  {account.name}
-                </div>
-                <div className=''>
-                  {account.username}
-                </div>
-              </div>
-            </div>
-            <div className='divider'>
-              <button onClick={(e) => navigate('/settings')} className='text drawerbg'>{MiscIcons('settings')} Settings</button>
-            </div>
-            <div className=''>
-              <button onClick={() => signOutClickHandler(instance)} className='text drawerbg'>{MiscIcons('logout')} Sign Out</button>
-            </div>
-          </Drawer> */}
         </div>
       </div>
     </>

@@ -5,6 +5,7 @@ import { dateMetrics } from "./dateMetrics"
 import { useMemo, useState } from "react"
 import { BiAxialLineChart, LineChart, Sankey, Select, StackedArea, StackedBar, Tiles } from "../../components"
 import { pickupMetrics } from './pickupMetrics';
+import { donorMetrics } from './donorMetrics';
 //Totals, donors, total pickups, web pickups, cancellations, Web vists, Completed Web Visits
 //Donors by Zip
 //Donors by Date
@@ -80,6 +81,7 @@ export type TheMetrics = {
         pickup: {
             scheduled: number
             completed: number
+            cancelled: number
         },
         delivery: {
             scheduled: number
@@ -99,7 +101,8 @@ export const emptyTheMetrics = {
         },
         pickup: {
             scheduled: 0,
-            completed: 0
+            completed: 0,
+            cancelled: 0
         },
         delivery: {
             scheduled: 0,
@@ -125,6 +128,8 @@ export function Dashboard({ isOpen, isAdmin, siteSettings, dbSched, dbDonor, dbT
 
     let theseDatesMetrics = useMemo(() => dateMetrics(dbTrack, dbDonor, dbSched), [dbTrack, dbDonor, dbSched])
     let thesePickupMetrics = useMemo(() => pickupMetrics(theseDatesMetrics), [])
+    let theseDonorMetrics = useMemo(() => donorMetrics(theseDatesMetrics), [])
+
     console.log(thesePickupMetrics)
     return (
         <>
@@ -145,14 +150,6 @@ export function Dashboard({ isOpen, isAdmin, siteSettings, dbSched, dbDonor, dbT
                     ))}
                 </Select>
             </div>
-            {`Donors: ${theseDatesMetrics.totals.donors}, `}
-            {/* {`Web Visits: ${theseDatesMetrics.totals.web.visits} `} */}
-            {/* {`Web Booked: ${theseDatesMetrics.totals.web.completed} `} */}
-            {/* {`Conversion Rate: ${(theseDatesMetrics.totals.web.completed / theseDatesMetrics.totals.web.visits * 100).toFixed(2).toLocaleString()}% `} */}
-            {/* {`Pickups Booked: ${theseDatesMetrics.totals.pickup.scheduled}, Pickups Completed: ${theseDatesMetrics.totals.pickup.completed}`} */}
-            {/* {`Pickups Completed: ${theseDatesMetrics.totals.pickup.completed} `} */}
-            {/* {`Deliveries Booked: ${theseDatesMetrics.totals.delivery.scheduled} `}
-            {`Deliveries Completed: ${theseDatesMetrics.totals.delivery.completed} `} */}
             <div className='dashboardchartarea'>
                 <StackedBar dataKeyX='step'
                     dataKeysY={[{ key: 'quantity', color: '#8884d8' }, { key: 'booked', color: '#82ca9d' }, { key: 'cancel', color: '#355c9b' }]}
@@ -171,33 +168,15 @@ export function Dashboard({ isOpen, isAdmin, siteSettings, dbSched, dbDonor, dbT
                 <StackedBar dataKeyX='date' width={620}
                     dataKeysY={[{ key: 'qtyManual', color: '#8884d8' }, { key: 'qtyWeb', color: '#82ca9d' }, { key: 'qtyCancel', color: '#355c9b' }]}
                     title='Scheduled Pickups'
-                    note={`Pickups Booked: ${theseDatesMetrics.totals.pickup.scheduled}, Pickups Completed: ${theseDatesMetrics.totals.pickup.completed}`}
+                    note={`Booked: ${theseDatesMetrics.totals.pickup.scheduled}, Completed: ${theseDatesMetrics.totals.pickup.completed}, Cancelled: ${theseDatesMetrics.totals.pickup.cancelled} = Remaining: ${theseDatesMetrics.totals.pickup.scheduled - theseDatesMetrics.totals.pickup.completed - theseDatesMetrics.totals.pickup.cancelled}`}
                     data={thesePickupMetrics}
                 />
-                {/* <LineChart dataKeyX='date'
-                    dataKeysY={[{ key: 'web', color: '#8884d8' }, { key: 'manual', color: '#82ca9d' }, { key: 'cancel', color: '#355c9b' }]}
-                    title='Online Pickup Conversion'
-                    note={` ${(theseDatesMetrics.totals.web.completed / theseDatesMetrics.totals.web.visits * 100).toFixed(2).toLocaleString()}% Conversion Rate = ${theseDatesMetrics.totals.web.completed} Booked / ${theseDatesMetrics.totals.web.visits} Visits`}
-                    data={[
-                        {
-                            date: "02/01",
-                            web: 4000,
-                            manual: 2400,
-                            cancel: 100
-                        },
-                        {
-                            date: "02/02",
-                            web: 3000,
-                            manual: 1398,
-                            cancel: 1000
-                        },
-                        {
-                            date: "02/03",
-                            web: 2000,
-                            manual: 9800,
-                            cancel: 100
-                        }]}
-                /> */}
+                <LineChart dataKeyX='date' width={620}
+                    dataKeysY={[{ key: 'qtyDonors', color: '#8884d8' }]}
+                    title='Donors'
+                    note={`Total: ${theseDatesMetrics.totals.donors} `}
+                    data={theseDonorMetrics}
+                />
                 {/* <BiAxialLineChart dataKeys={['date', 'web', 'manual', 'cancel']} data={[
                     {
                         date: "02/01",

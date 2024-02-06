@@ -5,19 +5,20 @@ import { find_id } from "../../helpers"
 export function dateMetrics(dbTrack: IVisits[], dbDonor: IDonor[], dbSched: IScheds[]) {
     let theMetrics: TheMetrics = emptyTheMetrics
     const hasWebCompleted = (thisStep: string | number) => thisStep.toString() === 'C' ? 1 : 0
-    const wasCancelled = (thisRoute: string) => thisRoute.toString() === CONST_CANCEL_ROUTE ? 1 : 0
-    const wasCompleted = (done: boolean | undefined) => done ? 1 : 0
+    const isCancelled = (thisRoute: string) => thisRoute.toString() === CONST_CANCEL_ROUTE
+    const isDone = (done: boolean | undefined) => done ? true : false
 
-    const whichValue = (v: string | null, m: string, q: number, rt: string | number) => {
-        if (rt.toString() === CONST_CANCEL_ROUTE) return 0
-        if (v === m) return q
+    function howMuchToAdd(match: boolean, completeOrCancel: boolean, amt: number = 1) {
+        if (match && completeOrCancel) return amt
         return 0
+
     }
+
     dbTrack && dbTrack.forEach((fingerprint: IVisits) => {
         // console.log(fingerprint,theMetrics)
         fingerprint.sessions.forEach((session: ISessions) => {
             const idx = find_id('date', session.dt, theMetrics.metrics)
-            console.log(session, idx)
+            // console.log(session, idx)
             if (idx > -1) {
                 let steps = theMetrics.metrics[idx].web.steps
                 steps.push(session.step.toString())
@@ -41,7 +42,7 @@ export function dateMetrics(dbTrack: IVisits[], dbDonor: IDonor[], dbSched: ISch
                 })
             }
             let steps = theMetrics.totals.web.steps
-            console.log(steps)
+            // console.log(steps)
             steps.push(session.step.toString())
             theMetrics.totals = {
                 ...theMetrics.totals, web: {
@@ -87,49 +88,50 @@ export function dateMetrics(dbTrack: IVisits[], dbDonor: IDonor[], dbSched: ISch
                 theMetrics.metrics[idx] = {
                     ...theMetrics.metrics[idx],
                     pickup: {
-                        qtyWeb: theMetrics.metrics[idx].pickup.qtyWeb + whichValue(sched.src, 'w', 1, sched.appt.rt),
-                        totalItemsWeb: theMetrics.metrics[idx].pickup.totalItemsWeb + whichValue(sched.src, 'w', sched.items.length, sched.appt.rt),
-                        qtyManual: theMetrics.metrics[idx].pickup.qtyManual + whichValue(sched.src, 's', 1, sched.appt.rt),
-                        totalItemsManual: theMetrics.metrics[idx].pickup.totalItemsManual + whichValue(sched.src, 's', sched.items.length, sched.appt.rt),
-                        qtyCancel: theMetrics.metrics[idx].pickup.qtyCancel + wasCancelled(sched.appt.rt)
+                        qtyWeb: theMetrics.metrics[idx].pickup.qtyWeb + howMuchToAdd(sched.src === 'w', true),
+                        totalItemsWeb: theMetrics.metrics[idx].pickup.totalItemsWeb + howMuchToAdd(sched.src === 'w', true, sched.items.length),
+                        qtyManual: theMetrics.metrics[idx].pickup.qtyManual + howMuchToAdd(sched.src === 's', true),
+                        totalItemsManual: theMetrics.metrics[idx].pickup.totalItemsManual + howMuchToAdd(sched.src === 's', true, sched.items.length),
+                        qtyCancel: theMetrics.metrics[idx].pickup.qtyCancel + (isCancelled(sched.appt.rt) ? 1 : 0)
                     },
                     delivery: {
-                        qty: theMetrics.metrics[idx].delivery.qty + whichValue(sched.src, 'd', 1, sched.appt.rt),
-                        totalItems: theMetrics.metrics[idx].delivery.totalItems + whichValue(sched.src, 'd', sched.items.length, sched.appt.rt)
+                        qty: theMetrics.metrics[idx].delivery.qty + howMuchToAdd(sched.src === 'd', true),
+                        totalItems: theMetrics.metrics[idx].delivery.totalItems + howMuchToAdd(sched.src === 'd', true, sched.items.length)
                     }
-
                 }
             } else {
                 theMetrics.metrics.push({
                     ...emptyDateMetrics,
                     date: scheds._id,
                     pickup: {
-                        qtyWeb: whichValue(sched.src, 'w', 1, sched.appt.rt),
-                        totalItemsWeb: whichValue(sched.src, 'w', sched.items.length, sched.appt.rt),
-                        qtyManual: whichValue(sched.src, 's', 1, sched.appt.rt),
-                        totalItemsManual: whichValue(sched.src, 's', sched.items.length, sched.appt.rt),
-                        qtyCancel: wasCancelled(sched.appt.rt)
+                        qtyWeb: howMuchToAdd(sched.src=== 'w', true),
+                        totalItemsWeb: howMuchToAdd(sched.src === 'w', true, sched.items.length),
+                        qtyManual: howMuchToAdd(sched.src === 's', true),
+                        totalItemsManual: howMuchToAdd(sched.src === 's', true, sched.items.length),
+                        qtyCancel: isCancelled(sched.appt.rt) ? 1 : 0
                     },
                     delivery: {
-                        qty: whichValue(sched.src, 'd', 1, sched.appt.rt),
-                        totalItems: whichValue(sched.src, 'd', sched.items.length, sched.appt.rt)
+                        qty: howMuchToAdd(sched.src === 'd', true),
+                        totalItems: howMuchToAdd(sched.src === 'd', true, sched.items.length)
                     }
                 })
             }
             theMetrics.totals = {
                 ...theMetrics.totals,
                 pickup: {
-                    scheduled: theMetrics.totals.pickup.scheduled + whichValue(sched.src, 'w', 1, sched.appt.rt) + whichValue(sched.src, 's', 1, sched.appt.rt),
-                    completed: theMetrics.totals.pickup.completed + whichValue(sched.src, 'w', wasCompleted(sched.done), sched.appt.rt) + whichValue(sched.src, 's', wasCompleted(sched.done), sched.appt.rt)
+                    scheduled: theMetrics.totals.pickup.scheduled + howMuchToAdd(sched.src === 'w' || sched.src === 's', true),
+                    completed: theMetrics.totals.pickup.completed + howMuchToAdd(sched.src === 'w' || sched.src === 's', isDone(sched.done)),
+                    cancelled: theMetrics.totals.pickup.cancelled + howMuchToAdd(sched.src === 'w' || sched.src === 's', isCancelled(sched.appt.rt))
                 },
                 delivery: {
-                    scheduled: theMetrics.totals.delivery.scheduled + whichValue(sched.src, 'd', 1, sched.appt.rt),
-                    completed: theMetrics.totals.delivery.completed + whichValue(sched.src, 'd', sched.done ? 1 : 0, sched.appt.rt)
+                    scheduled: theMetrics.totals.delivery.scheduled + howMuchToAdd(sched.src === 'd', true),
+                    completed: theMetrics.totals.delivery.completed + howMuchToAdd(sched.src === 'd', isDone(sched.done))
                 }
             }
 
         })
     })
+
     if (theMetrics.metrics.length === 0) return theMetrics
     theMetrics.metrics.sort(function (a, b) { return new Date(a.date).getTime() - new Date(b.date).getTime() })
     let sumSteps = theMetrics.totals.web.steps.reduce(function (value: any, value2: any) {

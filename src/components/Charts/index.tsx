@@ -103,7 +103,7 @@ export function LineChart({ data, dataKeyX, dataKeysY, width = 320, height = 300
                         type="monotone"
                         dataKey={dataKey.key}
                         stroke={dataKey.color}
-                        activeDot={idx === 0 ? { r: 8 } : false}
+                        activeDot={idx === 0 ? { r: 3 } : false}
                     />
                 ))}
             </ReLineChart>
