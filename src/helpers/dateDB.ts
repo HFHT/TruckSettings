@@ -89,3 +89,7 @@ export function nextBusinessDay(date: string, businessDays: boolean[]): string {
     }
     return thisDate
 }
+
+export async function doDelay(delay: number) {
+    return new Promise(ok => setTimeout(ok, delay));
+}

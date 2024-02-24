@@ -1,5 +1,38 @@
 /// <reference types="vite/client" />
 
+interface IShopifyReturn {
+    theList: {
+        data: IShopifyProd[]
+    }
+    theProduct: {}
+    theCollections: {
+        data: IShopifyCollect[]
+    }
+}
+interface IShopifyProd {
+    id: string
+    handle: string
+    product_type: string
+    status: 'active' | 'archived' | 'draft'
+    created_at: string
+    vendor: string
+    variants: IShopifyVariant[]
+}
+interface IShopifyVariant {
+    id: string
+    barcode: string
+    created_at: string
+    compare_at_price: string
+    inventory_item_id: string
+    inventory_quantity: number
+    old_inventory_quantity: number
+    price: string
+}
+interface IShopifyCollect {
+    id: string
+    product_id: string
+    created_at: string
+}
 //Schedule Database 
 interface Idb extends Array<IScheds> { }
 interface IScheds {

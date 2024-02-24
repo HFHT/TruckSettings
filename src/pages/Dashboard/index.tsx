@@ -127,8 +127,8 @@ export function Dashboard({ isOpen, isAdmin, siteSettings, dbSched, dbDonor, dbT
     const [theMonth, setTheMonth] = useState(months[Number(new Date().getMonth())])
 
     let theseDatesMetrics = useMemo(() => dateMetrics(dbTrack, dbDonor, dbSched), [dbTrack, dbDonor, dbSched])
-    let thesePickupMetrics = useMemo(() => pickupMetrics(theseDatesMetrics), [])
-    let theseDonorMetrics = useMemo(() => donorMetrics(theseDatesMetrics), [])
+    let thesePickupMetrics = useMemo(() => pickupMetrics(theseDatesMetrics), [theseDatesMetrics])
+    let theseDonorMetrics = useMemo(() => donorMetrics(theseDatesMetrics), [theseDatesMetrics])
 
     console.log(thesePickupMetrics)
     return (

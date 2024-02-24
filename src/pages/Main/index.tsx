@@ -1,10 +1,11 @@
 import './main.css';
 
-import { useDb } from "../../hooks";
-import { Admins, Controls, Dashboard, Downloads, Holidays, Templates, Users } from "..";
+import { useDb, useReadProduct, useUpdateProduct } from "../../hooks";
+import { Admins, Archive, Controls, Dashboard, Downloads, HangTags, Holidays, Pricing, Templates, Users } from "..";
 import { ToastContainer } from "react-toastify";
 import { useEffect, useState } from "react";
 import { find_id, find_row } from "../../helpers";
+import { Button } from '../../components';
 export function Main({ account }: any) {
     const [dbTrack, mutateTrack, updateTrack, trackFetching] = useDb({ key: 'track', theDB: 'DonorTracking', interval: 4 })
     const [dbDonor, mutateDonor, updateDonor, donorFetching] = useDb({ key: 'donors', theDB: 'Donors', interval: 4 })
@@ -18,6 +19,9 @@ export function Main({ account }: any) {
         console.log(e)
         e === 'Dashboard' && mode !== e && setMode(e)
         e === 'Downloads' && mode !== e && setMode(e)
+        e === 'HangTags' && mode !== e && setMode(e)
+        e === 'Archive' && mode !== e && setMode(e)
+        e === 'Pricing' && mode !== e && setMode(e)
         e === 'Users' && mode !== e && setMode(e)
         e === 'Holidays' && mode !== e && setMode(e)
         e === 'Templates' && mode !== e && setMode(e)
@@ -47,6 +51,9 @@ export function Main({ account }: any) {
                 <div className='mainpage'>
                     <Dashboard isOpen={mode === 'Dashboard'} isAdmin={isAdmin} siteSettings={siteSettings} dbDonor={dbDonor} dbTrack={dbTrack} dbSched={dbSched} />
                     <Downloads isOpen={mode === 'Downloads'} dbDonor={dbDonor} dbTrack={dbTrack} dbSched={dbSched} />
+                    <HangTags isOpen={mode === 'HangTags'} />
+                    <Archive isOpen={mode === 'Archive'} />
+                    <Pricing isOpen={mode === 'Pricing'} />
                     <Holidays isOpen={mode === 'Holidays'} isAdmin={isAdmin} mutateDB={mutateSettings} dbSettings={dbSettings} />
                     <Templates isOpen={mode === 'Templates'} isAdmin={isAdmin} mutateDB={mutateSettings} dbSettings={dbSettings} />
                     <UserPage isOpen={mode === 'Users'} isAdmin={isAdmin} mutateDB={mutateSettings} dbSettings={dbSettings} />

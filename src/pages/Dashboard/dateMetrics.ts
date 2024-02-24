@@ -3,7 +3,8 @@ import { CONST_CANCEL_ROUTE } from "../../constants"
 import { find_id } from "../../helpers"
 
 export function dateMetrics(dbTrack: IVisits[], dbDonor: IDonor[], dbSched: IScheds[]) {
-    let theMetrics: TheMetrics = emptyTheMetrics
+    let theMetrics: TheMetrics = { ...emptyTheMetrics }
+    console.log('dateMetrics-empty', theMetrics)
     const hasWebCompleted = (thisStep: string | number) => thisStep.toString() === 'C' ? 1 : 0
     const isCancelled = (thisRoute: string) => thisRoute.toString() === CONST_CANCEL_ROUTE
     const isDone = (done: boolean | undefined) => done ? true : false
@@ -104,7 +105,7 @@ export function dateMetrics(dbTrack: IVisits[], dbDonor: IDonor[], dbSched: ISch
                     ...emptyDateMetrics,
                     date: scheds._id,
                     pickup: {
-                        qtyWeb: howMuchToAdd(sched.src=== 'w', true),
+                        qtyWeb: howMuchToAdd(sched.src === 'w', true),
                         totalItemsWeb: howMuchToAdd(sched.src === 'w', true, sched.items.length),
                         qtyManual: howMuchToAdd(sched.src === 's', true),
                         totalItemsManual: howMuchToAdd(sched.src === 's', true, sched.items.length),

@@ -17,3 +17,11 @@ Settings:
 -- Default route name
 -- email templates
 -- store gps location
+
+Archive
+-- For appliances need to figure out how to remove from a sales channel, docs say using GraphQL.
+
+End of Month Price changes
+
+
+Move state to higher level.
