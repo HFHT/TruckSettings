@@ -19,3 +19,8 @@ export function readyToArchive(shopifyProduct: any, theAge: number = CONST_ARCHI
 export function readyToRemove(shopifyProduct: any, theAge: number = CONST_ARCHIVE_AFTER) {
     return dateDiffInDays(dateFormat(shopifyProduct.created_at), dateFormat(null)) > theAge
 }
+
+export function readyToPrint(shopifyProduct: IShopifyProd) {
+    if (hasInventory(shopifyProduct)) return true
+    return false
+}

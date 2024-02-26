@@ -1,8 +1,10 @@
 import { dateFormat } from "../helpers";
 
 export const CONST_DISCOUNTS = ['blue-discount-collection', 'yellow-collection', 'red-collection', 'green-collection']
-export const CONST_DISCOUNT_COLORS = [{bg:'#194b9d'}, {bg:'#FFCC00'}, {bg:'#A63740'}, {bg:'#43B02A'}]
+export const CONST_DISCOUNT_COLORS = [{fg: '#000000', bg:'#194b9d'}, {fg: '#FFFFFF', bg:'#FFCC00'}, {fg: '#FFFFFF', bg:'#A63740'}, {fg: '#FFFFFF', bg:'#43B02A'}]
 export const CONST_ARCHIVE_AFTER = 4
+export const CONST_LOGO_IMAGE = 'HabiStorelogo_stacked_black.png'
+
 
 export const CONST_NOTSUPPORTED_IMAGES = ['HEIC', 'MPG', 'MPEG']
 export const CONST_NOTSUPPORTED_IMG = 'https://hfhtdev.blob.core.windows.net/habistorepickup/invalidphoto.jpg'

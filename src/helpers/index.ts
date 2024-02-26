@@ -3,7 +3,7 @@ export * from './dateDB';
 export * from './fetchAPI';
 export * from './find_id';
 export * from './haves';
-// export * from './numberNaN';
+export * from './printHangTags';
 // export * from './next_id';
 // export * from './isDeepEqual';
 // export * from './window-exists';

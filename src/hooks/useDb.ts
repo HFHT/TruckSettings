@@ -18,7 +18,7 @@ export function useDb({ key, theDB, _id = null, interval = 4 }: IuseDB) {
     const [isFetching, setIsFetching] = useState(false)
     const theKey = [key, theDB]
     _id && theKey.push(_id)
-    const retDB: any = useQuery<any>({ queryKey: theKey, queryFn: fetchDB, refetchInterval: 1000 * 60 * interval }).data
+    const retDB: any = useQuery<any>({ queryKey: theKey, queryFn: fetchDB, refetchInterval: 1000 * 60 * interval, refetchOnWindowFocus: false }).data
     const queryClient = useQueryClient();
 
     const updateItems = useMutation<any, any, { item: any, db: string, insert: boolean }>(

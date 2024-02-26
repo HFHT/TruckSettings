@@ -9,4 +9,4 @@ export * from './useReadProduct';
 export * from './useUpdateProduct';
 export * from './useReadCollects';
 export * from './useUpdateCollects';
-// export * from './useEmail';
+export * from './usePrinter';
