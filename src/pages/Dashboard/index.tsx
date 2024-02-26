@@ -20,9 +20,7 @@ interface IDashboard {
     isOpen: boolean
     isAdmin: boolean
     siteSettings: any
-    dbSched: IScheds[]
-    dbDonor: IDonor[]
-    dbTrack: IVisits[]
+    metrics: any
 }
 
 export type DateMetrics = {
@@ -119,16 +117,16 @@ export type ZipMetrics = {
     qtyDelivery: number
     totalDeliveryItems: number
 }
-export function Dashboard({ isOpen, isAdmin, siteSettings, dbSched, dbDonor, dbTrack }: IDashboard) {
+export function Dashboard({ isOpen, isAdmin, metrics, siteSettings }: IDashboard) {
     if (!isOpen) return (<></>)
     const [view, setView] = useState('Month')
     const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
     const [theYear, setTheYear] = useState(Number(new Date().getFullYear()))
     const [theMonth, setTheMonth] = useState(months[Number(new Date().getMonth())])
 
-    let theseDatesMetrics = useMemo(() => dateMetrics(dbTrack, dbDonor, dbSched), [dbTrack, dbDonor, dbSched])
-    let thesePickupMetrics = useMemo(() => pickupMetrics(theseDatesMetrics), [theseDatesMetrics])
-    let theseDonorMetrics = useMemo(() => donorMetrics(theseDatesMetrics), [theseDatesMetrics])
+    let theseDatesMetrics = metrics.date
+    let thesePickupMetrics = metrics.pickup
+    let theseDonorMetrics = metrics.donor
 
     console.log(thesePickupMetrics)
     return (

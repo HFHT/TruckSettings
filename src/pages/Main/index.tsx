@@ -3,9 +3,12 @@ import './main.css';
 import { useDb, useReadProduct, useUpdateProduct } from "../../hooks";
 import { Admins, Archive, Controls, Dashboard, Downloads, HangTags, Holidays, Pricing, Templates, Users } from "..";
 import { ToastContainer } from "react-toastify";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { find_id, find_row } from "../../helpers";
 import { Button } from '../../components';
+import { dateMetrics } from '../Dashboard/dateMetrics';
+import { pickupMetrics } from '../Dashboard/pickupMetrics';
+import { donorMetrics } from '../Dashboard/donorMetrics';
 export function Main({ account }: any) {
     const [dbTrack, mutateTrack, updateTrack, trackFetching] = useDb({ key: 'track', theDB: 'DonorTracking', interval: 4 })
     const [dbDonor, mutateDonor, updateDonor, donorFetching] = useDb({ key: 'donors', theDB: 'Donors', interval: 4 })
@@ -14,6 +17,14 @@ export function Main({ account }: any) {
     const [mode, setMode] = useState('Dashboard')
     const [isAdmin, setIsAdmin] = useState(false)
     const [siteSettings, setSiteSettings] = useState()
+
+    const dashboardMetrics = useMemo(() => {
+        console.log('dashboardMetrics-useMemo')
+        var dateM:any = dateMetrics(dbTrack, dbDonor, dbSched)
+        var pickupM: any = pickupMetrics(dateM)
+        var donorM: any = donorMetrics(dateM)
+        return {date:dateM, pickup: pickupM, donor: donorM}
+    }, [dbTrack, dbDonor, dbSched])
 
     const handleModeChange = (e: string) => {
         console.log(e)
@@ -49,7 +60,7 @@ export function Main({ account }: any) {
             </div>
             {(dbTrack && dbDonor && dbSched && dbSettings && siteSettings) ?
                 <div className='mainpage'>
-                    <Dashboard isOpen={mode === 'Dashboard'} isAdmin={isAdmin} siteSettings={siteSettings} dbDonor={dbDonor} dbTrack={dbTrack} dbSched={dbSched} />
+                    <Dashboard isOpen={mode === 'Dashboard'} isAdmin={isAdmin} metrics={dashboardMetrics} siteSettings={siteSettings} />
                     <Downloads isOpen={mode === 'Downloads'} dbDonor={dbDonor} dbTrack={dbTrack} dbSched={dbSched} />
                     <HangTags isOpen={mode === 'HangTags'} />
                     <Archive isOpen={mode === 'Archive'} />

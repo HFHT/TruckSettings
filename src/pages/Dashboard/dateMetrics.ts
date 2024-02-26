@@ -68,7 +68,7 @@ export function dateMetrics(dbTrack: IVisits[], dbDonor: IDonor[], dbSched: ISch
             }
         } else {
             theMetrics.metrics.push({
-                ...emptyDateMetrics,
+                ...{...emptyDateMetrics},
                 date: donor.dt,
                 donor: {
                     qtyDonors: 1
@@ -102,7 +102,7 @@ export function dateMetrics(dbTrack: IVisits[], dbDonor: IDonor[], dbSched: ISch
                 }
             } else {
                 theMetrics.metrics.push({
-                    ...emptyDateMetrics,
+                    ...{...emptyDateMetrics},
                     date: scheds._id,
                     pickup: {
                         qtyWeb: howMuchToAdd(sched.src === 'w', true),
