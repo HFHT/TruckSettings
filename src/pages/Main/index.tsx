@@ -1,6 +1,6 @@
 import './main.css';
 
-import { useDb, useReadProduct, useUpdateProduct } from "../../hooks";
+import { useDb } from "../../hooks";
 import { Admins, Archive, Controls, Dashboard, Downloads, HangTags, Holidays, Pricing, Templates, Users } from "..";
 import { ToastContainer } from "react-toastify";
 import { useEffect, useMemo, useState } from "react";

@@ -3,7 +3,7 @@
 // export * from './useFetch';
 // export * from './useLocalStorage';
 // export * from './usePhoneLookup';
-// export * from './useUnload';
+export * from './useUpdateVariant';
 export * from './useDb';
 export * from './useReadProduct';
 export * from './useUpdateProduct';

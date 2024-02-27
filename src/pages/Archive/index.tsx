@@ -3,16 +3,13 @@ import './archive.css';
 import { useEffect, useState } from "react"
 import { useReadCollects, useReadProduct, useUpdateCollects, useUpdateProduct } from "../../hooks"
 import { Button } from "../../components"
-import { doDelay, hasInventory, readyToArchive, readyToRemove } from "../../helpers"
+import { archiveProducts, trimNewArrivals } from "../../helpers"
 import { CONST_ARCHIVE_AFTER } from "../../constants"
 
 interface IHangTag {
     isOpen: boolean
 }
-async function thisDelay() {
-    console.log('delay...')
-    await doDelay(250)
-}
+
 export function Archive({ isOpen }: IHangTag) {
     const [allProducts, doReadProducts, doReset] = useReadProduct()
     const [theProd, doUpdateProduct] = useUpdateProduct()
@@ -25,7 +22,7 @@ export function Archive({ isOpen }: IHangTag) {
 
     function handleReadProducts(shopifyType: string, thisAge: number = CONST_ARCHIVE_AFTER) {
         setAge(thisAge)
-        doReadProducts(shopifyType)
+        doReadProducts({ type: shopifyType })
     }
     function handleReadCollection(thisAge: number = CONST_ARCHIVE_AFTER) {
         setAge(thisAge)
@@ -35,7 +32,7 @@ export function Archive({ isOpen }: IHangTag) {
         console.log('Archive-useEffect', allProducts)
         if (!allProducts || !allProducts.hasOwnProperty('theList')) return
         if (allProducts && allProducts.theList.data.length < 1) return
-        doArchive(allProducts.theList.data, age)
+        archiveProducts(allProducts.theList.data, age, doUpdateProduct)
         return () => {
             console.log('doReset')
             doReset
@@ -50,12 +47,18 @@ export function Archive({ isOpen }: IHangTag) {
         console.log('Archive-useEffect', allNewItems)
         if (!allNewItems || !allNewItems.hasOwnProperty('theCollections')) return
         if (allNewItems && allNewItems.theCollections.data.length < 1) return
-        setNewItemList(doNewArrival(allNewItems.theCollections.data, 2))
+        trimNewArrivals(allNewItems.theCollections.data, 2, doUpdateCollect)
         return () => {
             console.log('doReset')
             doReset
         }
     }, [allNewItems])
+
+    useEffect(() => {
+        if (!theCollect) return
+        setNewItemList([...newItemList, theCollect])
+        console.log(theCollect)
+    }, [theCollect])
 
     if (!isOpen) return (<></>)
 
@@ -89,48 +92,12 @@ export function Archive({ isOpen }: IHangTag) {
                 {archiveList && archiveList.map((thisProd: any, idx: number) => (
                     <div key={idx}>{thisProd.theProduct.data.product.id}:{thisProd.theProduct.err} </div>
                 ))}
-                {/* {newItemList && newItemList.map((thisProd: any, idx: number) => (
-                    <div key={idx}>{thisProd.theProduct.data.product.id}:{thisProd.theProduct.err} </div>
-                ))} */}
+                {newItemList && newItemList.map((thisProd: any, idx: number) => (
+                    <div key={idx}>{thisProd.theProduct.product_id}:{thisProd.theProduct.err} </div>
+                ))}
             </div>
         </>
     )
 
-    function doArchive(theProducts: IShopifyProd[], theAge: number): any[] {
-        var theList: IShopifyProd[] = []
-        var delayCount = 0
-        theProducts.forEach((thisProduct: IShopifyProd) => {
-            console.log(thisProduct.id, readyToArchive(thisProduct, theAge))
-            if (readyToArchive(thisProduct, theAge)) {
-                doUpdateProduct(thisProduct.id)
-                theList.push(thisProduct)
-                thisDelay()
-                // delayCount++
-                // if (delayCount > 30) {
-                //     thisDelay()
-                //     delayCount = 0
-                // }
-            }
-        })
-        return theList
-        // thisDelay()
-    }
-    function doNewArrival(theProducts: IShopifyCollect[], theAge: number) {
-        var theList: IShopifyCollect[] = []
-        var delayCount = 0
-        theProducts.forEach((thisProduct: IShopifyCollect) => {
-            console.log(thisProduct.id, thisProduct.product_id, readyToRemove(thisProduct, theAge))
-            if (readyToRemove(thisProduct, theAge)) {
-                doUpdateCollect(thisProduct.id)
-                theList.push(thisProduct)
-                thisDelay()
-                // delayCount++
-                // if (delayCount > 30) {
-                //     thisDelay()
-                //     delayCount = 0
-                // }
-            }
-        })
-        return theList
-    }
+
 }

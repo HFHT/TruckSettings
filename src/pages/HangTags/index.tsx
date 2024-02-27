@@ -17,7 +17,7 @@ export function HangTags({ isOpen }: IHangTag) {
     const [barcode, setBarcode] = useState('')
 
     function handleReadProducts(shopifyType: string) {
-        const xyz = doReadProducts && doReadProducts(shopifyType)
+        const xyz = doReadProducts && doReadProducts({type:shopifyType})
     }
     useEffect(() => {
         console.log('Archive-useEffect', allProducts)

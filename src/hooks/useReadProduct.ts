@@ -5,6 +5,11 @@ export interface IuseReadProduct {
     doReadProduct: Function
     doReset: Function
 }
+export interface IdoRead {
+    type?:string | undefined
+    vendor?: string | undefined
+    status?: string
+}
 export function useReadProduct() {
     const [theProduct, setTheProduct] = useState<IShopifyReturn | undefined>({} as IShopifyReturn)
 
@@ -14,21 +19,22 @@ export function useReadProduct() {
     const doReset = () => {
         setTheProduct(undefined)
     }
-    const doReadProduct = async (type: string) => {
+    const doReadProduct = async ({type, vendor, status='active'}:IdoRead) => {
         console.log('useReadProduct', prompt)
+
+        let body:any = {
+            method: 'getAllProds',
+            collections: '',
+            product: '',
+            status: status,
+        }
+        type && (body.type = type)
+        vendor && (body.vendor = vendor)
 
         let options = {
             method: "POST",
             headers: headers,
-            body: JSON.stringify({
-                method: 'getAllProds',
-                collections: '',
-                product: '',
-                status: 'active',
-                // vendor: 'green-collection',
-                // tags: 'Bedroom',
-                type: type
-            })
+            body: JSON.stringify(body)
         };
         try {
             const response = await fetch(url, options);

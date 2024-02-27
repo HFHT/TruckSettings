@@ -1,11 +1,11 @@
-// export * from './calcDistance';
+export * from './archiveProducts';
 export * from './dateDB';
 export * from './fetchAPI';
 export * from './find_id';
 export * from './haves';
 export * from './printHangTags';
-// export * from './next_id';
-// export * from './isDeepEqual';
+export * from './repriceProducts';
+export * from './currentDiscount';
 // export * from './window-exists';
 // export * from './sumObjectsByKey';
 // export * from './barCode';
