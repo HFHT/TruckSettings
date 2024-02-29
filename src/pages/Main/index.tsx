@@ -1,6 +1,6 @@
 import './main.css';
 
-import { useDb } from "../../hooks";
+import { useDb, useParams } from "../../hooks";
 import { Admins, Archive, Controls, Dashboard, Downloads, HangTags, Holidays, Pricing, Templates, Users } from "..";
 import { ToastContainer } from "react-toastify";
 import { useEffect, useMemo, useState } from "react";
@@ -10,6 +10,8 @@ import { dateMetrics } from '../Dashboard/dateMetrics';
 import { pickupMetrics } from '../Dashboard/pickupMetrics';
 import { donorMetrics } from '../Dashboard/donorMetrics';
 export function Main({ account }: any) {
+    const params = useParams(['debug', 'noprint']) // noprint: do not print hang tags
+
     const [dbTrack, mutateTrack, updateTrack, trackFetching] = useDb({ key: 'track', theDB: 'DonorTracking', interval: 4 })
     const [dbDonor, mutateDonor, updateDonor, donorFetching] = useDb({ key: 'donors', theDB: 'Donors', interval: 4 })
     const [dbSched, mutateSched, updateSched, schedFetching] = useDb({ key: 'sched', theDB: 'Schedule', interval: 4 })
@@ -62,7 +64,7 @@ export function Main({ account }: any) {
                 <div className='mainpage'>
                     <Dashboard isOpen={mode === 'Dashboard'} isAdmin={isAdmin} metrics={dashboardMetrics} siteSettings={siteSettings} />
                     <Downloads isOpen={mode === 'Downloads'} dbDonor={dbDonor} dbTrack={dbTrack} dbSched={dbSched} />
-                    <HangTags isOpen={mode === 'HangTags'} />
+                    <HangTags isOpen={mode === 'HangTags'} params={params}/>
                     <Archive isOpen={mode === 'Archive'} />
                     <Pricing isOpen={mode === 'Pricing'} />
                     <Holidays isOpen={mode === 'Holidays'} isAdmin={isAdmin} mutateDB={mutateSettings} dbSettings={dbSettings} />

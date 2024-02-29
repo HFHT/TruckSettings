@@ -6,9 +6,10 @@ export interface IuseReadProduct {
     doReset: Function
 }
 export interface IdoRead {
-    type?:string | undefined
+    type?: string | undefined
     vendor?: string | undefined
     status?: string
+    product?: string | undefined
 }
 export function useReadProduct() {
     const [theProduct, setTheProduct] = useState<IShopifyReturn | undefined>({} as IShopifyReturn)
@@ -19,13 +20,13 @@ export function useReadProduct() {
     const doReset = () => {
         setTheProduct(undefined)
     }
-    const doReadProduct = async ({type, vendor, status='active'}:IdoRead) => {
+    const doReadProduct = async ({ type, vendor, status = 'active', product }: IdoRead) => {
         console.log('useReadProduct', prompt)
 
-        let body:any = {
-            method: 'getAllProds',
+        let body: any = {
+            method: product ? 'getProd' : 'getAllProds',
             collections: '',
-            product: '',
+            product: product ? `handle=${product}` : '',
             status: status,
         }
         type && (body.type = type)
@@ -42,7 +43,9 @@ export function useReadProduct() {
             if (!response.ok) throw `Shopify Product failed with ${response.status}: ${response.statusText}`
             const shopifyResponse = (await response.json());
             console.log(shopifyResponse);
-            if (shopifyResponse.theList.err) alert(shopifyResponse.theList.err)
+            if (!product) {
+                if (shopifyResponse.theList.err) alert(shopifyResponse.theList.err)
+            }
             setTheProduct(shopifyResponse)
         }
         catch (error) {

@@ -4,7 +4,9 @@ interface IShopifyReturn {
     theList: {
         data: IShopifyProd[]
     }
-    theProduct: {}
+    theProduct: {
+        data: any
+    }
     theCollections: {
         data: IShopifyCollect[]
     }

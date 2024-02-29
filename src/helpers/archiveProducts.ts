@@ -29,7 +29,7 @@ export function trimNewArrivals(theProducts: IShopifyCollect[], theAge: number, 
     function doCollect(thisProduct: IShopifyCollect, i: number) {
         setTimeout(() => {
             console.log(thisProduct, Date.now())
-            doUpdate(thisProduct.id)
+            doUpdate(thisProduct.id, thisProduct.product_id)
         }, 750 * i)
     }
 }

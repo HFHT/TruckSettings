@@ -1,6 +1,41 @@
 .downloadmain {
     display: grid
 }
+
 .dbtn {
     width: 200px;
+}
+
+.btngroup {
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 0.25rem;
+    margin-bottom: 1rem;
+    padding: 4px;
+    width: -moz-fit-content;
+    width: fit-content;
+}
+
+.btnspace {
+    margin-top: 0.5rem;
+}
+
+.rule {
+    border-style: dotted;
+    border-width: 1px;
+    margin-bottom: 1rem;
+}
+
+.barcode {
+    width: 200px !important;
+    height: 2rem;
+}
+
+.flex {
+    display: flex;
+}
+
+.errtext {
+    margin: 0;
+    color: var(--color-input-border-err)
 }

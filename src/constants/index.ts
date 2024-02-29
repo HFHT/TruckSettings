@@ -43,6 +43,22 @@ export const CONST_EMAILS: any = {
   }
 }
 
+export const CONST_TYPES:any = {
+  furniture: ['Furniture-Bedroom', 'Furniture-Dining', 'Furniture-Living', 'Furniture-Office', 'Furniture-Patio'],
+  appliance: ['Appliance-HeatCool', 'Appliance-Household', 'Appliance-Kitchen', 'Appliance-Outdoor', 'BldgMat-Electrical'],
+  bldgmat: ['Cabinets', 'Flooring', 'BldgMat-Door', 'BldgMat-Window', 'BldgMat-Tools', 'BldgMat-Plumbing'],
+  household: ['Household-ArtDecor', 'Household-Sporting']
+
+}
+
+
+
+
+
+
+
+
+
 export const CONST_NO_EMAIL = 'none'
 export const CONST_STORE_LOC1 = { lat: 32.2500024, lng: -110.987376 }
 export const CONST_SHOPIFY_TAG = 'Pickup'

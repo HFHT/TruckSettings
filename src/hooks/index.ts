@@ -2,7 +2,7 @@
 // export * from './useCookie';
 // export * from './useFetch';
 // export * from './useLocalStorage';
-// export * from './usePhoneLookup';
+export * from './useParams';
 export * from './useUpdateVariant';
 export * from './useDb';
 export * from './useReadProduct';

@@ -1,12 +1,12 @@
 import { useState } from "react";
 
 export function useUpdateCollects() {
-    const [theCollect, setTheCollect] = useState<IShopifyCollect>()
+    const [theCollect, setTheCollect] = useState<{ prodid: string, err: string }>()
 
     const headers = new Headers();
     var url = `${import.meta.env.VITE_AZURE_FUNC_URL}/api/HFHTShopify`;
 
-    const doUpdateCollect = async (collectId: string) => {
+    const doUpdateCollect = async (collectId: string, prodid: string) => {
         console.log('doUpdateProduct', prompt)
 
         let options = {
@@ -24,8 +24,8 @@ export function useUpdateCollects() {
             if (!response.ok) throw `Shopify Collect failed with ${response.status}: ${response.statusText}`
             const shopifyResponse = (await response.json());
             console.log(shopifyResponse);
-            if (shopifyResponse.theProduct.err) {console.log(shopifyResponse.theProduct.err)}
-            setTheCollect(shopifyResponse)
+            if (shopifyResponse.theCollections.err) { console.log(shopifyResponse.theCollections.err) }
+            setTheCollect({ prodid: prodid, err: shopifyResponse.theCollections.err })
         }
         catch (error) {
             console.log(error);

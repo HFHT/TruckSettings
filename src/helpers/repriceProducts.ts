@@ -1,8 +1,8 @@
 import { currentDiscountCollection, readyToReprice } from "."
 
-export async function repriceProducts(theProducts: IShopifyProd[], doUpdate:Function) {
+export async function repriceProducts(theProducts: IShopifyProd[], doUpdate: Function) {
     const theCollectionPct = currentDiscountCollection()
-    console.log(theCollectionPct)
+    console.log(theProducts, theCollectionPct)
 
     theProducts.forEach((thisProduct: IShopifyProd, idx: number) => {
         let repricePct = readyToReprice(thisProduct, theCollectionPct)

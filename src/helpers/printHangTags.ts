@@ -1,13 +1,13 @@
 import { readyToPrint } from "."
 import { usePrinter } from "../hooks"
 
-export async function printHangTags(theProducts: IShopifyProd[]) {
+export async function printHangTags(theProducts: IShopifyProd[], noprint:string) {
     const print = usePrinter({})
-
+    console.log(theProducts)
     theProducts.forEach((thisProduct: IShopifyProd, idx: number) => {
         console.log(thisProduct.id, thisProduct.variants[0].barcode, readyToPrint(thisProduct))
         if (readyToPrint(thisProduct)) {
-            doPrint(thisProduct, idx)
+            if (noprint === null) doPrint(thisProduct, idx)
         }
     })
     function doPrint(thisProduct: any, i: number) {
