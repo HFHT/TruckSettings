@@ -26,7 +26,7 @@ export function usePrinter({ name = '_blank', height = 400, width = 600 }: IuseP
                 </head><body >`
             )
             mywindow.document.write(
-                `<div style="width:500px; "><img width="400"\
+                `<div style="width:400px; "><img width="320"\
                 src="${import.meta.env.VITE_STORAGEIMAGEURL}${CONST_LOGO_IMAGE}"/>`
             )
             mywindow.document.write(
