@@ -30,19 +30,19 @@ export function readyToReprice(shopifyProduct: IShopifyProd, collectionPcts: { c
     //Check if the discount is already applied, if so then return null (don't do it again, handle re-run)
     //If inventory is zero then return null (Handle warranty items that need to maintain price for 30 days)
     //If number of variations is greater than one, alert and then return null (color discount products  don't have variants)
-    console.log(shopifyProduct.id, shopifyProduct.vendor, shopifyProduct.variants[0].barcode, shopifyProduct.variants[0].id, getPct(shopifyProduct.variants[0].price, shopifyProduct.variants[0].compare_at_price))
+    // console.log(shopifyProduct.id, shopifyProduct.vendor, shopifyProduct.variants[0].barcode, shopifyProduct.variants[0].id, getPct(shopifyProduct.variants[0].price, shopifyProduct.variants[0].compare_at_price))
 
-    if (!hasInventory(shopifyProduct)) return null
+    if (!hasInventory(shopifyProduct)) { console.log('reprice: no inventory', shopifyProduct.id); return null }
     if (shopifyProduct.variants.length !== 1) { alert(`Product ${shopifyProduct.variants[0].barcode} has more than 1 variant, not processed.`); return null }
     let pctToApply = collectionPcts.find((e: any) => e.c === shopifyProduct.vendor)
-    console.log(pctToApply)
+    console.log('reprice:', pctToApply, shopifyProduct.id, shopifyProduct.vendor, shopifyProduct.variants[0].barcode, shopifyProduct.variants[0].id, getPct(shopifyProduct.variants[0].price, shopifyProduct.variants[0].compare_at_price))
     if (!pctToApply) { alert(`Product ${shopifyProduct.variants[0].barcode} has incorrect vendor, not processed.`); return null }
-    if (pctToApply.p === getPct(shopifyProduct.variants[0].price, shopifyProduct.variants[0].compare_at_price)) return null
+    if (pctToApply.p === getPct(shopifyProduct.variants[0].price, shopifyProduct.variants[0].compare_at_price)) { console.log('reprice: already priced', shopifyProduct.id); return null }
     return pctToApply.p
 
     function getPct(n: number | string, d: number | string): number {
         let pct = Number(n) / Number(d)
-        console.log(n, d, pct)
+        // console.log(n, d, pct)
         return pct
     }
 }

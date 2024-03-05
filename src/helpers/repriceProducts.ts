@@ -6,7 +6,7 @@ export async function repriceProducts(theProducts: IShopifyProd[], doUpdate: Fun
 
     theProducts.forEach((thisProduct: IShopifyProd, idx: number) => {
         let repricePct = readyToReprice(thisProduct, theCollectionPct)
-        console.log(repricePct)
+        // console.log(repricePct)
         if (repricePct) {
             let theNewPrice = Number(thisProduct.variants[0].compare_at_price) * repricePct
             doReprice(thisProduct, theNewPrice, idx)

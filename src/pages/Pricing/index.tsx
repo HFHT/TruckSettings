@@ -7,7 +7,7 @@ interface IHangTag {
     isOpen: boolean
 }
 export function Pricing({ isOpen }: IHangTag) {
-    const CONST_BATCH_AMT = 5
+    const CONST_BATCH_AMT = 50
 
     const [allProducts, doReadProducts, doReset] = useReadProduct()
     const [theProd, doUpdateProduct] = useUpdateProduct()

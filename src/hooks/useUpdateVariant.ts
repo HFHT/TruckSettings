@@ -22,7 +22,7 @@ export function useUpdateVariant() {
                     body: JSON.stringify({
                         "variant": {
                             "id": variantId,
-                            "weight": "0.1"
+                            "price": price
                         }
                     })
                 }

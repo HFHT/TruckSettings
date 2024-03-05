@@ -26,27 +26,27 @@ export function usePrinter({ name = '_blank', height = 400, width = 600 }: IuseP
                 </head><body >`
             )
             mywindow.document.write(
-                `<div style="width:500px; "><img width="400"\
+                `<div style="width:360px; "><img width="300"\
                 src="${import.meta.env.VITE_STORAGEIMAGEURL}${CONST_LOGO_IMAGE}"/>`
             )
             mywindow.document.write(
                 `<table style="display:flex; align-items:baseline">\
                 <tr style="display:flex; align-items:center "><td>\
-                <img height="80" style="margin-left:1rem;"\
+                <img height="60" style="margin-left:0.7rem;"\
                 src="${import.meta.env.VITE_STORAGEIMAGEURL}WAS.png"/>\
-                </td><td><h1 style="font-size:4rem; margin-left:4rem; text-decoration-line: underline;">${detail.was}</h1></td></tr>`
+                </td><td><h1 style="font-size:3rem; margin-left:3.6rem; text-decoration-line: underline;">${detail.was}</h1></td></tr>`
             )
             mywindow.document.write(
                 `<tr style="display:flex; align-items:center "><td>\
-                <img height="80" style="margin-left:1rem;"\
+                <img height="60" style="margin-left:0.7rem;"\
                 src="${import.meta.env.VITE_STORAGEIMAGEURL}NOW.png"/>\
-                </td><td><h1 style="font-size:4rem; margin-left:4rem; text-decoration-line: underline;">${detail.now}</h1></td></tr>`
+                </td><td><h1 style="font-size:3rem; margin-left:3.6rem; text-decoration-line: underline;">${detail.now}</h1></td></tr>`
             )
             mywindow.document.write(
                 `<tr style="display:flex; align-items:center "><td>\
-                <img height="80" style="margin-left:1rem;"\
+                <img height="60" style="margin-left:0.7rem;"\
                 src="${import.meta.env.VITE_STORAGEIMAGEURL}ITEM.png"/>\
-                </td><td><h1 style="font-size:4rem; margin-left:3rem; text-decoration-line: underline;">${detail.item}</h1></td></tr>\
+                </td><td><h1 style="font-size:3rem; margin-left:2.8rem; text-decoration-line: underline;">${detail.item}</h1></td></tr>\
                 </table>`
             )
             // mywindow.document.write(

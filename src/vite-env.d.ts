@@ -58,6 +58,7 @@ interface ISched {
     call?: string
     done?: boolean
     resched?: boolean
+    cancel?: string
     note?: string
     calls: Icall[]
     remind?: boolean

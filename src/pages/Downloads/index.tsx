@@ -79,6 +79,7 @@ export const Downloads = ({ isOpen, dbDonor, dbTrack, dbSched }: IDownloads) => 
                     getItems(theAppt.items),
                     `'${theAppt.id}`,
                     theAppt.src ? theAppt.src : '',
+                    theAppt.cancel ? theAppt.cancel : '',
                     theAppt.fingerprint ? theAppt.fingerprint : ''
                 ])
             })
