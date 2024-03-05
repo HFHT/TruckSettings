@@ -54,7 +54,7 @@ export function usePrinter({ name = '_blank', height = 400, width = 600 }: IuseP
             //     src="${import.meta.env.VITE_STORAGEIMAGEURL}BANGNAIL.png"/>`
             // )
             mywindow.document.write(
-                `<div style="display:flex; justify-content:center; align-items:center; height:120px; ${currentDiscount(theColorIdx)}"><h2 style=" text-align:center">EVERY SALE BANGS A NAIL</h2></div></div>`
+                `<div style="display:flex; justify-content:center; align-items:center; height:60px; ${currentDiscount(theColorIdx)}"><h2 style="font-size:1.4rem; text-align:center">EVERY SALE BANGS A NAIL</h2></div></div>`
             )
             // mywindow.document.write(document.getElementById(elem).innerHTML);
             mywindow.document.write('</body></html>')
