@@ -62,7 +62,7 @@ export const Downloads = ({ isOpen, dbDonor, dbTrack, dbSched }: IDownloads) => 
         }
     }
     function csvPickup(dbSched: IScheds[]) {
-        let csv = [['Date', 'Done?', 'Route', 'First', 'Last', 'Company', 'Address', 'Unit', 'Zip', 'email', 'Items', 'ID', 'src', 'Fingerprint']]
+        let csv = [['Date', 'Done?', 'Route', 'First', 'Last', 'Company', 'Address', 'Unit', 'Zip', 'email', 'Items', 'ID', 'src', 'Cancel', 'Fingerprint']]
         dbSched.forEach((theDay: IScheds) => {
             theDay.c.forEach((theAppt: ISched) => {
                 csv.push([
