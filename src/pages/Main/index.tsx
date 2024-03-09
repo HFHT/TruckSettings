@@ -1,8 +1,9 @@
 import './main.css';
+import 'react-toastify/dist/ReactToastify.min.css';
 
-import { useDb, useParams } from "../../hooks";
-import { Admins, Archive, Controls, Dashboard, Downloads, HangTags, Holidays, Pricing, Templates, Users } from "..";
-import { ToastContainer } from "react-toastify";
+import { useDb, useEmail, useParams } from "../../hooks";
+import { Admins, Archive, Controls, Dashboard, Downloads, Email, Gaslight, HangTags, Holidays, Pricing, Templates, Users } from "..";
+import { ToastContainer, toast } from "react-toastify";
 import { useEffect, useMemo, useState } from "react";
 import { find_id, find_row } from "../../helpers";
 import { Button } from '../../components';
@@ -10,12 +11,14 @@ import { dateMetrics } from '../Dashboard/dateMetrics';
 import { pickupMetrics } from '../Dashboard/pickupMetrics';
 import { donorMetrics } from '../Dashboard/donorMetrics';
 export function Main({ account }: any) {
-    const params = useParams(['debug', 'noprint']) // noprint: do not print hang tags
+    const params = useParams(['debug', 'noprint', 'noemail']) // noprint: do not print hang tags
 
     const [dbTrack, mutateTrack, updateTrack, trackFetching] = useDb({ key: 'track', theDB: 'DonorTracking', interval: 4 })
     const [dbDonor, mutateDonor, updateDonor, donorFetching] = useDb({ key: 'donors', theDB: 'Donors', interval: 4 })
     const [dbSched, mutateSched, updateSched, schedFetching] = useDb({ key: 'sched', theDB: 'Schedule', interval: 4 })
     const [dbSettings, mutateSettings, updateSettings, settingsFetching] = useDb({ key: 'settings', theDB: 'Settings', interval: 4 })
+    const [sendEMail, eMailSent] = useEmail(toast)
+
     const [mode, setMode] = useState('Dashboard')
     const [isAdmin, setIsAdmin] = useState(false)
     const [siteSettings, setSiteSettings] = useState()
@@ -39,6 +42,8 @@ export function Main({ account }: any) {
         e === 'Holidays' && mode !== e && setMode(e)
         e === 'Templates' && mode !== e && setMode(e)
         e === 'Routes' && mode !== e && setMode(e)
+        e === 'Email' && mode !== e && setMode(e)
+        e === 'Gaslight' && mode !== e && setMode(e)
     }
 
     const handleEdit = (apptID: string, apptDate: string) => {
@@ -70,7 +75,8 @@ export function Main({ account }: any) {
                     <Holidays isOpen={mode === 'Holidays'} isAdmin={isAdmin} mutateDB={mutateSettings} dbSettings={dbSettings} />
                     <Templates isOpen={mode === 'Templates'} isAdmin={isAdmin} mutateDB={mutateSettings} dbSettings={dbSettings} />
                     <UserPage isOpen={mode === 'Users'} isAdmin={isAdmin} mutateDB={mutateSettings} dbSettings={dbSettings} />
-
+                    <Email isOpen={mode === 'Email'} isAdmin={isAdmin} mutateDB={mutateSettings} dbSettings={dbSettings} sendEmail={sendEMail} params={params}/>
+                    <Gaslight isOpen={mode === 'Gaslight'} isAdmin={isAdmin} mutateDB={mutateSettings} dbSettings={dbSettings} sendEmail={sendEMail} params={params}/>
                 </div>
                 :
                 'loading...'

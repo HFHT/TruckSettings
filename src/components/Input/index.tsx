@@ -5,7 +5,7 @@ import { dateFormat } from "../../helpers";
 interface IInput {
     type: string;
     inputMode?: "text" | "search" | "email" | "tel" | "url" | "none" | "numeric" | "decimal" | undefined;
-    value: string | number;
+    value: string | number | undefined;
     title: string;
     setter?: Function;          // State is controlled locally and only sent on Enter or Blur
     onChange?: Function;        // State is controlled externally 
@@ -30,7 +30,7 @@ interface IInput {
 }
 
 interface IVal {
-    value: string | number;
+    value: string | number | undefined;
     event: any;
 }
 

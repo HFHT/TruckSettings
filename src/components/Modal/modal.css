@@ -1,0 +1,30 @@
+.modal-overlay {
+  z-index: 9999;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(251, 250, 250, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 1rem;
+}
+
+.modal-box {
+  display: block;
+  background: var(--color-modal);
+  width: 70%;
+  height: 70%;
+  padding: 1rem;
+  margin: 1rem;
+  border-radius: 1rem;
+}
+
+.modal-close {
+  cursor: pointer;
+  background: var(--color-modal);
+  position: absolute;
+  right: 8px;
+  top: 8px;
+}

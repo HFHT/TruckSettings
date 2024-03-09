@@ -1,6 +1,7 @@
 
 export * from './Main';
-// export * from './Settings';
+export * from './Email';
+export * from './Gaslight';
 export * from './Pricing';
 export * from './Controls';
 export * from './Downloads';

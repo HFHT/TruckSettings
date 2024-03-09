@@ -6,7 +6,7 @@ export * from './Charts';
 // export * from './Drawer';
 export * from './ErrorFallBack';
 // export * from './Header';
-// export * from './Modal';
+export * from './Modal';
 export * from './PageLayout';
 export * from './Input';
 export * from './Select';

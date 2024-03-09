@@ -1,7 +1,7 @@
 // export * from './useCancel';
 // export * from './useCookie';
 // export * from './useFetch';
-// export * from './useLocalStorage';
+export * from './useEmail';
 export * from './useParams';
 export * from './useUpdateVariant';
 export * from './useDb';

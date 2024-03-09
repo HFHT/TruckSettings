@@ -1,0 +1,68 @@
+.tbtn {
+    width: 200px;
+}
+
+.qty-modal {
+    width: 160px;
+    height: 160px;
+    margin: 8px;
+}
+
+.qtydiv {
+    padding-top: 16px;
+}
+
+.tbtngreen {
+    background-color: var(--color-green-background);
+}
+.tbtnyellow {
+    background-color: var(--color-yellow-background);
+}
+
+.tbtngroup {
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 0.25rem;
+    margin-bottom: 1rem;
+    padding: 4px;
+    width: -moz-fit-content;
+    width: fit-content;
+    overflow-y: scroll;
+    height: 860px;
+}
+
+@media (max-height: 1500px) {
+    .tbtngroup {
+        height: 1200px;
+    }
+}
+
+@media (max-height: 1100px) {
+    .tbtngroup {
+        height: 900px;
+    }
+}
+
+@media (max-height: 940px) {
+    .tbtngroup {
+        height: 610px;
+    }
+}
+
+@media (max-height: 850px) {
+    .tbtngroup {
+        height: 520px;
+    }
+}
+
+@media (max-height: 800px) {
+    .tbtngroup {
+        height: 430px;
+    }
+}
+
+@media (max-height: 700px) {
+    .tbtngroup {
+        height: 360px;
+    }
+}

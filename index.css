@@ -46,6 +46,8 @@ input::-webkit-outer-spin-button {
     --color-glyph: white;
     --color-glyph-bg: darkred;
     --color-green-background: darkgreen;
+    --color-yellow-background: rgb(126, 124, 2);
+
     --color-icon: white;
     --color-icon-hover: black;
 
@@ -108,6 +110,8 @@ input::-webkit-outer-spin-button {
     --color-glyph: white;
     --color-glyph-bg: darkred;
     --color-green-background: lightgreen;
+    --color-yellow-background: rgb(240, 238, 122);
+
     --color-icon: #334155;
     --color-icon-hover: white;
 
