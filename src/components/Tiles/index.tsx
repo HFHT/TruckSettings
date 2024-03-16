@@ -21,7 +21,7 @@ export const Tiles = ({ tiles, title, onClick, disabled = [], selected = -1, cho
             <div className="tiles">
                 {tiles && tiles.map((tileLabel, i: number) => (
                     <button key={i} name={tileLabel} disabled={disabled[i]} onClick={(e) => handleClick(e, i)}
-                        className={`${addActiveClass(i, tileLabel)} ${(tileLabel === '') && 'tilehide'} tile text-sm buttonoutlined buttonfull buttonmiddle`}
+                        className={`${addActiveClass(i, chosen, tileLabel)} ${(tileLabel === '') && 'tilehide'} tile text-sm buttonoutlined buttonfull buttonmiddle`}
                     >
                         {tileLabel}
                     </button>
@@ -30,9 +30,9 @@ export const Tiles = ({ tiles, title, onClick, disabled = [], selected = -1, cho
         </div>
     );
 
-    function addActiveClass(idx: number, btn: string) {
+    function addActiveClass(idx: number, isChosen: string[] | undefined, btn: string) {
         // console.log(idx, btn);
-        if (chosen) {
+        if (isChosen) {
             return isSelected(btn) ? 'tileactive' : ''
         } else {
             if (typeof (selected) === 'string' ? selected === btn : selected === idx) return 'tileactive'

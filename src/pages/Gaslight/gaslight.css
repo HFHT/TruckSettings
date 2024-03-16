@@ -39,30 +39,30 @@
 
 @media (max-height: 1100px) {
     .tbtngroup {
-        height: 900px;
+        height: 870px;
     }
 }
 
 @media (max-height: 940px) {
     .tbtngroup {
-        height: 610px;
+        height: 710px;
     }
 }
 
 @media (max-height: 850px) {
     .tbtngroup {
-        height: 520px;
+        height: 620px;
     }
 }
 
 @media (max-height: 800px) {
     .tbtngroup {
-        height: 430px;
+        height: 570px;
     }
 }
 
 @media (max-height: 700px) {
     .tbtngroup {
-        height: 360px;
+        height: 470px;
     }
 }

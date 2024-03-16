@@ -70,11 +70,20 @@
 @media (max-width: 440px) {
     .controlgrid {
         display: grid;
-        grid-template-columns: minmax(auto, max-content) minmax(auto, max-content);
+        grid-template-columns: minmax(auto, min-content) minmax(auto, max-content) minmax(auto, min-content);
         grid-template-areas:
-            "logo  profile"
-            "title  title"
-            "navigation  navigation";
+            "logo title profile"
+            "navigation navigation navigation";
 
+    }
+
+    .tiles {
+        padding-left: unset;
+        margin-top: unset;
+    }
+
+    .tile {
+        padding: 0.1rem 0.2rem;
+        margin: 0;
     }
 }
