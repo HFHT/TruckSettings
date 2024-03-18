@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { usePrinter, useReadProduct } from "../../hooks"
-import { Button } from "../../components"
+import { Button, ProgressBar } from "../../components"
 import { doDelay, printHangTags, readyToPrint } from "../../helpers"
 
 // async function thisDelay(amt: number = 250) {
@@ -15,10 +15,17 @@ export function HangTags({ isOpen, params }: IHangTag) {
     const CONST_BATCH_AMT = 25
 
     const [allProducts, doReadProducts, doReset] = useReadProduct()
+    const [print, seperator, printStatus] = usePrinter({ noPrint: params.noprint !== null })
+
     const [nextIdx, setNextIdx] = useState(0)
 
     const [barcode, setBarcode] = useState('')
     const [theError, setTheError] = useState('')
+    const [size, setSize] = useState(0)
+    const [overallProgress, setOverallProgress] = useState(0)
+    const [ready, setReady] = useState(0)
+    const [progress, setProgress] = useState(0)
+    const [progressLabel, setProgressLabel] = useState('')
 
     const isDisabled = () => {
         return nextIdx === 0
@@ -26,14 +33,20 @@ export function HangTags({ isOpen, params }: IHangTag) {
     function handleReadProducts(shopifyType: string) {
         if (!confirm('This will print out alot of tags, are you sure you want to proceed?')) return
         doReadProducts({ type: shopifyType })
+        setProgressLabel(shopifyType)
+        setReady(0)
+        setSize(0)
+        setProgress(0)
+        seperator({ category: shopifyType })
     }
     function handleNextProducts() {
         let theseProducts = allProducts!.theList.data.slice(nextIdx * CONST_BATCH_AMT, (nextIdx * CONST_BATCH_AMT) + CONST_BATCH_AMT)
+        setProgress(0)
         if (theseProducts.length === 0) {
             doReset()
             setNextIdx(0)
         } else {
-            printHangTags(theseProducts, params.noprint)
+            setReady(printHangTags(theseProducts, print))
             setNextIdx(nextIdx + 1)
         }
     }
@@ -43,11 +56,13 @@ export function HangTags({ isOpen, params }: IHangTag) {
         if (!allProducts || !allProducts.hasOwnProperty('theList')) return
         if (allProducts.theList.hasOwnProperty('data')) {
             if (allProducts.theList.data.length < 1) return
-            printHangTags(allProducts.theList.data.slice(0, CONST_BATCH_AMT), params.noprint)
+            setReady(printHangTags(allProducts.theList.data.slice(0, CONST_BATCH_AMT), print))
+            setSize(allProducts.theList.data.length)
             setNextIdx(nextIdx + 1)
         } else {
             if (allProducts.theProduct.hasOwnProperty('data')) {
-                printHangTags(allProducts.theProduct.data.products, params.noprint)
+                setReady(printHangTags(allProducts.theProduct.data.products, print))
+                setSize(1)
             } else {
                 return
             }
@@ -55,8 +70,16 @@ export function HangTags({ isOpen, params }: IHangTag) {
 
     }, [allProducts])
 
+    useEffect(() => {
+        console.log('printerStatus', printStatus)
+        if (printStatus === 'Done') {
+            setProgress(progress + 1)
+        }
+    }, [printStatus])
+
+
     function handleSingleProduct() {
-        if (barcode==='') return
+        if (barcode === '') return
         doReadProducts({ product: barcode })
         setBarcode('')
     }
@@ -70,6 +93,8 @@ export function HangTags({ isOpen, params }: IHangTag) {
         <>
             <h3>Hang Tag Printing</h3>
             <p>Print out hang tags for all instock products in Shopify or for a single product by providing it's barcode.</p>
+            <ProgressBar progress={Math.floor(((nextIdx) / Math.ceil(size / 25)) * 100)} label={''} />
+            <ProgressBar progress={Math.floor((progress / ready) * 100)} label={progressLabel} />
             <div className='btngroup'>
                 <Button classes='dbtn' disabled={!isDisabled()} onClick={() => handleReadProducts('Furniture-Bedroom')}>Furniture-Bedroom</Button>
                 <Button classes='dbtn' disabled={!isDisabled()} onClick={() => handleReadProducts('Furniture-Dining')}>Furniture-Dining</Button>

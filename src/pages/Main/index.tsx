@@ -59,7 +59,7 @@ export function Main({ account }: any) {
     return (
         <div className='maingrid'>
             <div className='maincontrol'>
-                <ToastContainer position="top-left" className='mytoast' autoClose={3000} hideProgressBar={true} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover theme="light" />
+                <ToastContainer position="top-left" className='mytoast' autoClose={3000} hideProgressBar={false} newestOnTop={false} closeOnClick rtl={false} pauseOnFocusLoss draggable pauseOnHover theme="light" />
                 <Controls
                     mode={mode}
                     setMode={(e: any) => handleModeChange(e)}
@@ -70,7 +70,7 @@ export function Main({ account }: any) {
                     <Dashboard isOpen={mode === 'Dashboard'} isAdmin={isAdmin} metrics={dashboardMetrics} siteSettings={siteSettings} />
                     <Downloads isOpen={mode === 'Downloads'} dbDonor={dbDonor} dbTrack={dbTrack} dbSched={dbSched} />
                     <HangTags isOpen={mode === 'HangTags'} params={params}/>
-                    <Archive isOpen={mode === 'Archive'} />
+                    <Archive isOpen={mode === 'Archive'} toast={toast}/>
                     <Pricing isOpen={mode === 'Pricing'} />
                     <Holidays isOpen={mode === 'Holidays'} isAdmin={isAdmin} mutateDB={mutateSettings} dbSettings={dbSettings} />
                     <Templates isOpen={mode === 'Templates'} isAdmin={isAdmin} mutateDB={mutateSettings} dbSettings={dbSettings} />

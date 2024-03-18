@@ -1,13 +1,15 @@
 import { readyToArchive, readyToRemove } from "."
 
-export function archiveProducts(theProducts: IShopifyProd[], theAge: number, doUpdate: Function) {
+export function archiveProducts(theProducts: IShopifyProd[], theAge: number, doUpdate: Function): number {
+    let isReady = 0
     theProducts.forEach((thisProduct: IShopifyProd, idx: number) => {
         console.log(thisProduct.id, readyToArchive(thisProduct, theAge))
         if (readyToArchive(thisProduct, theAge)) {
             doArchive(thisProduct, idx)
+            isReady++
         }
     })
-    return
+    return isReady
 
     function doArchive(thisProduct: IShopifyProd, i: number) {
         setTimeout(() => {
@@ -17,14 +19,16 @@ export function archiveProducts(theProducts: IShopifyProd[], theAge: number, doU
     }
 }
 
-export function trimNewArrivals(theProducts: IShopifyCollect[], theAge: number, doUpdate: Function) {
+export function trimNewArrivals(theProducts: IShopifyCollect[], theAge: number, doUpdate: Function): number {
+    let isReady = 0
     theProducts.forEach((thisProduct: IShopifyCollect, idx: number) => {
         console.log(thisProduct.id, thisProduct.product_id, readyToRemove(thisProduct, theAge))
         if (readyToRemove(thisProduct, theAge)) {
             doCollect(thisProduct, idx)
+            isReady++
         }
     })
-    return
+    return isReady
 
     function doCollect(thisProduct: IShopifyCollect, i: number) {
         setTimeout(() => {

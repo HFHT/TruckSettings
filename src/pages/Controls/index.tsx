@@ -38,7 +38,7 @@ export function Controls({ mode, setMode }: any) {
         </div>
         <div className="thetitle"><h2>Truck Console</h2></div>
         <div className='thenav'>
-          <Tiles tiles={['Dashboard', 'Downloads', /*'HangTags', 'Archive', 'Pricing',*/ 'Users', 'Holidays', /* 'Templates', 'Routes', /*'Email',*/ 'Gaslight']} title={''} onClick={(e) => setMode(e)} />
+          <Tiles tiles={['Dashboard', 'Downloads', 'HangTags', 'Archive', 'Pricing', 'Users', 'Holidays', 'Templates', 'Routes', /*'Email', 'Gaslight'*/]} title={''} onClick={(e) => setMode(e)} />
         </div>
         <div className='profilegrid'>
           <button className="p0" title="open profile" onClick={() => setProfileDrawer(true)}>

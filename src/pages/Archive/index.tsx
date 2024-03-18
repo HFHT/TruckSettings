@@ -2,15 +2,16 @@ import './archive.css';
 
 import { useEffect, useState } from "react"
 import { useReadCollects, useReadProduct, useUpdateCollects, useUpdateProduct } from "../../hooks"
-import { Button } from "../../components"
+import { Button, ProgressBar } from "../../components"
 import { archiveProducts, trimNewArrivals } from "../../helpers"
 import { CONST_ARCHIVE_AFTER } from "../../constants"
 
 interface IHangTag {
     isOpen: boolean
+    toast: Function
 }
 
-export function Archive({ isOpen }: IHangTag) {
+export function Archive({ isOpen, toast }: IHangTag) {
     const [allProducts, doReadProducts, doReset] = useReadProduct()
     const [theProd, doUpdateProduct] = useUpdateProduct()
     const [allNewItems, doReadNewItems] = useReadCollects()
@@ -19,35 +20,48 @@ export function Archive({ isOpen }: IHangTag) {
     const [archiveList, setArchiveList] = useState<any[]>([])
     const [newItemList, setNewItemList] = useState<any[]>([])
     const [age, setAge] = useState(7)
+    const [ready, setReady] = useState(0)
+    const [progress, setProgress] = useState(0)
+    const [progressLabel, setProgressLabel] = useState('')
 
     function handleReadProducts(shopifyType: string, thisAge: number = CONST_ARCHIVE_AFTER) {
         setAge(thisAge)
         doReadProducts({ type: shopifyType })
+        setProgressLabel(shopifyType)
     }
     function handleReadCollection(thisAge: number = CONST_ARCHIVE_AFTER) {
         setAge(thisAge)
         doReadNewItems()
+        setProgressLabel('New Arrivals')
     }
+
     useEffect(() => {
         console.log('Archive-useEffect', allProducts)
         if (!allProducts || !allProducts.hasOwnProperty('theList')) return
         if (allProducts && allProducts.theList.data.length < 1) return
-        archiveProducts(allProducts.theList.data, age, doUpdateProduct)
+        setReady(archiveProducts(allProducts.theList.data, age, doUpdateProduct))
+        setProgress(0)
+        setArchiveList([])
         return () => {
             console.log('doReset')
             doReset
         }
     }, [allProducts])
+
     useEffect(() => {
         if (!theProd) return
         setArchiveList([...archiveList, theProd])
+        setProgress(Math.floor(((archiveList.length + 1) / ready) * 100))
         console.log(theProd)
     }, [theProd])
+
     useEffect(() => {
         console.log('Archive-useEffect', allNewItems)
         if (!allNewItems || !allNewItems.hasOwnProperty('theCollections')) return
         if (allNewItems && allNewItems.theCollections.data.length < 1) return
-        trimNewArrivals(allNewItems.theCollections.data, 2, doUpdateCollect)
+        setReady(trimNewArrivals(allNewItems.theCollections.data, 2, doUpdateCollect))
+        setProgress(0)
+        setNewItemList([])
         return () => {
             console.log('doReset')
             doReset
@@ -57,6 +71,7 @@ export function Archive({ isOpen }: IHangTag) {
     useEffect(() => {
         if (!theCollect) return
         setNewItemList([...newItemList, theCollect])
+        setProgress(Math.floor(((newItemList.length + 1) / ready) * 100))
         console.log(theCollect)
     }, [theCollect])
 
@@ -66,6 +81,7 @@ export function Archive({ isOpen }: IHangTag) {
         <>
             <h3>Archive sold products</h3>
             <p></p>
+            <ProgressBar progress={progress} label={progressLabel} />
             <div className='btngroup'>
 
                 <Button classes='dbtn' onClick={() => handleReadProducts('Furniture-Bedroom')}>Furniture-Bedroom</Button>
