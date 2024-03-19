@@ -3,13 +3,14 @@ interface IdoVariant {
     variantId: string
     price: number
 }
-export function useUpdateVariant() {
+export function useUpdateVariant(noprice: boolean) {
     const [theProduct, setTheProduct] = useState()
+    const [thex, setThex] = useState(noprice)
 
     const headers = new Headers();
     var url = `${import.meta.env.VITE_AZURE_FUNC_URL}/api/HFHTShopify`;
 
-    const doUpdateVariant = async ({variantId, price}:IdoVariant) => {
+    const doUpdateVariant = async ({ variantId, price }: IdoVariant) => {
         console.log('doUpdateVariant', variantId, price)
         if (!variantId) return
         let options = {
@@ -19,12 +20,7 @@ export function useUpdateVariant() {
                 method: 'updateVariant',
                 product: {
                     handle: variantId,
-                    body: JSON.stringify({
-                        "variant": {
-                            "id": variantId,
-                            "price": price
-                        }
-                    })
+                    body: doReprice(price, variantId, noprice)
                 }
             })
         };
@@ -44,4 +40,11 @@ export function useUpdateVariant() {
         return true
     }
     return [theProduct, doUpdateVariant] as const
+
+    function doReprice(price: number, variantId: string, noprice: boolean): string {
+        if (noprice) {
+            return JSON.stringify({ "variant": { "id": variantId } })
+        }
+        return JSON.stringify({ "variant": { "id": variantId, "price": price } })
+    }
 }

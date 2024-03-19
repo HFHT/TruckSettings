@@ -11,7 +11,7 @@ import { dateMetrics } from '../Dashboard/dateMetrics';
 import { pickupMetrics } from '../Dashboard/pickupMetrics';
 import { donorMetrics } from '../Dashboard/donorMetrics';
 export function Main({ account }: any) {
-    const params = useParams(['debug', 'noprint', 'noemail']) // noprint: do not print hang tags
+    const params = useParams(['debug', 'noprint', 'noprice', 'noemail']) // noprint: do not print hang tags; noprice: do not reprice items
 
     const [dbTrack, mutateTrack, updateTrack, trackFetching] = useDb({ key: 'track', theDB: 'DonorTracking', interval: 4 })
     const [dbDonor, mutateDonor, updateDonor, donorFetching] = useDb({ key: 'donors', theDB: 'Donors', interval: 4 })
@@ -71,7 +71,7 @@ export function Main({ account }: any) {
                     <Downloads isOpen={mode === 'Downloads'} dbDonor={dbDonor} dbTrack={dbTrack} dbSched={dbSched} />
                     <HangTags isOpen={mode === 'HangTags'} params={params}/>
                     <Archive isOpen={mode === 'Archive'} toast={toast}/>
-                    <Pricing isOpen={mode === 'Pricing'} />
+                    <Pricing isOpen={mode === 'Pricing'}  params={params}/>
                     <Holidays isOpen={mode === 'Holidays'} isAdmin={isAdmin} mutateDB={mutateSettings} dbSettings={dbSettings} />
                     <Templates isOpen={mode === 'Templates'} isAdmin={isAdmin} mutateDB={mutateSettings} dbSettings={dbSettings} />
                     <UserPage isOpen={mode === 'Users'} isAdmin={isAdmin} mutateDB={mutateSettings} dbSettings={dbSettings} />

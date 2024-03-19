@@ -49,15 +49,14 @@ export const CONST_EMAILS: any = {
   }
 }
 
-export const CONST_TYPES:any = {
-  furniture: ['Furniture-Bedroom', 'Furniture-Dining', 'Furniture-Living', 'Furniture-Office', 'Furniture-Patio'],
-  appliance: ['Appliance-HeatCool', 'Appliance-Household', 'Appliance-Kitchen', 'Appliance-Outdoor', 'BldgMat-Electrical'],
+export const CONST_TYPES: any = {
+  living: ['Furniture-Living'],
+  dining: ['Furniture-Dining'],
+  furniture: ['Furniture-Bedroom', 'Furniture-Office', 'Furniture-Patio'],
+  appliance: ['Appliance-HeatCool', 'Appliance-Household', 'Appliance-Kitchen', 'Appliance-Laundry', 'Appliance-Outdoor', 'BldgMat-Electrical'],
   bldgmat: ['Cabinets', 'Flooring', 'BldgMat-Door', 'BldgMat-Window', 'BldgMat-Tools', 'BldgMat-Plumbing'],
   household: ['Household-ArtDecor', 'Household-Sporting']
-
 }
-
-
 
 
 

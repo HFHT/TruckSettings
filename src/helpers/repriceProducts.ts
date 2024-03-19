@@ -1,7 +1,8 @@
 import { currentDiscountCollection, readyToReprice } from "."
 
-export async function repriceProducts(theProducts: IShopifyProd[], doUpdate: Function) {
+export function repriceProducts(theProducts: IShopifyProd[], doUpdate: Function): number {
     const theCollectionPct = currentDiscountCollection()
+    let theSize = 0
     console.log(theProducts, theCollectionPct)
 
     theProducts.forEach((thisProduct: IShopifyProd, idx: number) => {
@@ -10,8 +11,10 @@ export async function repriceProducts(theProducts: IShopifyProd[], doUpdate: Fun
         if (repricePct) {
             let theNewPrice = Number(thisProduct.variants[0].compare_at_price) * repricePct
             doReprice(thisProduct, theNewPrice, idx)
+            theSize++
         }
     })
+    return theSize
     function doReprice(thisProduct: IShopifyProd, theNewPrice: number, i: number) {
         setTimeout(() => {
             console.log(thisProduct, thisProduct.variants[0].id, Date.now())
