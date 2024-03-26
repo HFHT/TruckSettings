@@ -40,6 +40,7 @@ export function Archive({ isOpen, toast }: IHangTag) {
         if (!allProducts || !allProducts.hasOwnProperty('theList')) return
         if (allProducts && allProducts.theList.data.length < 1) return
         setReady(archiveProducts(allProducts.theList.data, age, doUpdateProduct))
+        if (ready < 1) toast('No Products Returned.')
         setProgress(0)
         setArchiveList([])
         return () => {
@@ -60,6 +61,7 @@ export function Archive({ isOpen, toast }: IHangTag) {
         if (!allNewItems || !allNewItems.hasOwnProperty('theCollections')) return
         if (allNewItems && allNewItems.theCollections.data.length < 1) return
         setReady(trimNewArrivals(allNewItems.theCollections.data, 2, doUpdateCollect))
+        if (ready < 1) toast('No New Items Returned.')
         setProgress(0)
         setNewItemList([])
         return () => {
