@@ -6,10 +6,10 @@
 .tiles {
     padding-left: 0.70rem;
     margin-top: -0.3rem;
-    border-color: var(--color-input-border);
+    /* border-color: var(--color-input-border);
     border-width: 1px;
     border-style: solid;
-    border-radius: 0.5rem;
+    border-radius: 0.5rem; */
 }
 
 .tiletitle {

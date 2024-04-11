@@ -17,7 +17,7 @@ export const Tiles = ({ tiles, title, onClick, disabled = [], selected = -1, cho
     if (!tiles) alert('Undefined Tile')
     return (
         <div className="tilegroup">
-            <span className={"tiletitle text-sm label-span"}>{title}</span>
+            {title !== '' && <span className={"tiletitle text-sm label-span"}>{title}</span>}
             <div className="tiles">
                 {tiles && tiles.map((tileLabel, i: number) => (
                     <button key={i} name={tileLabel} disabled={disabled[i]} onClick={(e) => handleClick(e, i)}

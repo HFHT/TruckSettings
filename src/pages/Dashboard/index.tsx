@@ -135,18 +135,18 @@ export function Dashboard({ isOpen, isAdmin, metrics, siteSettings }: IDashboard
             <div className='dashcontrols'>
                 <Tiles tiles={['Month', 'Year']} title={'View'} onClick={(e) => setView(e)} />
 
-                <Select value={theYear} setter={(e: any) => setTheYear(e)} title={'Year'} >
+                <select value={theYear} onChange={(e: any) => setTheYear(e.target.value)} title={'Year'} >
                     <option value="0">--All</option>
                     {getYears(siteSettings).map((theYear: string, i: number) => (
                         <option key={i} value={theYear}>{theYear}</option>
                     ))}
-                </Select>
-                <Select value={theMonth} setter={(e: any) => setTheMonth(e)} title={'Month'} >
+                </select>
+                <select value={theMonth} onChange={(e: any) => setTheMonth(e.target.value)} title={'Month'} >
                     <option value="0">--All</option>
                     {months.map((theYear: string, i: number) => (
                         <option key={i} value={theYear}>{theYear}</option>
                     ))}
-                </Select>
+                </select>
             </div>
             <div className='dashboardchartarea'>
 

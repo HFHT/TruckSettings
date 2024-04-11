@@ -1,5 +1,5 @@
 import { useState } from "react";
-import './select.css';
+// import './select.css';
 
 interface ISelect {
     value: string | number;

@@ -2,7 +2,7 @@ import './main.css';
 import 'react-toastify/dist/ReactToastify.min.css';
 
 import { useDb, useEmail, useParams } from "../../hooks";
-import { Admins, Archive, Controls, Dashboard, Downloads, Email, Gaslight, HangTags, Holidays, NewArchive, NewHangTags, Pricing, Templates, Users } from "..";
+import { Admins, Archive, Controls, Dashboard, Downloads, Email, Gaslight, HangTags, Holidays, NewArchive, NewHangTags, Pricing, Routes, Templates, Users } from "..";
 import { ToastContainer, toast } from "react-toastify";
 import { useEffect, useMemo, useState } from "react";
 import { find_id, find_row } from "../../helpers";
@@ -37,7 +37,7 @@ export function Main({ account }: any) {
         e === 'Dashboard' && mode !== e && setMode(e)
         e === 'Downloads' && mode !== e && setMode(e)
         e === 'HangTags' && mode !== e && setMode(e)
-        // e === 'NewHangTags' && mode !== e && setMode(e)
+        e === 'Routes' && mode !== e && setMode(e)
         e === 'Archive' && mode !== e && setMode(e)
         // e === 'NewArchive' && mode !== e && setMode(e)
         e === 'Pricing' && mode !== e && setMode(e)
@@ -82,6 +82,8 @@ export function Main({ account }: any) {
                     <Holidays isOpen={mode === 'Holidays'} isAdmin={isAdmin} mutateDB={mutateSettings} dbSettings={dbSettings} />
                     <Templates isOpen={mode === 'Templates'} isAdmin={isAdmin} mutateDB={mutateSettings} dbSettings={dbSettings} />
                     <UserPage isOpen={mode === 'Users'} isAdmin={isAdmin} mutateDB={mutateSettings} dbSettings={dbSettings} />
+                    <Routes isOpen={mode === 'Routes'} mutateDB={mutateSettings} dbSettings={dbSettings} />
+
                     <Email isOpen={mode === 'Email'} isAdmin={isAdmin} mutateDB={mutateSettings} dbSettings={dbSettings} sendEmail={sendEMail}/>
                     <Gaslight isOpen={mode === 'Gaslight'} isAdmin={isAdmin} mutateDB={mutateSettings} dbSettings={dbSettings} sendEmail={sendEMail} />
                 </div>

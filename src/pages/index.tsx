@@ -14,3 +14,4 @@ export * from './Archive';
 export * from './NewArchive';
 export * from './HangTags';
 export * from './NewHangTags';
+export * from './Routes';

@@ -1,0 +1,52 @@
+.routemain {
+    /* display:flex; */
+}
+.routemap {
+    width: 1000px;
+    position: absolute;
+}
+.routeoverlay {
+    position: relative;
+    display: inline;
+}
+.route-pin {
+    position: absolute;
+    /* height: 24px;
+    width: 24px; */
+    /* left: 20px;
+    top: 20px; */
+}
+.routemaingrid {
+    display:grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 10px;
+}
+.routegrid {
+    display:grid;
+    grid-template-columns: 3fr repeat(7, 1fr);
+    gap: 4px;
+  
+}
+.routezipgrid {
+    display:grid;
+    grid-template-columns: 1fr 6fr;
+    gap: 4px;
+    row-gap: 4px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: var(--color-input-border);
+}
+.routezipmain {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px;
+}
+.routedaygrid {
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    gap: 4px;
+
+}
+.inputsmall {
+
+}
