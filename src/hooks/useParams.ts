@@ -8,7 +8,7 @@ export function useParams(paramList: string[]): any {
         const urlSearchString = window.location.search;
         const params = new URLSearchParams(urlSearchString);
         let retParms: any = {}
-        paramList.forEach((p: string) => retParms[p] = params.get(p))
+        paramList.forEach((p: string) => retParms[p] = (params.get(p) !== null))
         setParams(retParms)
     }, [])
 

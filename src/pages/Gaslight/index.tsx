@@ -13,10 +13,9 @@ interface Etypes {
     mutateDB: Function
     sendEmail: Function
     dbSettings: any
-    params: any
 }
 
-export function Gaslight({ isOpen, isAdmin, mutateDB, dbSettings, sendEmail, params }: Etypes) {
+export function Gaslight({ isOpen, isAdmin, mutateDB, dbSettings, sendEmail }: Etypes) {
     if (!isOpen) return (<></>)
     const [theGuest, setTheGuest] = useState<any>('')
     const [theQty, setTheQty] = useState<undefined | number>(undefined)

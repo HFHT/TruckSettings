@@ -12,18 +12,24 @@ interface IShopifyReturn {
     }
 }
 interface IShopifyProd {
-    id: string
-    handle: string
+    id: string                              // Common properties of products and collections
+    created_at: string
+    updated_at: string
+
+    handle: string                          // Unique to products
     product_type: string
     status: 'active' | 'archived' | 'draft'
-    created_at: string
     vendor: string
     variants: IShopifyVariant[]
+
+    product_id: string                      // Unique to list of products in a collection
+    colleciton_id: string
 }
 interface IShopifyVariant {
     id: string
     barcode: string
     created_at: string
+    updated_at: string
     compare_at_price: string
     inventory_item_id: string
     inventory_quantity: number
@@ -34,6 +40,7 @@ interface IShopifyCollect {
     id: string
     product_id: string
     created_at: string
+    updated_at: string
 }
 //Schedule Database 
 interface Idb extends Array<IScheds> { }

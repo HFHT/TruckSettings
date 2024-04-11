@@ -11,4 +11,6 @@ export * from './Holidays';
 export * from './Templates';
 export * from './Dashboard';
 export * from './Archive';
+export * from './NewArchive';
 export * from './HangTags';
+export * from './NewHangTags';

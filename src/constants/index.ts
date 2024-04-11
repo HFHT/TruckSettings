@@ -4,6 +4,7 @@ export const CONST_DISCOUNTS = ['blue-discount-collection', 'yellow-collection',
 export const CONST_DISCOUNT_COLORS = [{ fg: '#000000', bg: '#EEEEEE' }, { fg: '#FFFFFF', bg: '#FFCC00' }, { fg: '#FFFFFF', bg: '#A63740' }, { fg: '#FFFFFF', bg: '#43B02A' }]
 export const CONST_DISCOUNT_PCT = [1, 0.75, 0.5, 0.25]
 export const CONST_ARCHIVE_AFTER = 4
+export const CONST_NEW_ARRIVAL = 2
 export const CONST_LOGO_IMAGE = 'HabiStorelogo_stacked_black.png'
 
 
@@ -53,10 +54,42 @@ export const CONST_TYPES: any = {
   living: ['Furniture-Living'],
   dining: ['Furniture-Dining'],
   furniture: ['Furniture-Bedroom', 'Furniture-Office', 'Furniture-Patio'],
-  appliance: ['Appliance-HeatCool', 'Appliance-Household', 'Appliance-Kitchen', 'Appliance-Laundry', 'Appliance-Outdoor', 'BldgMat-Electrical'],
+  //appliance: ['Appliance-HeatCool', 'Appliance-Household', 'Appliance-Kitchen', 'Appliance-Laundry', 'Appliance-Outdoor', 'BldgMat-Electrical'],
+
+  appliance: ['Appliance-Kitchen'],
   bldgmat: ['Cabinets', 'Flooring', 'BldgMat-Door', 'BldgMat-Window', 'BldgMat-Tools', 'BldgMat-Plumbing'],
   household: ['Household-ArtDecor', 'Household-Sporting']
 }
+export const CONST_EXCEPTIONS = [
+  'Appliance-HeatCool',
+  'Appliance-Household',
+  'Appliance-Kitchen',
+  'Appliance-Laundry',
+  'Appliance-Outdoor',
+  'BldgMat-Electrical',
+]
+export const CONST_GROUPINGS = [
+  'Furniture-Bedroom',
+  'Furniture-Dining',
+  'Furniture-Living',
+  'Furniture-Office',
+  'Furniture-Patio',
+  'Appliance-HeatCool',
+  'Appliance-Household',
+  'Appliance-Kitchen',
+  'Appliance-Laundry',
+  'Appliance-Outdoor',
+  'Cabinets',
+  'BldgMat-Door',
+  'BldgMat-Window',
+  'BldgMat-Tools',
+  'BldgMat-Electrical',
+  'BldgMat-Plumbing',
+  'BldgMat-Paint',
+  'Household-ArtDecor',
+  'Household-Sporting'
+]
+
 
 
 

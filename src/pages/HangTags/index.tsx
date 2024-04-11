@@ -9,13 +9,13 @@ import { doDelay, printHangTags, readyToPrint } from "../../helpers"
 // }
 interface IHangTag {
     isOpen: boolean
-    params: any
+    noPrint: boolean
 }
-export function HangTags({ isOpen, params }: IHangTag) {
+export function HangTags({ isOpen, noPrint }: IHangTag) {
     const CONST_BATCH_AMT = 25
 
     const [allProducts, doReadProducts, doReset] = useReadProduct()
-    const [print, seperator, printStatus] = usePrinter({ noPrint: params.noprint !== null })
+    const [print, seperator, printStatus] = usePrinter({ noPrint: noPrint })
 
     const [nextIdx, setNextIdx] = useState(0)
 

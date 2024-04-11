@@ -2,7 +2,7 @@ import './main.css';
 import 'react-toastify/dist/ReactToastify.min.css';
 
 import { useDb, useEmail, useParams } from "../../hooks";
-import { Admins, Archive, Controls, Dashboard, Downloads, Email, Gaslight, HangTags, Holidays, Pricing, Templates, Users } from "..";
+import { Admins, Archive, Controls, Dashboard, Downloads, Email, Gaslight, HangTags, Holidays, NewArchive, NewHangTags, Pricing, Templates, Users } from "..";
 import { ToastContainer, toast } from "react-toastify";
 import { useEffect, useMemo, useState } from "react";
 import { find_id, find_row } from "../../helpers";
@@ -10,14 +10,15 @@ import { Button } from '../../components';
 import { dateMetrics } from '../Dashboard/dateMetrics';
 import { pickupMetrics } from '../Dashboard/pickupMetrics';
 import { donorMetrics } from '../Dashboard/donorMetrics';
+import { NewPricing } from '../NewPricing';
 export function Main({ account }: any) {
-    const params = useParams(['debug', 'noprint', 'noprice', 'noemail']) // noprint: do not print hang tags; noprice: do not reprice items
+    const params = useParams(['debug', 'nosave', 'noprint', 'noprice', 'noemail']) // noprint: do not print hang tags; noprice: do not reprice items
 
     const [dbTrack, mutateTrack, updateTrack, trackFetching] = useDb({ key: 'track', theDB: 'DonorTracking', interval: 4 })
     const [dbDonor, mutateDonor, updateDonor, donorFetching] = useDb({ key: 'donors', theDB: 'Donors', interval: 4 })
     const [dbSched, mutateSched, updateSched, schedFetching] = useDb({ key: 'sched', theDB: 'Schedule', interval: 4 })
     const [dbSettings, mutateSettings, updateSettings, settingsFetching] = useDb({ key: 'settings', theDB: 'Settings', interval: 4 })
-    const [sendEMail, eMailSent] = useEmail(toast)
+    const [sendEMail, eMailSent] = useEmail({ toast: toast, noSend: params.noemail })
 
     const [mode, setMode] = useState('Dashboard')
     const [isAdmin, setIsAdmin] = useState(false)
@@ -36,7 +37,9 @@ export function Main({ account }: any) {
         e === 'Dashboard' && mode !== e && setMode(e)
         e === 'Downloads' && mode !== e && setMode(e)
         e === 'HangTags' && mode !== e && setMode(e)
+        // e === 'NewHangTags' && mode !== e && setMode(e)
         e === 'Archive' && mode !== e && setMode(e)
+        // e === 'NewArchive' && mode !== e && setMode(e)
         e === 'Pricing' && mode !== e && setMode(e)
         e === 'Users' && mode !== e && setMode(e)
         e === 'Holidays' && mode !== e && setMode(e)
@@ -69,14 +72,18 @@ export function Main({ account }: any) {
                 <div className='mainpage'>
                     <Dashboard isOpen={mode === 'Dashboard'} isAdmin={isAdmin} metrics={dashboardMetrics} siteSettings={siteSettings} />
                     <Downloads isOpen={mode === 'Downloads'} dbDonor={dbDonor} dbTrack={dbTrack} dbSched={dbSched} />
-                    <HangTags isOpen={mode === 'HangTags'} params={params}/>
-                    <Archive isOpen={mode === 'Archive'} toast={toast}/>
-                    <Pricing isOpen={mode === 'Pricing'}  params={params}/>
+                    {/* <HangTags isOpen={mode === 'HangTags'} noPrint={params.noprint}/> */}
+                    <NewArchive isOpen={mode === 'Archive'} noSave={params.nosave} toast={toast}/>
+
+                    <NewHangTags isOpen={mode === 'HangTags'} noPrint={params.noprint}/>
+
+                    {/* <Archive isOpen={mode === 'Archive'} toast={toast}/> */}
+                    <NewPricing isOpen={mode === 'Pricing'}  noPrice={params.noprice} noSave={params.nosave} toast={toast}/>
                     <Holidays isOpen={mode === 'Holidays'} isAdmin={isAdmin} mutateDB={mutateSettings} dbSettings={dbSettings} />
                     <Templates isOpen={mode === 'Templates'} isAdmin={isAdmin} mutateDB={mutateSettings} dbSettings={dbSettings} />
                     <UserPage isOpen={mode === 'Users'} isAdmin={isAdmin} mutateDB={mutateSettings} dbSettings={dbSettings} />
-                    <Email isOpen={mode === 'Email'} isAdmin={isAdmin} mutateDB={mutateSettings} dbSettings={dbSettings} sendEmail={sendEMail} params={params}/>
-                    <Gaslight isOpen={mode === 'Gaslight'} isAdmin={isAdmin} mutateDB={mutateSettings} dbSettings={dbSettings} sendEmail={sendEMail} params={params}/>
+                    <Email isOpen={mode === 'Email'} isAdmin={isAdmin} mutateDB={mutateSettings} dbSettings={dbSettings} sendEmail={sendEMail}/>
+                    <Gaslight isOpen={mode === 'Gaslight'} isAdmin={isAdmin} mutateDB={mutateSettings} dbSettings={dbSettings} sendEmail={sendEMail} />
                 </div>
                 :
                 'loading...'

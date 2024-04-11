@@ -9,7 +9,6 @@ export interface ISendMail {
     listAll: boolean
     images?: string[] | undefined
     doConfirm?: boolean
-    noSend?: string | null | undefined
     template: {
         subject: string
         body: string
@@ -25,11 +24,16 @@ interface IEmail {
     date: string
     time: string
 }
-export function useEmail(toast: Function) {
+interface IuseEmail {
+    toast: Function
+    noSend?: boolean
+}
+export function useEmail({ toast, noSend = false }: IuseEmail) {
 
     const [emailSent, setEmailSent] = useState(true)
+    console.log('useEmail', noSend)
 
-    const sendEMail = async ({ email, list, listAll, images = [], template, doConfirm = true, noSend = null }: ISendMail) => {
+    const sendEMail = async ({ email, list, listAll, images = [], template, doConfirm = true}: ISendMail) => {
         // if (!chatGPT) return;
         console.log('sendEmail', email, template)
         if (!email || email.email === CONST_NO_EMAIL) { setEmailSent(false); return; }
@@ -47,18 +51,17 @@ export function useEmail(toast: Function) {
         }
         console.log('sendEmail', optionsDesc.body)
         //if the doNotSend param is set then skip actually sending the email
-        if (noSend === null || noSend === undefined) {
-            fetch(`${import.meta.env.VITE_AZURE_FUNC_URL}/api/HFHTSendEmail`, optionsDesc)
-                .then(response => {
-                    console.log(response);
-                    if (response.ok) {
-                        toast(`${template.type} email to ${email.name} Sent...`)
-                    } else {
-                        !response.ok && alert(`There is a problem with the network, ${template.type} email to ${email.name.first} ${email.name.last} not sent. Please try again later.`)
-                    }
-                })
-                .catch(error => { console.log(error); toast(`Send of ${template.type} email to ${email.name} failed: ` + error) })
-        }
+        if (noSend) return
+        fetch(`${import.meta.env.VITE_AZURE_FUNC_URL}/api/HFHTSendEmail`, optionsDesc)
+            .then(response => {
+                console.log(response);
+                if (response.ok) {
+                    toast(`${template.type} email to ${email.name} Sent...`)
+                } else {
+                    !response.ok && alert(`There is a problem with the network, ${template.type} email to ${email.name.first} ${email.name.last} not sent. Please try again later.`)
+                }
+            })
+            .catch(error => { console.log(error); toast(`Send of ${template.type} email to ${email.name} failed: ` + error) })
     }
 
     return [sendEMail, emailSent] as const;

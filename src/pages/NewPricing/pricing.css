@@ -1,0 +1,9 @@
+.archiveList {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+}
+.agediv {
+    width:25%;
+    display: grid;
+    grid-template-columns: 4fr 1fr 2fr 4fr 1fr;
+}

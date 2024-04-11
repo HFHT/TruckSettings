@@ -10,10 +10,9 @@ interface Etypes {
     mutateDB: Function
     sendEmail: Function
     dbSettings: any
-    params: any
 }
 
-export function Email({ isOpen, isAdmin, mutateDB, dbSettings, sendEmail, params }: Etypes) {
+export function Email({ isOpen, isAdmin, mutateDB, dbSettings, sendEmail }: Etypes) {
     if (!isOpen) return (<></>)
 
     const uIdx = find_id('_id', 'gaslight', dbSettings)
@@ -34,7 +33,6 @@ export function Email({ isOpen, isAdmin, mutateDB, dbSettings, sendEmail, params
             list: [],
             listAll: false,
             template: CONST_EMAILS.email,
-            noSend: params.noemail
         })
 
     }

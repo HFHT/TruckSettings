@@ -6,14 +6,14 @@ import { CONST_TYPES } from "../../constants"
 
 interface IHangTag {
     isOpen: boolean
-    params: any //noprice params.noprint !== null
+    noPrice: boolean
 }
-export function Pricing({ isOpen, params }: IHangTag) {
+export function Pricing({ isOpen, noPrice }: IHangTag) {
     const CONST_BATCH_AMT = 50
     // CONST_TYPES
     const [productTypes, doReadProducts, doReset] = useReadProduct()
     const [theProd, doUpdateProduct] = useUpdateProduct()
-    const [theVariant, updateTheVariant] = useUpdateVariant(params.noprice !== null)
+    const [theVariant, updateTheVariant] = useUpdateVariant(noPrice)
     const [theCollection, setTheCollection] = useState('0')
     const [allProducts, setAllProducts] = useState<any[]>([])
     const [repriceList, setRepriceList] = useState<any[]>([])
@@ -26,17 +26,18 @@ export function Pricing({ isOpen, params }: IHangTag) {
     function handleReadTypes(shopifyTypes: string[]) {
         console.log(shopifyTypes)
         const theDay = new Date().getDate()
-        if (theCollection==='0') {
+        if (theCollection === '0') {
             alert('You must first select a Collection.')
             return
         }
-        if (theDay > 3 && theDay < 27 && params.noprice === null) {
+        if (theDay > 3 && theDay < 27 && noPrice) {
             alert('This operation is only allowed at the end of the month.')
             return
         }
         if (!confirm('This will change prices in Shopify, are you sure you want to proceed?')) return
         if (!confirm('Are you really sure?')) return
         setAllProducts([])
+        setProgressLabel(shopifyTypes.toString())
         shopifyTypes.forEach((shopifyVendor: string, idx: number) => {
             doReadProducts({ vendor: theCollection, type: shopifyVendor })
         })
@@ -70,6 +71,7 @@ export function Pricing({ isOpen, params }: IHangTag) {
         if (productTypes && productTypes.theList.data.length < 1) return
         let theArray = [...allProducts].concat(productTypes.theList.data)
         setAllProducts(theArray)
+        setRepriceList([])
     }, [productTypes])
 
     useEffect(() => {
