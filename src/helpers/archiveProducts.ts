@@ -22,11 +22,11 @@ export function archiveProducts(theProducts: IShopifyProd[], theAge: number, doU
 export function trimNewArrivals(theProducts: IShopifyCollect[], theAge: number, doUpdate: Function): number {
     let isReady = 0
     theProducts.forEach((thisProduct: IShopifyCollect, idx: number) => {
-        console.log(thisProduct.id, thisProduct.product_id, readyToRemove(thisProduct, theAge))
-        if (readyToRemove(thisProduct, theAge)) {
-            doCollect(thisProduct, idx)
-            isReady++
-        }
+        // console.log(thisProduct.id, thisProduct.product_id, readyToRemove(thisProduct, theAge))
+        // if (readyToRemove(thisProduct, theAge)) {
+        //     doCollect(thisProduct, idx)
+        //     isReady++
+        // }
     })
     return isReady
 
