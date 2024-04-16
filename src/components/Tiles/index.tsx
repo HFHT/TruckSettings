@@ -2,6 +2,7 @@ import './tiles.css';
 
 interface ITile {
     tiles: string[]
+    colors?: string[]
     disabled?: boolean[]
     title: string
     selected?: number | string
@@ -9,7 +10,7 @@ interface ITile {
     onClick(e: string, i: number | string, f: string[]): Function | void
 }
 
-export const Tiles = ({ tiles, title, onClick, disabled = [], selected = -1, chosen }: ITile) => {
+export const Tiles = ({ tiles, colors, title, onClick, disabled = [], selected = -1, chosen }: ITile) => {
     const handleClick = (e: React.MouseEvent<HTMLButtonElement>, id: number) => {
         console.log(e.currentTarget.name, id, chosen)
         onClick(e.currentTarget.name, id, buildChosen(e.currentTarget.name, id, chosen))

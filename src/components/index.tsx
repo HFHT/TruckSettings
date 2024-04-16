@@ -12,4 +12,5 @@ export * from './Input';
 export * from './Select';
 export * from './Search';
 export * from './ProgressBar';
+export * from './PopoverPicker';
 export * from './Tiles';

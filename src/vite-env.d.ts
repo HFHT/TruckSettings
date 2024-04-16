@@ -193,6 +193,11 @@ interface DBEmail {
     _id: 'email'
     templates: ITemplate[]
 }
+interface DBRoutes {
+    _id: 'users'
+    trucks: any,
+    routes: any
+}
 interface ITemplate {
     confirmation: IEmailType
     reschedule: IEmailType

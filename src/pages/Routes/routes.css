@@ -18,12 +18,12 @@
 }
 .routemaingrid {
     display:grid;
-    grid-template-columns: 1fr 2fr;
+    grid-template-columns: 2fr 3fr;
     gap: 10px;
 }
 .routegrid {
     display:grid;
-    grid-template-columns: 3fr repeat(7, 1fr);
+    grid-template-columns: 2fr 1fr 1fr repeat(7, 1fr);
     gap: 4px;
   
 }
@@ -36,6 +36,10 @@
     border-width: 1px;
     border-color: var(--color-input-border);
 }
+.routezipscroll {
+    overflow-y: scroll;
+    height: calc(100vh - 175px);
+}
 .routezipmain {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -47,6 +51,15 @@
     gap: 4px;
 
 }
+.editinput {
+    display: inline-block;
+}
+.editinput input {
+    width: 50%;
+}
 .inputsmall {
 
+}
+.popover {
+    z-index: 1;
 }

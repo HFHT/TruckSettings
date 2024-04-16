@@ -1,9 +1,9 @@
 import './routes.css';
 
-import { useState } from 'react';
-import { find_id } from '../../helpers';
+import { useEffect, useState } from 'react';
+import { find_id, find_row } from '../../helpers';
 import { MiscIcons } from '../../icons';
-import { Tiles } from '../../components';
+import { PopoverPicker, Tiles } from '../../components';
 import { CONST_MAP_CNTL } from '../../constants';
 export interface IRoutes {
     isOpen: boolean
@@ -12,8 +12,11 @@ export interface IRoutes {
 }
 export const Routes = ({ isOpen, dbSettings, mutateDB/* dbTrack, dbSched */ }: IRoutes) => {
     if (!isOpen) return (<></>)
+    const uIdx = find_id('_id', 'routes', dbSettings)
     const [chosen, setChosen] = useState<string[]>([])
-
+    const [color, setColor] = useState("#aabbcc")
+    const [theRoutes, setTheRoutes] = useState<DBRoutes>(dbSettings[uIdx])
+    Object.entries(theRoutes.trucks).map(([k, v], i) => console.log(k, v, i))
     return (
         <div className='routemain'>
             <h2>Routes</h2>
@@ -22,6 +25,8 @@ export const Routes = ({ isOpen, dbSettings, mutateDB/* dbTrack, dbSched */ }: I
                     <p>Routes Pickup</p>
                     <div className='routegrid'>
                         <div>Route</div>
+                        <div>Order</div>
+                        <div>Color</div>
                         <div>Sunday</div>
                         <div>Monday</div>
                         <div>Tuesday</div>
@@ -30,28 +35,20 @@ export const Routes = ({ isOpen, dbSettings, mutateDB/* dbTrack, dbSched */ }: I
                         <div>Friday</div>
                         <div>Saturday</div>
                     </div>
-                    <div className='routegrid'>
-                        <div>Blue</div>
-                        <input className='inputsmall' disabled={false} type={'number'} value={0} title={'Sunday Slots'} onChange={(e: any) => console.log(e)} />
-                        <input className='inputsmall' disabled={false} type={'number'} value={10} title={'Slots'} onChange={(e: any) => console.log(e)} />
-                        <input className='inputsmall' disabled={false} type={'number'} value={10} title={'Slots'} onChange={(e: any) => console.log(e)} />
-                        <input className='inputsmall' disabled={false} type={'number'} value={10} title={'Slots'} onChange={(e: any) => console.log(e)} />
-                        <input className='inputsmall' disabled={false} type={'number'} value={10} title={'Slots'} onChange={(e: any) => console.log(e)} />
-                        <input className='inputsmall' disabled={false} type={'number'} value={10} title={'Slots'} onChange={(e: any) => console.log(e)} />
-                        <input className='inputsmall' disabled={false} type={'number'} value={0} title={'Slots'} onChange={(e: any) => console.log(e)} />
-                    </div>
-                    <div className='routegrid'>
-                        <div>Red</div>
-                        <input className='inputsmall' disabled={false} type={'number'} value={0} title={'Slots'} onChange={(e: any) => console.log(e)} />
-                        <input className='inputsmall' disabled={false} type={'number'} value={10} title={'Slots'} onChange={(e: any) => console.log(e)} />
-                        <input className='inputsmall' disabled={false} type={'number'} value={10} title={'Slots'} onChange={(e: any) => console.log(e)} />
-                        <input className='inputsmall' disabled={false} type={'number'} value={10} title={'Slots'} onChange={(e: any) => console.log(e)} />
-                        <input className='inputsmall' disabled={false} type={'number'} value={10} title={'Slots'} onChange={(e: any) => console.log(e)} />
-                        <input className='inputsmall' disabled={false} type={'number'} value={10} title={'Slots'} onChange={(e: any) => console.log(e)} />
-                        <input className='inputsmall' disabled={false} type={'number'} value={0} title={'Slots'} onChange={(e: any) => console.log(e)} />
-                    </div>
+                    {Object.entries(theRoutes.trucks).map(([k, v]: any, i: number) => (
+                        <div key={i} className='routegrid'>
+                            <EditInput field={k} />
+                            <Reorder field={k} idx={i} length={Object.entries(theRoutes.trucks).length} />
+                            <div><PopoverPicker color={v.pickup.color} onChange={setColor} /></div>
+                            {v.pickup.loadsize.map((ls: string, j: number) => (
+                                <input key={`${i}${j}`} className='inputsmall' disabled={false} type={'number'} value={ls} title={'Slot'} onChange={(e: any) => console.log(e)} />
+                            ))}
+                        </div>
+                    ))}
                     <div className='routegrid'>
                         <input className='inputsmall' disabled={false} type={'text'} value={''} placeholder='New route...' title={'Route'} onChange={(e: any) => console.log(e)} />
+                        <div></div>
+                        <div><PopoverPicker color={'#808080'} onChange={setColor} /></div>
                         <input className='inputsmall' disabled={false} type={'number'} value={0} title={'Slots'} onChange={(e: any) => console.log(e)} />
                         <input className='inputsmall' disabled={false} type={'number'} value={0} title={'Slots'} onChange={(e: any) => console.log(e)} />
                         <input className='inputsmall' disabled={false} type={'number'} value={0} title={'Slots'} onChange={(e: any) => console.log(e)} />
@@ -61,202 +58,81 @@ export const Routes = ({ isOpen, dbSettings, mutateDB/* dbTrack, dbSched */ }: I
                         <input className='inputsmall' disabled={false} type={'number'} value={0} title={'Slots'} onChange={(e: any) => console.log(e)} />
                     </div>
                     <p>Routes Delivery</p>
-                    <div className='routegrid'>
-                        <div>Blue</div>
-                        <input className='inputsmall' disabled={false} type={'number'} value={0} title={'Slots'} onChange={(e: any) => console.log(e)} />
-                        <input className='inputsmall' disabled={false} type={'number'} value={4} title={'Slots'} onChange={(e: any) => console.log(e)} />
-                        <input className='inputsmall' disabled={false} type={'number'} value={4} title={'Slots'} onChange={(e: any) => console.log(e)} />
-                        <input className='inputsmall' disabled={false} type={'number'} value={4} title={'Slots'} onChange={(e: any) => console.log(e)} />
-                        <input className='inputsmall' disabled={false} type={'number'} value={4} title={'Slots'} onChange={(e: any) => console.log(e)} />
-                        <input className='inputsmall' disabled={false} type={'number'} value={4} title={'Slots'} onChange={(e: any) => console.log(e)} />
-                        <input className='inputsmall' disabled={false} type={'number'} value={0} title={'Slots'} onChange={(e: any) => console.log(e)} />
-                    </div>
-                    <div className='routegrid'>
-                        <div>Red</div>
-                        <input className='inputsmall' disabled={false} type={'number'} value={0} title={'Slots'} onChange={(e: any) => console.log(e)} />
-                        <input className='inputsmall' disabled={false} type={'number'} value={4} title={'Slots'} onChange={(e: any) => console.log(e)} />
-                        <input className='inputsmall' disabled={false} type={'number'} value={4} title={'Slots'} onChange={(e: any) => console.log(e)} />
-                        <input className='inputsmall' disabled={false} type={'number'} value={4} title={'Slots'} onChange={(e: any) => console.log(e)} />
-                        <input className='inputsmall' disabled={false} type={'number'} value={4} title={'Slots'} onChange={(e: any) => console.log(e)} />
-                        <input className='inputsmall' disabled={false} type={'number'} value={4} title={'Slots'} onChange={(e: any) => console.log(e)} />
-                        <input className='inputsmall' disabled={false} type={'number'} value={0} title={'Slots'} onChange={(e: any) => console.log(e)} />
-                    </div>
-                    <div className='routegrid'>
-                        <input className='inputsmall' disabled={false} type={'text'} value={''} placeholder='New route...' title={'Route'} onChange={(e: any) => console.log(e)} />
-                        <input className='inputsmall' disabled={false} type={'number'} value={0} title={'Slots'} onChange={(e: any) => console.log(e)} />
-                        <input className='inputsmall' disabled={false} type={'number'} value={0} title={'Slots'} onChange={(e: any) => console.log(e)} />
-                        <input className='inputsmall' disabled={false} type={'number'} value={0} title={'Slots'} onChange={(e: any) => console.log(e)} />
-                        <input className='inputsmall' disabled={false} type={'number'} value={0} title={'Slots'} onChange={(e: any) => console.log(e)} />
-                        <input className='inputsmall' disabled={false} type={'number'} value={0} title={'Slots'} onChange={(e: any) => console.log(e)} />
-                        <input className='inputsmall' disabled={false} type={'number'} value={0} title={'Slots'} onChange={(e: any) => console.log(e)} />
-                        <input className='inputsmall' disabled={false} type={'number'} value={0} title={'Slots'} onChange={(e: any) => console.log(e)} />
-                    </div>
+                    {Object.entries(theRoutes.trucks).map(([k, v]: any, i: number) => (
+                        <div key={i} className='routegrid'>
+                            <EditInput field={k} />
+                            <div></div>
+                            <div><PopoverPicker color={v.delivery.color} onChange={setColor} /></div>
+                            {v.delivery.loadsize.map((ls: string, j: number) => (
+                                <input key={`${i}${j}`} className='inputsmall' disabled={false} type={'number'} value={ls} title={'Slot'} onChange={(e: any) => console.log(e)} />
+                            ))}
+                        </div>
+                    ))}
                 </div>
 
-                <div>
+                <div className='routezipscroll'>
                     <p>Zips</p>
                     <div className='routezipmain'>
-                        <div className='routezipgrid'>
-                            <div title='Add Day'>85614 {MiscIcons('circleplus')}</div>
-                            <div className=''>
-                                <div className='routedaygrid'>
-                                    <select value={0} onChange={(e: any) => console.log(e.target.value)} title={'title'}>
-                                        <option value='0'>Sunday</option>
-                                        <option value='1'>Monday</option>
-                                        <option value='2'>Tuesday</option>
-                                        <option value='3'>Wednesday</option>
-                                        <option value='4'>Thursday</option>
-                                        <option value='5'>Friday</option>
-                                        <option value='6'>Saturday</option>
-                                    </select>
-                                    <Tiles tiles={CONST_MAP_CNTL} chosen={chosen} title={''} onClick={(name: string, id: number, chosen: string[]) => setChosen([...chosen])} />
-                                </div>
-                            </div>
-                        </div>
-                        <div className='routezipgrid'>
-                            <div title='Add Day'>85622 {MiscIcons('circleplus')}</div>
-                            <div className=''>
-                                <div className='routedaygrid'>
-                                    <select value={0} onChange={(e: any) => console.log(e.target.value)} title={'title'}>
-                                        <option value='0'>Sunday</option>
-                                        <option value='1'>Monday</option>
-                                        <option value='2'>Tuesday</option>
-                                        <option value='3'>Wednesday</option>
-                                        <option value='4'>Thursday</option>
-                                        <option value='5'>Friday</option>
-                                        <option value='6'>Saturday</option>
-                                    </select>
-                                    <Tiles tiles={CONST_MAP_CNTL} chosen={chosen} title={''} onClick={(name: string, id: number, chosen: string[]) => setChosen([...chosen])} />
-                                </div>
+                        {Object.entries(theRoutes.routes).map(([k, v]: any, i: number) => (
 
-                            </div>
-                        </div>
-                        <div className='routezipgrid'>
-                            <div title='Add Day'>85629 {MiscIcons('circleplus')}</div>
-                            <div className=''>
-                                <div className='routedaygrid'>
-                                    <select value={0} onChange={(e: any) => console.log(e.target.value)} title={'title'}>
-                                        <option value='0'>Sunday</option>
-                                        <option value='1'>Monday</option>
-                                        <option value='2'>Tuesday</option>
-                                        <option value='3'>Wednesday</option>
-                                        <option value='4'>Thursday</option>
-                                        <option value='5'>Friday</option>
-                                        <option value='6'>Saturday</option>
-                                    </select>
-                                    <Tiles tiles={CONST_MAP_CNTL} chosen={chosen} title={''} onClick={(name: string, id: number, chosen: string[]) => setChosen([...chosen])} />
+                            <div key={i} className='routezipgrid'>
+                                <EditInput field={k} handleAddDay={(e: any) => console.log(e)} />
+                                <div>
+                                    {v.map((rt: any, j: number) => (
+                                        <div key={`${i}${j}`} className='routedaygrid'>
+                                            <select value={rt.dow} onChange={(e: any) => console.log(e.target.value)} title={'title'}>
+                                                <option value='0'>Sunday</option>
+                                                <option value='1'>Monday</option>
+                                                <option value='2'>Tuesday</option>
+                                                <option value='3'>Wednesday</option>
+                                                <option value='4'>Thursday</option>
+                                                <option value='5'>Friday</option>
+                                                <option value='6'>Saturday</option>
+                                            </select>
+                                            <Tiles tiles={CONST_MAP_CNTL} colors={[]} chosen={rt.rt} title={''} onClick={(name: string, id: number, chosen: string[]) => setChosen([...chosen])} />
+                                        </div>
+                                    ))}
                                 </div>
                             </div>
-                        </div>
-                        <div className='routezipgrid'>
-                            <div title='Add Day'>85641 {MiscIcons('circleplus')}</div>
-                            <div className=''>
-                                <div className='routedaygrid'>
-                                    <select value={0} onChange={(e: any) => console.log(e.target.value)} title={'title'}>
-                                        <option value='0'>Sunday</option>
-                                        <option value='1'>Monday</option>
-                                        <option value='2'>Tuesday</option>
-                                        <option value='3'>Wednesday</option>
-                                        <option value='4'>Thursday</option>
-                                        <option value='5'>Friday</option>
-                                        <option value='6'>Saturday</option>
-                                    </select>
-                                    <Tiles tiles={CONST_MAP_CNTL} chosen={chosen} title={''} onClick={(name: string, id: number, chosen: string[]) => setChosen([...chosen])} />
-                                </div>
-                            </div>
-                        </div>
-                        <div className='routezipgrid'>
-                            <div title='Add Day'>85705 {MiscIcons('circleplus')}</div>
-                            <div className=''>
-                                <div className='routedaygrid'>
-                                    <select value={0} onChange={(e: any) => console.log(e.target.value)} title={'title'}>
-                                        <option value='1'>Monday</option>
-                                        <option value='2'>Tuesday</option>
-                                        <option value='3'>Wednesday</option>
-                                        <option value='4'>Thursday</option>
-                                        <option value='5'>Friday</option>
-                                        <option value='6'>Saturday</option>
-                                    </select>
-                                    <Tiles tiles={CONST_MAP_CNTL} chosen={chosen} title={''} onClick={(name: string, id: number, chosen: string[]) => setChosen([...chosen])} />
-                                </div>
-                                <div className='routedaygrid'>
-                                    <select value={0} onChange={(e: any) => console.log(e.target.value)} title={'title'}>
-                                        <option value='1'>Monday</option>
-                                        <option value='2'>Tuesday</option>
-                                        <option value='3'>Wednesday</option>
-                                        <option value='4'>Thursday</option>
-                                        <option value='5'>Friday</option>
-                                        <option value='6'>Saturday</option>
-                                    </select>
-                                    <Tiles tiles={CONST_MAP_CNTL} chosen={chosen} title={''} onClick={(name: string, id: number, chosen: string[]) => setChosen([...chosen])} />
-                                </div>
-                                <div className='routedaygrid'>
-                                    <select value={0} onChange={(e: any) => console.log(e.target.value)} title={'title'}>
-                                        <option value='1'>Monday</option>
-                                        <option value='2'>Tuesday</option>
-                                        <option value='3'>Wednesday</option>
-                                        <option value='4'>Thursday</option>
-                                        <option value='5'>Friday</option>
-                                        <option value='6'>Saturday</option>
-                                    </select>
-                                    <Tiles tiles={CONST_MAP_CNTL} chosen={chosen} title={''} onClick={(name: string, id: number, chosen: string[]) => setChosen([...chosen])} />
-                                </div>
-                                <div className='routedaygrid'>
-                                    <select value={0} onChange={(e: any) => console.log(e.target.value)} title={'title'}>
-                                        <option value='1'>Monday</option>
-                                        <option value='2'>Tuesday</option>
-                                        <option value='3'>Wednesday</option>
-                                        <option value='4'>Thursday</option>
-                                        <option value='5'>Friday</option>
-                                        <option value='6'>Saturday</option>
-                                    </select>
-                                    <Tiles tiles={CONST_MAP_CNTL} chosen={chosen} title={''} onClick={(name: string, id: number, chosen: string[]) => setChosen([...chosen])} />
-                                </div>
-                            </div>
-                        </div>
-                        <div className='routezipgrid'>
-                            <div title='Add Day'>85706 {MiscIcons('circleplus')}</div>
-                            <div className=''>
-                                <div className='routedaygrid'>
-                                    <select value={0} onChange={(e: any) => console.log(e.target.value)} title={'title'}>
-                                        <option value='0'>Sunday</option>
-                                        <option value='1'>Monday</option>
-                                        <option value='2'>Tuesday</option>
-                                        <option value='3'>Wednesday</option>
-                                        <option value='4'>Thursday</option>
-                                        <option value='5'>Friday</option>
-                                        <option value='6'>Saturday</option>
-                                    </select>
-                                    <Tiles tiles={CONST_MAP_CNTL} chosen={chosen} title={''} onClick={(name: string, id: number, chosen: string[]) => setChosen([...chosen])} />
-                                </div>
-                            </div>
-                        </div>
-                        <div className='routezipgrid'>
-                            <div title='Add Day'>85707 {MiscIcons('circleplus')}</div>
-                            <div className=''>
-                                <div className='routedaygrid'>
-                                    <select value={0} onChange={(e: any) => console.log(e.target.value)} title={'title'}>
-                                        <option value='0'>Sunday</option>
-                                        <option value='1'>Monday</option>
-                                        <option value='2'>Tuesday</option>
-                                        <option value='3'>Wednesday</option>
-                                        <option value='4'>Thursday</option>
-                                        <option value='5'>Friday</option>
-                                        <option value='6'>Saturday</option>
-                                    </select>
-                                    <Tiles tiles={CONST_MAP_CNTL} chosen={chosen} title={''} onClick={(name: string, id: number, chosen: string[]) => setChosen([...chosen])} />
-                                </div>
-                            </div>
-                        </div>
+                        ))}
                     </div>
                 </div>
-
             </div>
-
         </div>
     )
 }
-
+function EditInput({ field, setField, handleAddDay }: any) {
+    const [editMode, setEditMode] = useState(false)
+    const handleSave = () => {
+        setEditMode(false)
+        console.log('save')
+    }
+    return (
+        <>
+            {editMode ?
+                <div className='editinput'>
+                    <input size={6} className='inputsmall' type={'text'} value={field} title={'Field'} onChange={(e: any) => console.log(e)} />
+                    <span title='save' onClick={() => handleSave()}> {MiscIcons('save')}</span>
+                    <span title='close' onClick={() => setEditMode(false)}> {MiscIcons('close')}</span>
+                </div>
+                :
+                <div className='editinput'>
+                    {field}
+                    <span title='edit' onClick={() => setEditMode(true)}> {MiscIcons('edit')}</span>
+                    {handleAddDay && <span title='Add Day' onClick={() => handleAddDay(field)}> {MiscIcons('circleplus')}</span>}
+                </div>
+            }
+        </>
+    )
+}
+function Reorder({ field, idx, length }: any) {
+    return (
+        <div className='editinput'>
+            <span title='up' onClick={() => console.log('up')}> {idx === 0 ? MiscIcons('empty') : MiscIcons('up')}</span>
+            <span title='down' onClick={() => console.log('down')}> {idx === length - 1 ? MiscIcons('empty') : MiscIcons('down')}</span>
+        </div>
+    )
+}
 function RouteMap() {
     function handleImageClick(e: any) {
         console.log(`X: ${e.pageX - e.target.offsetLeft}, Y: ${e.pageY - e.target.offsetTop}`, e)
