@@ -73,10 +73,28 @@ export const Routes = ({ isOpen, dbSettings, mutateDB/* dbTrack, dbSched */ }: I
                 <div className='routezipscroll'>
                     <p>Zips</p>
                     <div className='routezipmain'>
+                        <div className='routezipgrid'>
+                            <EditInput field={''} edit={true} handleAddDay={(e: any) => console.log(e)} handleDelete={(e: any) => console.log(e)} />
+                            <div>
+                                <div className='routedaygrid'>
+                                    <select value={'-'} onChange={(e: any) => console.log(e.target.value)} title={'title'}>
+                                        <option value='-'>-</option>
+                                        <option value='0'>Sunday</option>
+                                        <option value='1'>Monday</option>
+                                        <option value='2'>Tuesday</option>
+                                        <option value='3'>Wednesday</option>
+                                        <option value='4'>Thursday</option>
+                                        <option value='5'>Friday</option>
+                                        <option value='6'>Saturday</option>
+                                    </select>
+                                    <Tiles tiles={CONST_MAP_CNTL} colors={[]} chosen={[]} title={''} onClick={(name: string, id: number, chosen: string[]) => setChosen([...chosen])} />
+                                </div>
+                            </div>
+                        </div>
                         {Object.entries(theRoutes.routes).map(([k, v]: any, i: number) => (
 
                             <div key={i} className='routezipgrid'>
-                                <EditInput field={k} handleAddDay={(e: any) => console.log(e)} />
+                                <EditInput field={k} handleAddDay={(e: any) => console.log(e)} handleDelete={(e: any) => console.log(e)} />
                                 <div>
                                     {v.map((rt: any, j: number) => (
                                         <div key={`${i}${j}`} className='routedaygrid'>
@@ -101,8 +119,8 @@ export const Routes = ({ isOpen, dbSettings, mutateDB/* dbTrack, dbSched */ }: I
         </div>
     )
 }
-function EditInput({ field, setField, handleAddDay }: any) {
-    const [editMode, setEditMode] = useState(false)
+function EditInput({ field, setField, handleAddDay, handleDelete, edit = false }: any) {
+    const [editMode, setEditMode] = useState(edit)
     const handleSave = () => {
         setEditMode(false)
         console.log('save')
@@ -120,6 +138,8 @@ function EditInput({ field, setField, handleAddDay }: any) {
                     {field}
                     <span title='edit' onClick={() => setEditMode(true)}> {MiscIcons('edit')}</span>
                     {handleAddDay && <span title='Add Day' onClick={() => handleAddDay(field)}> {MiscIcons('circleplus')}</span>}
+                    {handleDelete && <span title='Delete Zip' onClick={() => handleDelete(field)}> {MiscIcons('trash')}</span>}
+
                 </div>
             }
         </>
