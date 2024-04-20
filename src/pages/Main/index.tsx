@@ -17,7 +17,7 @@ export function Main({ account }: any) {
     const [dbTrack, mutateTrack, updateTrack, trackFetching] = useDb({ key: 'track', theDB: 'DonorTracking', interval: 4 })
     const [dbDonor, mutateDonor, updateDonor, donorFetching] = useDb({ key: 'donors', theDB: 'Donors', interval: 4 })
     const [dbSched, mutateSched, updateSched, schedFetching] = useDb({ key: 'sched', theDB: 'Schedule', interval: 4 })
-    const [dbSettings, mutateSettings, updateSettings, settingsFetching] = useDb({ key: 'settings', theDB: 'Settings', interval: 4 })
+    const [dbSettings, mutateSettings, updateSettings, settingsFetching, refetchSettings ] = useDb({ key: 'settings', theDB: 'Settings', interval: 0 })
     const [sendEMail, eMailSent] = useEmail({ toast: toast, noSend: params.noemail })
 
     const [mode, setMode] = useState('Dashboard')
@@ -82,7 +82,7 @@ export function Main({ account }: any) {
                     <Holidays isOpen={mode === 'Holidays'} isAdmin={isAdmin} mutateDB={mutateSettings} dbSettings={dbSettings} />
                     <Templates isOpen={mode === 'Templates'} isAdmin={isAdmin} mutateDB={mutateSettings} dbSettings={dbSettings} />
                     <UserPage isOpen={mode === 'Users'} isAdmin={isAdmin} mutateDB={mutateSettings} dbSettings={dbSettings} />
-                    <Routes isOpen={mode === 'Routes'} mutateDB={mutateSettings} dbSettings={dbSettings} />
+                    <Routes isOpen={mode === 'Routes'} mutateDB={mutateSettings} refetchDB={refetchSettings} dbSettings={dbSettings} toast={toast}/>
 
                     <Email isOpen={mode === 'Email'} isAdmin={isAdmin} mutateDB={mutateSettings} dbSettings={dbSettings} sendEmail={sendEMail}/>
                     <Gaslight isOpen={mode === 'Gaslight'} isAdmin={isAdmin} mutateDB={mutateSettings} dbSettings={dbSettings} sendEmail={sendEMail} />

@@ -18,7 +18,8 @@ export function useDb({ key, theDB, _id = null, interval = 4 }: IuseDB) {
     const [isFetching, setIsFetching] = useState(false)
     const theKey = [key, theDB]
     _id && theKey.push(_id)
-    const retDB: any = useQuery<any>({ queryKey: theKey, queryFn: fetchDB, refetchInterval: 1000 * 60 * interval, refetchOnWindowFocus: false }).data
+    const { data: retDB, refetch }: any = useQuery<any>({ queryKey: theKey, queryFn: fetchDB, refetchInterval: 1000 * 60 * interval, refetchOnWindowFocus: false })
+    console.log(retDB, refetch)
     const queryClient = useQueryClient();
 
     const updateItems = useMutation<any, any, { item: any, db: string, insert: boolean }>(
@@ -50,7 +51,7 @@ export function useDb({ key, theDB, _id = null, interval = 4 }: IuseDB) {
         return
     }
 
-    return [retDB, doMutation, update, isFetching] as const;
+    return [retDB, doMutation, update, isFetching, refetch] as const;
 }
 
 type Group = { id: number }

@@ -13,3 +13,4 @@ export * from './useReadCollects';
 export * from './useUpdateCollects';
 export * from './usePrinter';
 export * from './usePrintHangTags';
+export * from './useExitPrompt';

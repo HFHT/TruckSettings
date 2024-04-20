@@ -194,7 +194,7 @@ interface DBEmail {
     templates: ITemplate[]
 }
 interface DBRoutes {
-    _id: 'users'
+    _id: 'routes'
     trucks: any,
     routes: any
 }

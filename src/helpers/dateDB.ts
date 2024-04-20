@@ -1,3 +1,9 @@
+export const daysOfWeek: string[] = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+export const daysOfWeekLong: string[] = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+
+export const dayOfWeek = (dow: number, long = false) => {
+    return long ? daysOfWeekLong[dow] : daysOfWeek[dow]
+}
 export const dateDB = () => {
     // Return current date in DB format
     const theDate = new Date;
@@ -13,7 +19,7 @@ export const dateFormat = (date: any) => {
 export const dateDayName = (date: any) => {
     const dow: any = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
     const d = newDate(date)
-    return dow[d.getDay()];
+    return daysOfWeek[d.getDay()];
 }
 
 export const dateAdjust = (date: any, adjust: number) => {
@@ -65,7 +71,7 @@ export function getFirstOfMonth(date: any) {
     const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
     const parts = date.split('-')
     const dow = new Date(parts[0], parts[1] - 1, 1).getDay()
-    return { dow: dow, day: days[dow], first: [parts[0], parts[1], '01'].join('-') }
+    return { dow: dow, day: daysOfWeekLong[dow], first: [parts[0], parts[1], '01'].join('-') }
 }
 
 export function nextBusinessDay(date: string, businessDays: boolean[]): string {
