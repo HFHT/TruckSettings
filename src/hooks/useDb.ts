@@ -9,17 +9,12 @@ interface IuseDB {
     _id?: string | null
     interval?: number
 }
-interface FetchDB {
-    db: string;
-    _id?: number | string | null;
-}
 //useDb({key:'schedule', theDB: 'Schedule', _id: null, interval:4})
 export function useDb({ key, theDB, _id = null, interval = 4 }: IuseDB) {
     const [isFetching, setIsFetching] = useState(false)
     const theKey = [key, theDB]
     _id && theKey.push(_id)
     const { data: retDB, refetch }: any = useQuery<any>({ queryKey: theKey, queryFn: fetchDB, refetchInterval: 1000 * 60 * interval, refetchOnWindowFocus: false })
-    console.log(retDB, refetch)
     const queryClient = useQueryClient();
 
     const updateItems = useMutation<any, any, { item: any, db: string, insert: boolean }>(
