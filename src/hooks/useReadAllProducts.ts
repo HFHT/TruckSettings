@@ -7,8 +7,16 @@ export interface IuseReadProducts {
         do: boolean
         age: number
     }
-    reprice?: boolean
-    inStock?: boolean
+    tags?: {
+        do: boolean
+        reprice: boolean
+        inStock: boolean
+    }
+    reprice?: {
+        do: boolean
+        inStock: boolean
+    }
+    // inStock?: boolean
     outOfStock?: {
         do: boolean
         age: number
@@ -21,8 +29,9 @@ export interface IdoReadAll {
     vendor?: string | undefined
     status?: string
     product?: string | undefined
+    age?: number
 }
-export function useReadAllProducts({ newArrivals = { do: false, age: 0 }, reprice = false, inStock = false, outOfStock = { do: false, age: 0, except: [], exceptAge: 0 } }: IuseReadProducts) {
+export function useReadAllProducts({ newArrivals = { do: false, age: 0 }, tags = { do: false, reprice: false, inStock: false }, reprice = { do: false, inStock: false }, outOfStock = { do: false, age: 0, except: [], exceptAge: 0 } }: IuseReadProducts) {
     const [theProducts, setTheProducts] = useState<IShopifyProd[] | undefined>([])
     const [progress, setProgress] = useState(0)
     const [quantity, setQuantity] = useState(0)
@@ -33,7 +42,7 @@ export function useReadAllProducts({ newArrivals = { do: false, age: 0 }, repric
     const doReset = () => {
         setTheProducts(undefined)
     }
-    const doReadProducts = async ({ types, vendor, status = 'active', product }: IdoReadAll) => {
+    const doReadProducts = async ({ types, vendor, status = 'active', product, age = 999 }: IdoReadAll) => {
         console.log('useReadProduct', prompt)
         var productList: IShopifyProd[] = []
         let body: any = newArrivals.do ?
@@ -65,12 +74,26 @@ export function useReadAllProducts({ newArrivals = { do: false, age: 0 }, repric
                 console.log(shopifyResponse)
                 productList = productList.concat(
                     shopifyResponse.theList.data.filter((item: IShopifyProd, idx: number) => {
-                        if (reprice) {                                                                              //Must be before inStock filter check
-                            let thePct = readyToReprice(item, currentDiscountCollection())
-                            console.log(thePct)
-                            return thePct !== null
+                        if (reprice.do) {
+                            if (reprice.inStock) {
+                                if (item.variants[0].inventory_quantity > 0) {
+                                    let thePct = readyToReprice(item, currentDiscountCollection())
+                                    console.log(thePct)
+                                    return thePct !== null
+                                } else {
+                                    return false
+                                }
+                            }
                         }
-                        if (inStock) return item.variants[0].inventory_quantity > 0
+                        if (tags.do) {
+                            if (tags.inStock) {
+                                if (item.variants[0].inventory_quantity > 0) {
+                                    return dateDiffInDays(dateFormat(item.created_at), dateFormat(null)) <= age
+                                } else {
+                                    return false
+                                }
+                            }
+                        }
                         if (outOfStock.do) {
                             let useThisAge = outOfStock.except.includes(item.product_type) ? outOfStock.exceptAge : outOfStock.age
                             return (item.variants[0].inventory_quantity < 1) && readyToRemove(item, useThisAge)
@@ -81,7 +104,9 @@ export function useReadAllProducts({ newArrivals = { do: false, age: 0 }, repric
                         return true
                     })
                 )
-                reprice && (productList = doReprice(productList))
+                if (tags.reprice || reprice.do) {
+                    reprice && (productList = doReprice(productList))
+                }
                 setProgress(Math.round(((i + 1) / (newArrivals.do ? 1 : types.length)) * 100))
                 console.log(shopifyResponse.theList.data);
                 console.log(productList)

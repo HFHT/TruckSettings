@@ -17,15 +17,15 @@ interface IHangTag {
 export function NewHangTags({ isOpen, noPrint }: IHangTag) {
     const CONST_BATCH_AMT = 25
 
-    const [allProducts, doReadProducts, doReset, fetchProgress, quantity] = useReadAllProducts({ reprice: true, inStock: true })
+    const [allProducts, doReadProducts, doReset, fetchProgress, quantity] = useReadAllProducts({ tags: {do: true, reprice: true, inStock: true } })
     const [theQueue, updateQueue, printStatus] = usePrintHangTags({ noPrint: noPrint })
     const [progress, setProgress] = useState(0)
 
     const [nextIdx, setNextIdx] = useState(0)
 
-    function handleReadProducts() {
+    function handleReadProducts(age:number) {
         if (!confirm('This will print out alot of tags, are you sure you want to proceed?')) return
-        doReadProducts({ types: CONST_GROUPINGS })
+        doReadProducts({ types: CONST_GROUPINGS, age: age })
 
     }
     function handlePrint() {
@@ -50,7 +50,8 @@ export function NewHangTags({ isOpen, noPrint }: IHangTag) {
             <h3>Hang Tag Printing</h3>
             <p>Print out hang tags for all instock products in Shopify or for a single product by providing it's barcode.</p>
             <div className='tagbtnprog'>
-                <Button classes='' disabled={fetchProgress === 100} onClick={() => handleReadProducts()}>Fetch Products</Button>
+                <Button classes='' disabled={fetchProgress === 100} onClick={() => handleReadProducts(999)}>Fetch All Products</Button>
+                <Button classes='' disabled={fetchProgress === 100} onClick={() => handleReadProducts(1)}>Fetch Todays Products</Button>
                 <ProgressBar progress={fetchProgress} label={' - Fetching Shopify Products...'} />
             </div>
             {fetchProgress === 100 &&

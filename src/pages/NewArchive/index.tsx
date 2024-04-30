@@ -16,7 +16,7 @@ export function NewArchive({ isOpen, noSave, toast }: IArchive) {
     const [newArrival, setNewArrival] = useState(CONST_NEW_ARRIVAL)
 
     const [haveProducts, setHaveProducts] = useState(false)
-    const [allProducts, doReadProducts, doReset, fetchProgress, quantity] = useReadAllProducts({ reprice: false, outOfStock: { do: true, age: age, except: CONST_EXCEPTIONS, exceptAge: 31 } })
+    const [allProducts, doReadProducts, doReset, fetchProgress, quantity] = useReadAllProducts({ outOfStock: { do: true, age: age, except: CONST_EXCEPTIONS, exceptAge: 31 } })
     const [allNewProducts, doReadNewProducts, doNewReset, fetchNewProgress, newQuantity] = useReadAllProducts({ newArrivals: { do: true, age: newArrival } })
 
     const [doUpdateProducts, updateProgress] = useUpdateAllProducts({ archive: true, nosave: noSave })
@@ -62,12 +62,12 @@ export function NewArchive({ isOpen, noSave, toast }: IArchive) {
                 <div>New Arrival (days)</div>
                 <input className='username' disabled={fetchProgress > 0} type={'text'} value={newArrival} title={'NewArrival'} onChange={(e: any) => setNewArrival(e.target.value)} />
             </div>
-            <div className='tagbtnprog'>
+            <div className='archivebtnprog'>
                 <Button classes='' disabled={fetchProgress === 100} onClick={() => handleReadProducts()}>Fetch Products</Button>
                 <ProgressBar progress={fetchProgress} label={' - Fetching Shopify Products...'} />
             </div>
             {fetchProgress === 100 &&
-                <div className='tagbtnprog'>
+                <div className='archivebtnprog'>
                     <Button classes='' disabled={(allProducts && (allProducts.length === 0)) || updateProgress === 100} onClick={() => handleArchiveProducts()}>Archive Products</Button>
                     <ProgressBar progress={updateProgress} label={` - Archiving ${quantity} products`} />
                     <div></div>

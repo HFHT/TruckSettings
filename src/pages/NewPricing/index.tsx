@@ -13,7 +13,7 @@ interface IArchive {
 }
 export function NewPricing({ isOpen, noSave, noPrice, toast }: IArchive) {
 
-    const [allProducts, doReadProducts, doReset, fetchProgress, quantity] = useReadAllProducts({ reprice: true, inStock: true })
+    const [allProducts, doReadProducts, doReset, fetchProgress, quantity] = useReadAllProducts({ reprice: {do: true, inStock: true }})
 
     const [doUpdateProducts, updateProgress] = useUpdateAllProducts({ reprice: true, nosave: noSave })
 
@@ -45,12 +45,12 @@ export function NewPricing({ isOpen, noSave, noPrice, toast }: IArchive) {
         <>
             <h3>End of Month Pricing</h3>
             <p>Update pricing of all active products at the end of the month.</p>
-            <div className='tagbtnprog'>
+            <div className='pricebtnprog'>
                 <Button classes='' disabled={fetchProgress === 100} onClick={() => handleReadProducts()}>Fetch Products</Button>
                 <ProgressBar progress={fetchProgress} label={' - Fetching Shopify Products...'} />
             </div>
             {fetchProgress === 100 &&
-                <div className='tagbtnprog'>
+                <div className='pricebtnprog'>
                     <Button classes='' disabled={(allProducts && (allProducts.length === 0)) || updateProgress === 100} onClick={() => handleRepriceProducts()}>Reprice Products</Button>
                     <ProgressBar progress={updateProgress} label={` - Repricing ${quantity} products`} />
                 </div>
