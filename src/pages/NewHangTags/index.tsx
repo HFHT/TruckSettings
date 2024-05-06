@@ -13,17 +13,19 @@ import { CONST_GROUPINGS } from "../../constants"
 interface IHangTag {
     isOpen: boolean
     noPrint: boolean
+    doSave: Function
+    dbSettings: any[]
 }
-export function NewHangTags({ isOpen, noPrint }: IHangTag) {
+export function NewHangTags({ isOpen, noPrint, doSave, dbSettings }: IHangTag) {
     const CONST_BATCH_AMT = 25
 
-    const [allProducts, doReadProducts, doReset, fetchProgress, quantity] = useReadAllProducts({ tags: {do: true, reprice: true, inStock: true } })
+    const [allProducts, doReadProducts, doReset, fetchProgress, quantity] = useReadAllProducts({ tags: { do: true, reprice: true, inStock: true } })
     const [theQueue, updateQueue, printStatus] = usePrintHangTags({ noPrint: noPrint })
     const [progress, setProgress] = useState(0)
 
     const [nextIdx, setNextIdx] = useState(0)
 
-    function handleReadProducts(age:number) {
+    function handleReadProducts(age: number) {
         if (!confirm('This will print out alot of tags, are you sure you want to proceed?')) return
         doReadProducts({ types: CONST_GROUPINGS, age: age })
 
@@ -43,6 +45,13 @@ export function NewHangTags({ isOpen, noPrint }: IHangTag) {
     }, [printStatus])
 
 
+    useEffect(() => {
+        if (!allProducts) return
+        console.log(allProducts)
+        doSave({ _id: "hangtags", data: allProducts }, dbSettings, false)
+
+    }, [allProducts])
+
     if (!isOpen) return (<></>)
 
     return (
@@ -56,7 +65,7 @@ export function NewHangTags({ isOpen, noPrint }: IHangTag) {
             </div>
             {fetchProgress === 100 &&
                 <div className='tagbtnprog'>
-                    <Button classes='' disabled={fetchProgress !== 100} onClick={() => handlePrint()}>Print 25</Button>
+                    <Button classes='' disabled={fetchProgress !== 100} onClick={() => handlePrint()}>Print {CONST_BATCH_AMT}</Button>
                     <ProgressBar progress={Math.round(((progress) / quantity) * 100)} label={` - Printing ${(CONST_BATCH_AMT * nextIdx) > quantity ? quantity : (CONST_BATCH_AMT * nextIdx)} of ${quantity}`} />
                 </div>
             }

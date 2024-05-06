@@ -15,7 +15,7 @@ interface IShopifyProd {
     id: string                              // Common properties of products and collections
     created_at: string
     updated_at: string
-
+    image: string
     handle: string                          // Unique to products
     product_type: string
     status: 'active' | 'archived' | 'draft'

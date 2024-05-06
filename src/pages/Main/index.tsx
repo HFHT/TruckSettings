@@ -75,7 +75,7 @@ export function Main({ account }: any) {
                     {/* <HangTags isOpen={mode === 'HangTags'} noPrint={params.noprint}/> */}
                     <NewArchive isOpen={mode === 'Archive'} noSave={params.nosave} toast={toast}/>
 
-                    <NewHangTags isOpen={mode === 'HangTags'} noPrint={params.noprint}/>
+                    <NewHangTags isOpen={mode === 'HangTags'} noPrint={params.noprint} doSave={mutateSettings} dbSettings={dbSettings}/>
 
                     {/* <Archive isOpen={mode === 'Archive'} toast={toast}/> */}
                     <NewPricing isOpen={mode === 'Pricing'}  noPrice={params.noprice} noSave={params.nosave} toast={toast}/>

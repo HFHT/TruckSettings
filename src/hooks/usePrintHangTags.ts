@@ -36,11 +36,12 @@ export function usePrintHangTags({ name = '_blank', height = 400, width = 600, n
                 was: thisProduct.variants[0].compare_at_price,
                 now: thisProduct.variants[0].price,
                 item: thisProduct.variants[0].barcode.slice(-5),
-                vendor: thisProduct.vendor
+                vendor: thisProduct.vendor,
+                img: thisProduct.image.src
             })
         }, 4000 * i)
     }
-    const print = (detail: { was: string, now: string, item: string, vendor: string }) => {
+    const print = (detail: { was: string, now: string, item: string, vendor: string, img: string }) => {
         const theColorIdx = CONST_DISCOUNTS.findIndex((c: string) => c === detail.vendor)
         setPrintStatus('')
         if (theColorIdx === -1) {
@@ -64,8 +65,13 @@ export function usePrintHangTags({ name = '_blank', height = 400, width = 600, n
                 `<div style="width:360px; "><img width="300"\
                 src="${import.meta.env.VITE_STORAGEIMAGEURL}${CONST_LOGO_IMAGE}"/>`
             )
+            // mywindow.document.write(
+            //     `<div style="position:absolute; opacity:0.3"><img width="300"\
+            //     src="${import.meta.env.VITE_STORAGEIMAGEURL}${CONST_LOGO_IMAGE}"/></div>`
+            // )
+
             mywindow.document.write(
-                `<table style="display:flex; align-items:baseline">\
+                `<div style="position:fixed; z-index:100"><div style="position:fixed; opacity:0.3; z-index:1"><img width="300" src="${detail.img}"/></div><table style="display:flex; align-items:baseline">\
                 <tr style="display:flex; align-items:center "><td>\
                 <img height="60" style="margin-left:0.7rem;"\
                 src="${import.meta.env.VITE_STORAGEIMAGEURL}WAS.png"/>\
@@ -84,12 +90,8 @@ export function usePrintHangTags({ name = '_blank', height = 400, width = 600, n
                 </td><td><h1 style="font-size:3rem; margin-left:2.8rem; text-decoration-line: underline;">${detail.item}</h1></td></tr>\
                 </table>`
             )
-            // mywindow.document.write(
-            //     `<img width="480"\
-            //     src="${import.meta.env.VITE_STORAGEIMAGEURL}BANGNAIL.png"/>`
-            // )
             mywindow.document.write(
-                `<div style="display:flex; justify-content:center; align-items:center; height:60px; ${currentDiscount(theColorIdx)}"><h2 style="font-size:1.4rem; text-align:center">EVERY SALE BANGS A NAIL</h2></div></div>`
+                `<div style="display:flex; justify-content:center; align-items:center; height:60px; ${currentDiscount(theColorIdx)}"><h2 style="font-size:1.4rem; text-align:center">EVERY SALE BANGS A NAIL</h2></div></div></div>`
             )
             // mywindow.document.write(document.getElementById(elem).innerHTML);
             mywindow.document.write('</body></html>')
