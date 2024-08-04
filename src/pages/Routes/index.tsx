@@ -110,6 +110,12 @@ export const Routes = ({ isOpen, dbSettings, mutateDB, refetchDB, toast/* dbTrac
         setShowExitPrompt(true)
         setForceRender(forceRender + 1)
     }
+    const changeOnline = (i: number, k: string, v: string) => {
+        console.log(i, k, v);
+        theRoutes.online[i] = {[k]: v};
+        setShowExitPrompt(true)
+        setForceRender(forceRender + 1)
+    }
     const changeDow = (zip: string, whichDay: number, theDow: number | string) => {
         console.log(zip, whichDay, theDow)
         console.log(theRoutes.routes[zip], theRoutes.routes[zip][whichDay].dow)
@@ -212,6 +218,12 @@ export const Routes = ({ isOpen, dbSettings, mutateDB, refetchDB, toast/* dbTrac
                                         <input key={`${i}${j}`} className='inputsmall' disabled={false} type={'text'} value={ls} title={'Slot'} onChange={(e: any) => changeSlot('delivery', k, j, e.target.value)} />
                                     ))}
                                 </div>
+                            ))}
+                            <p>Online Delivery&nbsp;&nbsp; <sub>* Only controls the Truck Scheduler, Shopify must also be updated</sub></p>
+                            {theRoutes && theRoutes.online.map((d: any, i: number) => (
+                                <label key={i} className='routeonlinegrid'>{Object.keys(d)[0]}
+                                    <textarea rows={2} value={d[Object.keys(d)[0]]} onChange={(e: any) => changeOnline(i, Object.keys(d)[0], e.target.value)} />
+                                </label>
                             ))}
                             <div className='routebtns'>
                                 <Button disabled={!showExitPrompt} onClick={() => saveChanges()}>&nbsp;&nbsp;&nbsp;Save&nbsp;&nbsp;&nbsp;</Button>

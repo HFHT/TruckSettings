@@ -58,7 +58,9 @@ interface ISched {
     place: IPlace
     email: string
     cust: ICustInfo
+    addr?: string
     appt: IAppt
+    apptDt?: string
     items: Iitem[];
     imgs: string[]
     src: null | '' | 'w' | 's' | 'o' | 'd' | 'x' // w-web, s-scheduler, d-delivery, x - block slot
@@ -73,6 +75,7 @@ interface ISched {
     full?: boolean
     gpsStop?: string
     fingerprint?: string
+    by?: string
 }
 interface IName {
     first: string
@@ -196,7 +199,8 @@ interface DBEmail {
 interface DBRoutes {
     _id: 'routes'
     trucks: any,
-    routes: any
+    routes: any,
+    online: any
 }
 interface ITemplate {
     confirmation: IEmailType

@@ -8,9 +8,10 @@ interface IDownloads {
     dbSched: IScheds[]
     dbDonor: IDonor[]
     dbTrack: IVisits[]
+    dbHistory: ISched[]
 }
 
-export const Downloads = ({ isOpen, dbDonor, dbTrack, dbSched }: IDownloads) => {
+export const Downloads = ({ isOpen, dbDonor, dbTrack, dbSched, dbHistory }: IDownloads) => {
     if (!isOpen) return (<></>)
     return (
         <>
@@ -19,6 +20,7 @@ export const Downloads = ({ isOpen, dbDonor, dbTrack, dbSched }: IDownloads) => 
                 <CSVLink data={csvDonors(dbDonor)} filename={'HabiStoreDonors.csv'}><Button classes='dbtn'>Download Donors</Button></CSVLink>
                 <CSVLink data={csvTrack(dbTrack)} filename={'HabiStoreVisits.csv'}><Button classes='dbtn'>Download Web Visits</Button></CSVLink>
                 <CSVLink data={csvPickup(dbSched)} filename={'HabiStorePickups.csv'}><Button classes='dbtn'>Download Pickups</Button></CSVLink>
+                <CSVLink data={csvHistory(dbHistory)} filename={'HabiStoreHistory.csv'}><Button classes='dbtn'>Download History</Button></CSVLink>
             </div>
         </>
     )
@@ -93,4 +95,30 @@ export const Downloads = ({ isOpen, dbDonor, dbTrack, dbSched }: IDownloads) => 
             return retVal
         }
     }
+    function csvHistory(dbSched: ISched[]) {
+        let csv = [['Date', 'Phone', 'Done?', 'Appt', 'Route', 'First', 'Last', 'Company', 'Address', 'email', 'src', 'Cancel', 'Resched', 'By', 'Scheduler', 'Driver']]
+        dbSched.forEach((theAppt: ISched) => {
+            csv.push([
+                theAppt.dt,
+                theAppt.phone,
+                theAppt.done ? 'Yes' : '',
+                theAppt.apptDt ? theAppt.apptDt : '',
+                theAppt.appt.rt,
+                theAppt.name.first,
+                theAppt.name.last,
+                theAppt.name.company ? theAppt.name.company : '',
+                theAppt.addr ? theAppt.addr : '',
+                theAppt.email,
+                theAppt.src ? theAppt.src : '',
+                theAppt.cancel ? theAppt.cancel : '',
+                theAppt.resched ? 'Yes' : '',
+                theAppt.by ? theAppt.by : '',
+                theAppt.appt.note ? theAppt.appt.note : '',
+                theAppt.note ? theAppt.note : ''
+
+            ])
+        })
+        return csv
+    }
+
 }

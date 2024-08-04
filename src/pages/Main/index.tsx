@@ -17,6 +17,7 @@ export function Main({ account }: any) {
     const [dbTrack, mutateTrack, updateTrack, trackFetching] = useDb({ key: 'track', theDB: 'DonorTracking', interval: 4 })
     const [dbDonor, mutateDonor, updateDonor, donorFetching] = useDb({ key: 'donors', theDB: 'Donors', interval: 4 })
     const [dbSched, mutateSched, updateSched, schedFetching] = useDb({ key: 'sched', theDB: 'Schedule', interval: 4 })
+    const [dbHistory] = useDb({ key: 'history', theDB: 'History', interval: 4 })
     const [dbSettings, mutateSettings, updateSettings, settingsFetching, refetchSettings ] = useDb({ key: 'settings', theDB: 'Settings', interval: 0 })
     const [sendEMail, eMailSent] = useEmail({ toast: toast, noSend: params.noemail })
 
@@ -71,7 +72,7 @@ export function Main({ account }: any) {
             {(dbTrack && dbDonor && dbSched && dbSettings && siteSettings) ?
                 <div className='mainpage'>
                     <Dashboard isOpen={mode === 'Dashboard'} isAdmin={isAdmin} metrics={dashboardMetrics} siteSettings={siteSettings} />
-                    <Downloads isOpen={mode === 'Downloads'} dbDonor={dbDonor} dbTrack={dbTrack} dbSched={dbSched} />
+                    <Downloads isOpen={mode === 'Downloads'} dbDonor={dbDonor} dbTrack={dbTrack} dbSched={dbSched} dbHistory={dbHistory} />
                     {/* <HangTags isOpen={mode === 'HangTags'} noPrint={params.noprint}/> */}
                     <NewArchive isOpen={mode === 'Archive'} noSave={params.nosave} toast={toast}/>
 

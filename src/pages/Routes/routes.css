@@ -1,14 +1,17 @@
 .routemain {
     /* display:flex; */
 }
+
 .routemap {
     width: 1000px;
     position: absolute;
 }
+
 .routeoverlay {
     position: relative;
     display: inline;
 }
+
 .route-pin {
     position: absolute;
     /* height: 24px;
@@ -16,22 +19,36 @@
     /* left: 20px;
     top: 20px; */
 }
+
 .routebtns {
     margin: 15px;
 }
+
 .routemaingrid {
-    display:grid;
+    display: grid;
     grid-template-columns: 2fr 3fr;
     gap: 10px;
 }
+
 .routegrid {
-    display:grid;
+    display: grid;
     grid-template-columns: 2fr 1fr 1fr repeat(7, 1fr);
     gap: 4px;
-  
+
 }
+
+.routeonlinegrid {
+    display: grid;
+    grid-template-columns: 1fr 8fr;
+    gap: 4px;
+}
+
+.routeonlinegrid textarea {
+    height: unset;
+}
+
 .routezipgrid {
-    display:grid;
+    display: grid;
     grid-template-columns: 1fr 3fr;
     gap: 4px;
     row-gap: 4px;
@@ -39,30 +56,35 @@
     border-width: 1px;
     border-color: var(--color-input-border);
 }
+
 .routezipscroll {
     overflow-y: scroll;
     height: calc(100vh - 175px);
 }
+
 .routezipmain {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 4px;
 }
+
 .routedaygrid {
     display: grid;
     grid-template-columns: 1fr 4fr;
     gap: 4px;
 
 }
+
 .editinput {
     display: inline-block;
 }
+
 .editinput input {
     width: 50%;
 }
-.inputsmall {
 
-}
+.inputsmall {}
+
 .popover {
     z-index: 1;
 }
