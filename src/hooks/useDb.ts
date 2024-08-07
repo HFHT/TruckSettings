@@ -5,20 +5,21 @@ import { useState } from "react";
 
 interface IuseDB {
     key: string
+    mongoDB: string
     theDB: string
     _id?: string | null
     interval?: number
 }
 //useDb({key:'schedule', theDB: 'Schedule', _id: null, interval:4})
-export function useDb({ key, theDB, _id = null, interval = 4 }: IuseDB) {
+export function useDb({ key, mongoDB, theDB, _id = null, interval = 4 }: IuseDB) {
     const [isFetching, setIsFetching] = useState(false)
-    const theKey = [key, theDB]
+    const theKey = [key, mongoDB, theDB]
     _id && theKey.push(_id)
     const { data: retDB, refetch }: any = useQuery<any>({ queryKey: theKey, queryFn: fetchDB, refetchInterval: 1000 * 60 * interval, refetchOnWindowFocus: false })
     const queryClient = useQueryClient();
 
-    const updateItems = useMutation<any, any, { item: any, db: string, insert: boolean }>(
-        ({ item, db, insert }) => updateDB({ item, db, insert }),
+    const updateItems = useMutation<any, any, { item: any, mongoDB: string, db: string, insert: boolean }>(
+        ({ item, mongoDB, db, insert }) => updateDB({ item, mongoDB, db, insert }),
         {
             onSuccess: (i: any) => {
                 console.warn(i, i._id);
@@ -34,15 +35,15 @@ export function useDb({ key, theDB, _id = null, interval = 4 }: IuseDB) {
         setIsFetching(true)
         let rdx = find_id('_id', newRecord._id, db)
         if (rdx < 0) {
-            newRecord && updateItems.mutate({ item: { ...newRecord }, db: theDB, insert: true });
+            newRecord && updateItems.mutate({ item: { ...newRecord }, mongoDB: mongoDB, db: theDB, insert: true });
         } else {
-            newRecord && updateItems.mutate({ item: { ...newRecord }, db: theDB, insert: insert });
+            newRecord && updateItems.mutate({ item: { ...newRecord }, mongoDB: mongoDB, db: theDB, insert: insert });
         }
     }
 
     function update(curRecord: any | undefined, insert = false) {
         setIsFetching(true)
-        curRecord && updateItems.mutate({ item: { ...curRecord }, db: theDB, insert: insert });
+        curRecord && updateItems.mutate({ item: { ...curRecord }, mongoDB: mongoDB, db: theDB, insert: insert });
         return
     }
 
@@ -53,11 +54,11 @@ type Group = { id: number }
 const baseURL = `${import.meta.env.VITE_MONGO_URL}`;
 
 export async function fetchDB({ queryKey }: any): Promise<Group[]> {
-    const [_key, db, _id] = queryKey;
+    const [_key, mongoDB, db, _id] = queryKey;
     console.log(queryKey);
     let find = _id ? { _id: _id } : null;
     return (
-        fetch(`${baseURL}?req=${encodeURIComponent(JSON.stringify({ method: 'find', db: 'Truck', collection: db, find: find }))}`, { method: "GET", headers: new Headers() })
+        fetch(`${baseURL}?req=${encodeURIComponent(JSON.stringify({ method: 'find', db: mongoDB, collection: db, find: find }))}`, { method: "GET", headers: new Headers() })
             .then(response => {
                 console.log(response);
                 if (response.ok) return response.json()
@@ -68,7 +69,7 @@ export async function fetchDB({ queryKey }: any): Promise<Group[]> {
             .catch(error => { console.log(error); /*alert(`Could not get the Schedule from the Database. `);*/ return [] })
     )
 }
-export async function updateDB({ item, insert, db }: any): Promise<Group> {
+export async function updateDB({ item, insert, mongoDB, db }: any): Promise<Group> {
     console.warn('updateDB', item, insert, db);
     const header: any = { method: "POST", headers: new Headers() };
     let method = 'updateOne';
@@ -79,7 +80,7 @@ export async function updateDB({ item, insert, db }: any): Promise<Group> {
         //delete item._id;
     }
 
-    header.body = JSON.stringify({ method: method, db: 'Truck', collection: db, data: { ...item }, find: find })
+    header.body = JSON.stringify({ method: method, db: mongoDB, collection: db, data: { ...item }, find: find })
 
     return (
         fetch(`${import.meta.env.VITE_MONGO_URL}`, header)

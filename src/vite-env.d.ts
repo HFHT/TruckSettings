@@ -129,7 +129,20 @@ interface IDonor {
     name: IName
     nt: string
 }
-
+type KioskFormType = {
+    _id: number | string
+    date: string
+    phone: string
+    firstName: string
+    lastName: string
+    company: string
+    donations: string
+    email: string
+    zip: string
+    address: string
+    newsletter: boolean
+    emailReceipt: boolean
+}
 //Vists Tracking Database
 interface IVisits {
     _id: string

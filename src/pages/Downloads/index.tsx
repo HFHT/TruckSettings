@@ -8,10 +8,11 @@ interface IDownloads {
     dbSched: IScheds[]
     dbDonor: IDonor[]
     dbTrack: IVisits[]
+    dbKiosk: KioskFormType[]
     dbHistory: ISched[]
 }
 
-export const Downloads = ({ isOpen, dbDonor, dbTrack, dbSched, dbHistory }: IDownloads) => {
+export const Downloads = ({ isOpen, dbDonor, dbTrack, dbSched, dbKiosk, dbHistory }: IDownloads) => {
     if (!isOpen) return (<></>)
     return (
         <>
@@ -20,6 +21,7 @@ export const Downloads = ({ isOpen, dbDonor, dbTrack, dbSched, dbHistory }: IDow
                 <CSVLink data={csvDonors(dbDonor)} filename={'HabiStoreDonors.csv'}><Button classes='dbtn'>Download Donors</Button></CSVLink>
                 <CSVLink data={csvTrack(dbTrack)} filename={'HabiStoreVisits.csv'}><Button classes='dbtn'>Download Web Visits</Button></CSVLink>
                 <CSVLink data={csvPickup(dbSched)} filename={'HabiStorePickups.csv'}><Button classes='dbtn'>Download Pickups</Button></CSVLink>
+                <CSVLink data={csvKiosk(dbKiosk)} filename={'HabiStoreKiosk.csv'}><Button classes='dbtn'>Download Kiosk</Button></CSVLink>
                 <CSVLink data={csvHistory(dbHistory)} filename={'HabiStoreHistory.csv'}><Button classes='dbtn'>Download History</Button></CSVLink>
             </div>
         </>
@@ -120,5 +122,22 @@ export const Downloads = ({ isOpen, dbDonor, dbTrack, dbSched, dbHistory }: IDow
         })
         return csv
     }
-
+    function csvKiosk(kiosk: KioskFormType[]) {
+        let csv = [['Date', 'Zip', 'Phone', 'First', 'Last', 'Company', 'Address', 'email', 'donations', 'newletter' ]]
+        kiosk.forEach((receipt: KioskFormType) => {
+            csv.push([
+                receipt.date,
+                receipt.zip,
+                receipt.phone,
+                receipt.firstName,
+                receipt.lastName,
+                receipt.company,
+                receipt.address,
+                receipt.email,
+                receipt.donations,
+                receipt.newsletter ? 'Yes' : ''
+            ])
+        })
+        return csv
+    }
 }
