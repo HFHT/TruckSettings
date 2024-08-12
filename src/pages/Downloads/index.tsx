@@ -123,19 +123,23 @@ export const Downloads = ({ isOpen, dbDonor, dbTrack, dbSched, dbKiosk, dbHistor
         return csv
     }
     function csvKiosk(kiosk: KioskFormType[]) {
-        let csv = [['Date', 'Zip', 'Phone', 'First', 'Last', 'Company', 'Address', 'email', 'donations', 'newletter' ]]
+        let csv = [['Date', 'Zip', 'Phone', 'First', 'Last', 'Company', 'Address', 'City', 'State', 'email', 'donations', 'newletter', 'ShopifyId']]
         kiosk.forEach((receipt: KioskFormType) => {
+            let list = receipt.list.map((l) => `${l.qty}-${l.prod}`)
             csv.push([
                 receipt.date,
-                receipt.zip,
+                receipt.addresses[0].zip,
                 receipt.phone,
-                receipt.firstName,
-                receipt.lastName,
-                receipt.company,
-                receipt.address,
+                receipt.first_name,
+                receipt.last_name,
+                receipt.addresses[0].company,
+                `${receipt.addresses[0].address1} ${receipt.addresses[0].address2} `,
+                receipt.addresses[0].city,
+                receipt.addresses[0].province,
                 receipt.email,
-                receipt.donations,
-                receipt.newsletter ? 'Yes' : ''
+                list.toString(),
+                receipt.newsletter ? 'Yes' : '',
+                receipt.shopifyId
             ])
         })
         return csv

@@ -131,17 +131,25 @@ interface IDonor {
 }
 type KioskFormType = {
     _id: number | string
-    date: string
-    phone: string
-    firstName: string
-    lastName: string
-    company: string
-    donations: string
+    first_name: string
+    last_name: string
     email: string
-    zip: string
-    address: string
+    phone: string
+    note: string
+    addresses: KioskAddressType[]
+    shopifyId: string
+    date: string
     newsletter: boolean
     emailReceipt: boolean
+    list: any[]
+}
+type KioskAddressType = {
+    address1: string
+    address2: string
+    city: string
+    province: string
+    company: string
+    zip: string
 }
 //Vists Tracking Database
 interface IVisits {
