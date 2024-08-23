@@ -88,3 +88,12 @@
 .popover {
     z-index: 1;
 }
+
+.note-modal {
+    width: 320px;
+}
+
+.note-modal textarea {
+    max-width: 300px;
+    min-height: 160px;
+}

@@ -221,6 +221,7 @@ interface DBRoutes {
     _id: 'routes'
     trucks: any,
     routes: any,
+    notes: any,
     online: any
 }
 interface ITemplate {

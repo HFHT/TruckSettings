@@ -1,6 +1,6 @@
 
 // return toast icon based on the toast type
-export const MiscIcons = (type: "empty" | "calendar" | "calendarX" | "camera" | "circleplus" | "circleX" | "close" | "database" | "down" | "edit" | "fileminus" | "fileplus" | "geo" | "link" | "logout" | "moon" | "more" | "phone" | "pin" | "plusminus" | "profile" | "qr" | "save" | "send" | "settings" | "trash" | "undo" | "up" | "upc" | "upload") => {
+export const MiscIcons = (type: "empty" | "calendar" | "calendarX" | "camera" | "card" | "circleplus" | "circleX" | "close" | "database" | "down" | "edit" | "fileminus" | "fileplus" | "geo" | "link" | "logout" | "moon" | "more" | "phone" | "pin" | "plusminus" | "profile" | "qr" | "save" | "send" | "settings" | "trash" | "undo" | "up" | "upc" | "upload") => {
   // This code is equivalent to Switch
   return {
     empty: (
@@ -22,6 +22,12 @@ export const MiscIcons = (type: "empty" | "calendar" | "calendarX" | "camera" | 
       <svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
         <path d="M15 12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h1.172a3 3 0 0 0 2.12-.879l.83-.828A1 1 0 0 1 6.827 3h2.344a1 1 0 0 1 .707.293l.828.828A3 3 0 0 0 12.828 5H14a1 1 0 0 1 1 1v6zM2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2z" />
         <path d="M8 11a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5zm0 1a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zM3 6.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0z" />
+      </svg>
+    ),
+    card: (
+      <svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+        <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2z" />
+        <path d="M3 5.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5M3 8a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 8m0 2.5a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5" />
       </svg>
     ),
     circleplus: (

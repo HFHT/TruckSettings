@@ -3,7 +3,7 @@ import './routes.css';
 import { useEffect, useState } from 'react';
 import { dayOfWeek, find_id } from '../../helpers';
 import { MiscIcons } from '../../icons';
-import { Button, PopoverPicker, Tiles } from '../../components';
+import { Button, Modal, PopoverPicker, Tiles } from '../../components';
 import { useExitPrompt } from '../../hooks';
 export interface IRoutes {
     isOpen: boolean
@@ -112,7 +112,7 @@ export const Routes = ({ isOpen, dbSettings, mutateDB, refetchDB, toast/* dbTrac
     }
     const changeOnline = (i: number, k: string, v: string) => {
         console.log(i, k, v);
-        theRoutes.online[i] = {[k]: v};
+        theRoutes.online[i] = { [k]: v };
         setShowExitPrompt(true)
         setForceRender(forceRender + 1)
     }
@@ -169,6 +169,12 @@ export const Routes = ({ isOpen, dbSettings, mutateDB, refetchDB, toast/* dbTrac
         console.log(i, e)
         console.log(theRoutes.routes[e])
         theRoutes.routes[e].push({ dow: '-', rt: [] })
+        setShowExitPrompt(true)
+        setForceRender(forceRender + 1)
+    }
+    const handleAddNote = (i: string, e: string) => {
+        console.log(i, e)
+        theRoutes.notes = { ...theRoutes.notes, [i]: e }
         setShowExitPrompt(true)
         setForceRender(forceRender + 1)
     }
@@ -251,7 +257,7 @@ export const Routes = ({ isOpen, dbSettings, mutateDB, refetchDB, toast/* dbTrac
                                 </div>
                                 {theRoutes && Object.entries(theRoutes.routes).map(([k, v]: any, i: number) => (
                                     <div key={i} className='routezipgrid'>
-                                        <EditInput field={k} handleAddDay={(e: any) => handleAddDay(i, e)} handleDelete={(e: any) => console.log(e)} />
+                                        <EditInput field={k} note={theRoutes.notes[k]} handleAddNote={(e: any) => handleAddNote(k, e)} handleAddDay={(e: any) => handleAddDay(i, e)} handleDelete={(e: any) => console.log(e)} />
                                         <div>
                                             {v.map((rt: any, j: number) => (
                                                 <div key={`${i}${j}`} className='routedaygrid'>
@@ -274,14 +280,17 @@ export const Routes = ({ isOpen, dbSettings, mutateDB, refetchDB, toast/* dbTrac
         </>
     )
 }
-function EditInput({ field, disabled = false, setField, handleAddDay, handleDelete, edit = false }: any) {
+function EditInput({ field, note, disabled = false, setField, handleAddNote, handleAddDay, handleDelete, edit = false }: any) {
     const [editMode, setEditMode] = useState(edit)
+    const [noteMode, setNoteMode] = useState(false)
     const [theField, setTheField] = useState(field)
+    const [theNote, setTheNote] = useState(note)
     const handleSave = () => {
         setEditMode(false)
         console.log('save')
         setField(theField)
     }
+
     // useEffect(() => {
     //     setTheField(field)
     // }, [])
@@ -298,11 +307,20 @@ function EditInput({ field, disabled = false, setField, handleAddDay, handleDele
                 <div className='editinput'>
                     {field}
                     {!disabled && <span title='edit' onClick={() => setEditMode(true)}> {MiscIcons('edit')}</span>}
+                    {handleAddNote && <span title='Add Note' style={theNote === undefined ? {} : theNote.length === 0 ? {} : { backgroundColor: 'darkgreen' }} onClick={() => setNoteMode(true)}> {MiscIcons('card')}</span>}
                     {handleAddDay && <span title='Add Day' onClick={() => handleAddDay(field)}> {MiscIcons('circleplus')}</span>}
                     {handleDelete && <span title='Delete Zip' onClick={() => handleDelete(field)}> {MiscIcons('trash')}</span>}
-
                 </div>
             }
+            <Modal isOpen={noteMode} toggle={() => setNoteMode(!noteMode)} classes='note-modal'>
+                <label>Note</label>
+                <textarea rows={6} cols={280} value={theNote} title={'Note'} onChange={(e: any) => setTheNote(e.target.value)} />
+                <div className='routebtns'>
+                    <Button disabled={theNote === undefined} onClick={() => { handleAddNote(theNote); setNoteMode(false) }}>&nbsp;&nbsp;&nbsp;&nbsp;OK&nbsp;&nbsp;&nbsp;&nbsp;</Button>
+                    <Button onClick={() => { setTheNote(note); setNoteMode(false) }}>Cancel</Button>
+                </div>
+
+            </Modal>
         </>
     )
 }
