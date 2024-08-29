@@ -19,6 +19,9 @@ export function Main({ account }: any) {
     const [dbSched, mutateSched, updateSched, schedFetching] = useDb({ key: 'sched', mongoDB:'Truck', theDB: 'Schedule', interval: 4 })
     const [dbHistory] = useDb({ key: 'history', mongoDB:'Truck', theDB: 'History', interval: 4 })
     const [dbKiosk] = useDb({ key: 'kiosk', mongoDB:'Kiosk', theDB: 'Donations', interval: 4 })
+    const [dbOrders] = useDb({ key: 'orders', mongoDB:'Habitat', theDB: 'ShopifyOrders', interval: 4 })
+    const [dbOrderItems] = useDb({ key: 'orders', mongoDB:'Habitat', theDB: 'ShopifyItems', interval: 4 })
+    const [dbOrderRefunds] = useDb({ key: 'orders', mongoDB:'Habitat', theDB: 'ShopifyRefunds', interval: 4 })
 
     const [dbSettings, mutateSettings, updateSettings, settingsFetching, refetchSettings ] = useDb({ key: 'settings', mongoDB:'Truck', theDB: 'Settings', interval: 0 })
     const [sendEMail, eMailSent] = useEmail({ toast: toast, noSend: params.noemail })
@@ -74,7 +77,7 @@ export function Main({ account }: any) {
             {(dbTrack && dbDonor && dbSched && dbSettings && siteSettings) ?
                 <div className='mainpage'>
                     <Dashboard isOpen={mode === 'Dashboard'} isAdmin={isAdmin} metrics={dashboardMetrics} siteSettings={siteSettings} />
-                    <Downloads isOpen={mode === 'Downloads'} dbDonor={dbDonor} dbTrack={dbTrack} dbSched={dbSched} dbKiosk={dbKiosk} dbHistory={dbHistory} />
+                    <Downloads isOpen={mode === 'Downloads'} dbDonor={dbDonor} dbTrack={dbTrack} dbSched={dbSched} dbKiosk={dbKiosk} dbHistory={dbHistory} dbOrders={dbOrders} dbItems={dbOrderItems} dbRefunds={dbOrderRefunds} />
                     {/* <HangTags isOpen={mode === 'HangTags'} noPrint={params.noprint}/> */}
                     <NewArchive isOpen={mode === 'Archive'} noSave={params.nosave} toast={toast}/>
 

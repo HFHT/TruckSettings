@@ -10,14 +10,21 @@ interface IDownloads {
     dbTrack: IVisits[]
     dbKiosk: KioskFormType[]
     dbHistory: ISched[]
+    dbOrders: any[]
+    dbItems: any[]
+    dbRefunds: any[]
 }
 
-export const Downloads = ({ isOpen, dbDonor, dbTrack, dbSched, dbKiosk, dbHistory }: IDownloads) => {
+export const Downloads = ({ isOpen, dbDonor, dbTrack, dbSched, dbKiosk, dbHistory, dbOrders, dbItems, dbRefunds }: IDownloads) => {
     if (!isOpen) return (<></>)
     return (
         <>
             <h2>Downloads</h2>
             <div className='downloadmain'>
+                <CSVLink data={csvOrders(dbOrders)} filename={'HabiStoreOrders.csv'}><Button classes='dbtn'>Download Orders</Button></CSVLink>
+                <CSVLink data={csvOrderItems(dbItems)} filename={'HabiStoreOrders.csv'}><Button classes='dbtn'>Download Order Items</Button></CSVLink>
+                {/* <CSVLink data={csvOrders(dbRefunds)} filename={'HabiStoreOrders.csv'}><Button classes='dbtn'>Download Order Refunds</Button></CSVLink> */}
+
                 <CSVLink data={csvDonors(dbDonor)} filename={'HabiStoreDonors.csv'}><Button classes='dbtn'>Download Donors</Button></CSVLink>
                 <CSVLink data={csvTrack(dbTrack)} filename={'HabiStoreVisits.csv'}><Button classes='dbtn'>Download Web Visits</Button></CSVLink>
                 <CSVLink data={csvPickup(dbSched)} filename={'HabiStorePickups.csv'}><Button classes='dbtn'>Download Pickups</Button></CSVLink>
@@ -26,6 +33,29 @@ export const Downloads = ({ isOpen, dbDonor, dbTrack, dbSched, dbKiosk, dbHistor
             </div>
         </>
     )
+    function csvOrderItems(dbItems: any[]) {
+        console.log(dbItems)
+        let csv = [['id', 'Title', 'Price', 'Compare_at', 'Created', 'Sold', 'Tags', 'Vendor', 'Type']]
+        dbItems.forEach((theRcd: any) => {
+            console.log(theRcd)
+            theRcd.items.forEach((or: any) => {
+                csv.push([or.id, or.title, or.price, (or.compare_at_price === 0) ? or.price : or.compare_at_price, or.created_at, or.sold_at, or.tags, or.vendor, or.type])
+            })
+        })
+        return csv
+    }
+    function csvOrders(dbOrders: any[]) {
+        console.log(dbOrders)
+
+        let csv = [['id', 'Source', 'Price', 'Sold', 'Items']]
+        dbOrders.forEach((theRcd: any) => {
+            theRcd.orders.forEach((or: any) => {
+                console.log(or)
+                csv.push([or.id, or.src, Number(or.price), or.sold, or.items.length])
+            })
+        })
+        return csv
+    }
     function csvDonors(dbDonor: IDonor[]) {
         let csv = [['First', 'Last', 'Address', 'Unit', 'email', 'Date', 'ID']]
         dbDonor.forEach((theRcd: any) => {
