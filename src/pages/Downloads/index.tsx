@@ -22,7 +22,7 @@ export const Downloads = ({ isOpen, dbDonor, dbTrack, dbSched, dbKiosk, dbHistor
             <h2>Downloads</h2>
             <div className='downloadmain'>
                 <CSVLink data={csvOrders(dbOrders)} filename={'HabiStoreOrders.csv'}><Button classes='dbtn'>Download Orders</Button></CSVLink>
-                <CSVLink data={csvOrderItems(dbItems)} filename={'HabiStoreOrders.csv'}><Button classes='dbtn'>Download Order Items</Button></CSVLink>
+                <CSVLink data={csvOrderItems(dbItems)} filename={'HabiStoreOrderitems.csv'}><Button classes='dbtn'>Download Order Items</Button></CSVLink>
                 {/* <CSVLink data={csvOrders(dbRefunds)} filename={'HabiStoreOrders.csv'}><Button classes='dbtn'>Download Order Refunds</Button></CSVLink> */}
 
                 <CSVLink data={csvDonors(dbDonor)} filename={'HabiStoreDonors.csv'}><Button classes='dbtn'>Download Donors</Button></CSVLink>
