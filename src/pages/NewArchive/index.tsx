@@ -54,8 +54,9 @@ export function NewArchive({ isOpen, noSave, toast }: IArchive) {
     return (
         <>
             <h3>Archive sold products</h3>
-            <p>Archive sold products and remove older items from the New Arrivals collection.</p>
-            <div className='agediv'>
+            <p>Archival is now performed automatically.</p>
+            {/* <p>Archive sold products and remove older items from the New Arrivals collection.</p> */}
+            {/* <div className='agediv'>
                 <div>Archive (days):</div>
                 <input className='username' disabled={fetchProgress > 0} type={'text'} value={age} title={'Age'} onChange={(e: any) => setAge(e.target.value)} />
                 <div></div>
@@ -73,7 +74,7 @@ export function NewArchive({ isOpen, noSave, toast }: IArchive) {
                     <div></div>
                     <ProgressBar progress={updateNewProgress} label={` - Removing ${newQuantity} New Arrivals`} />
                 </div>
-            }
+            } */}
         </>
     )
 
