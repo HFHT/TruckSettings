@@ -1,5 +1,6 @@
 export * from './archiveProducts';
 export * from './dateDB';
+export * from './dateDaysBetween'
 export * from './fetchAPI';
 export * from './find_id';
 export * from './haves';

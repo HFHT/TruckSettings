@@ -48,6 +48,10 @@ export function NewArchive({ isOpen, noSave, toast }: IArchive) {
 
     }, [updateProgress])
 
+    useEffect(() => {
+        doReadNewProducts({ types: [] })
+    }, [])
+    
 
     if (!isOpen) return (<></>)
 

@@ -2,6 +2,7 @@
 import { CSVLink } from "react-csv";
 import './download.css';
 import { Button } from "../../components";
+import { dateDaysBetween } from "../../helpers";
 
 interface IDownloads {
     isOpen: boolean
@@ -35,11 +36,11 @@ export const Downloads = ({ isOpen, dbDonor, dbTrack, dbSched, dbKiosk, dbHistor
     )
     function csvOrderItems(dbItems: any[]) {
         console.log(dbItems)
-        let csv = [['id', 'Title', 'Price', 'Compare_at', 'Created', 'Sold', 'Tags', 'Vendor', 'Type']]
+        let csv = [['id', 'Title', 'Price', 'Compare_at', 'Created', 'Sold', 'Age', 'Tags', 'Vendor', 'Type']]
         dbItems.forEach((theRcd: any) => {
             console.log(theRcd)
             theRcd.items.forEach((or: any) => {
-                csv.push([or.id, or.title, or.price, (or.compare_at_price === 0) ? or.price : or.compare_at_price, or.created_at, or.sold_at, or.tags, or.vendor, or.type])
+                csv.push([or.id, or.title, or.price, (or.compare_at_price === 0) ? or.price : or.compare_at_price, or.created_at, or.sold_at, dateDaysBetween(or.created_at, or.sold_at,), or.tags, or.vendor, or.type])
             })
         })
         return csv
